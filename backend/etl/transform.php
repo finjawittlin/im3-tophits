@@ -17,15 +17,16 @@ function getMainGenre($genres)
 {
     $genreText = strtolower(implode(" ", $genres));
 
+    // Spezieller Fall:
+    // "dance pop" oder "pop dance" soll zu Pop gehören
+    if (
+        str_contains($genreText, "dance pop") ||
+        str_contains($genreText, "pop dance")
+    ) {
+        return "Pop";
+    }
+
     $genreRules = [
-        "Electronic / Dance" => [
-            "edm",
-            "house",
-            "techno",
-            "electro",
-            "dance",
-            "brostep"
-        ],
 
         "Hip-Hop / Rap" => [
             "rap",
@@ -34,15 +35,15 @@ function getMainGenre($genres)
             "drill"
         ],
 
+        "R&B / Soul" => [
+            "r&b",
+            "soul"
+        ],
+
         "Rock" => [
             "rock",
             "metal",
             "punk"
-        ],
-
-        "R&B / Soul" => [
-            "r&b",
-            "soul"
         ],
 
         "Latin" => [
@@ -56,13 +57,24 @@ function getMainGenre($genres)
             "alternative"
         ],
 
+        "Electronic / Dance" => [
+            "edm",
+            "house",
+            "techno",
+            "electro",
+            "dance",
+            "brostep"
+        ],
+
         "Pop" => [
             "pop"
         ]
     ];
 
     foreach ($genreRules as $mainGenre => $keywords) {
+
         foreach ($keywords as $keyword) {
+
             if (str_contains($genreText, $keyword)) {
                 return $mainGenre;
             }
