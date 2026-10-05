@@ -3,3 +3,5 @@ config.php
 .idea/
 
 data/spotify_ch_2014_2022.csv
+
+config.php

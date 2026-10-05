@@ -1,6 +1,6 @@
 <?php
 
-$file = "../../data/spotify_ch_2014_2022.csv";
+$file = __DIR__ . "/../../data/spotify_ch_2014_2022.csv";
 
 $handle = fopen($file, "r");
 
@@ -74,16 +74,29 @@ function getMainGenre($genres)
 
 
 // --------------------------------------------------
-// CSV lesen
+// Kopfzeile lesen
 // --------------------------------------------------
 
 $headers = fgetcsv($handle, 0, ",", '"', "\\");
 
+
+// --------------------------------------------------
+// Speicher vorbereiten
+// --------------------------------------------------
+
+// Streams pro Monat und Genre
 $monthlyGenreStreams = [];
+
+// Streams pro Monat, Genre und Artist
+$monthlyGenreArtistStreams = [];
+
+
+// --------------------------------------------------
+// CSV Zeile für Zeile verarbeiten
+// --------------------------------------------------
 
 while (($row = fgetcsv($handle, 0, ",", '"', "\\")) !== false) {
 
-    // Nur vollständige Zeilen übernehmen
     if (count($row) !== count($headers)) {
         continue;
     }
@@ -92,28 +105,7 @@ while (($row = fgetcsv($handle, 0, ",", '"', "\\")) !== false) {
 
 
     // --------------------------------------------------
-    // Genres aus CSV-Text in Array umwandeln
-    // --------------------------------------------------
-
-    $genres = json_decode(
-        str_replace("'", '"', $row["artist_genres"]),
-        true
-    );
-
-    if (!is_array($genres)) {
-        $genres = [];
-    }
-
-
-    // --------------------------------------------------
-    // Hauptgenre bestimmen
-    // --------------------------------------------------
-
-    $mainGenre = getMainGenre($genres);
-
-
-    // --------------------------------------------------
-    // Datum einlesen
+    // Datum
     // --------------------------------------------------
 
     $date = DateTime::createFromFormat(
@@ -125,82 +117,127 @@ while (($row = fgetcsv($handle, 0, ",", '"', "\\")) !== false) {
         continue;
     }
 
-
-    // Jahr und Monat bilden
-    // Beispiel: 2022-01
     $monthKey = $date->format("Y-m");
 
 
     // --------------------------------------------------
-    // Streams in Zahl umwandeln
+    // Streams
     // --------------------------------------------------
 
     $streams = (int) $row["streams"];
 
 
     // --------------------------------------------------
-    // Monat vorbereiten
+    // Genres
+    // --------------------------------------------------
+
+    $genres = json_decode(
+        str_replace("'", '"', $row["artist_genres"]),
+        true
+    );
+
+    if (!is_array($genres)) {
+        $genres = [];
+    }
+
+    $mainGenre = getMainGenre($genres);
+
+
+    // --------------------------------------------------
+    // Artists
+    // --------------------------------------------------
+
+    $artists = json_decode(
+        str_replace("'", '"', $row["artists"]),
+        true
+    );
+
+    if (!is_array($artists) || count($artists) === 0) {
+        $artists = ["Unknown"];
+    }
+
+    // Nur erster Artist zählt als Hauptartist
+    $mainArtist = $artists[0];
+
+
+    // --------------------------------------------------
+    // Streams pro Monat + Genre addieren
     // --------------------------------------------------
 
     if (!isset($monthlyGenreStreams[$monthKey])) {
         $monthlyGenreStreams[$monthKey] = [];
     }
 
-
-    // --------------------------------------------------
-    // Genre vorbereiten
-    // --------------------------------------------------
-
     if (!isset($monthlyGenreStreams[$monthKey][$mainGenre])) {
         $monthlyGenreStreams[$monthKey][$mainGenre] = 0;
     }
 
-
-    // --------------------------------------------------
-    // Streams addieren
-    // --------------------------------------------------
-
     $monthlyGenreStreams[$monthKey][$mainGenre] += $streams;
+
+
+    // --------------------------------------------------
+    // Streams pro Monat + Genre + Artist addieren
+    // --------------------------------------------------
+
+    if (!isset($monthlyGenreArtistStreams[$monthKey])) {
+        $monthlyGenreArtistStreams[$monthKey] = [];
+    }
+
+    if (!isset($monthlyGenreArtistStreams[$monthKey][$mainGenre])) {
+        $monthlyGenreArtistStreams[$monthKey][$mainGenre] = [];
+    }
+
+    if (!isset($monthlyGenreArtistStreams[$monthKey][$mainGenre][$mainArtist])) {
+        $monthlyGenreArtistStreams[$monthKey][$mainGenre][$mainArtist] = 0;
+    }
+
+    $monthlyGenreArtistStreams[$monthKey][$mainGenre][$mainArtist] += $streams;
 }
 
 fclose($handle);
 
 
 // --------------------------------------------------
-// Nach Monaten sortieren
+// Monate sortieren
 // --------------------------------------------------
 
 ksort($monthlyGenreStreams);
 
 
 // --------------------------------------------------
-// Genres innerhalb jedes Monats nach Streams sortieren
+// Resultate vorbereiten
 // --------------------------------------------------
 
-foreach ($monthlyGenreStreams as $month => &$genres) {
-    arsort($genres);
-}
-
-unset($genres);
-
-
-// --------------------------------------------------
-// Ausgabe
-// --------------------------------------------------
+$results = [];
 
 foreach ($monthlyGenreStreams as $month => $genres) {
 
-    echo $month . PHP_EOL;
+    // Genres nach Streams sortieren
+    arsort($genres);
 
-    foreach ($genres as $genre => $streams) {
+    // Top Genre
+    $topGenre = array_key_first($genres);
+    $topGenreStreams = $genres[$topGenre];
 
-        echo "  "
-            . $genre
-            . ": "
-            . number_format($streams, 0, ".", "'")
-            . " Streams"
-            . PHP_EOL;
-    }
+    // Artists nur aus dem Top Genre holen
+    $artistsInTopGenre =
+        $monthlyGenreArtistStreams[$month][$topGenre] ?? [];
 
-    echo PHP_EOL;
+    arsort($artistsInTopGenre);
+
+    $topArtist = array_key_first($artistsInTopGenre);
+
+    $topArtistStreams = $topArtist !== null
+        ? $artistsInTopGenre[$topArtist]
+        : 0;
+
+    $results[] = [
+        "month" => $month,
+        "top_genre" => $topGenre,
+        "genre_streams" => $topGenreStreams,
+        "top_artist" => $topArtist,
+        "artist_streams" => $topArtistStreams
+    ];
 }
+
+return $results;
