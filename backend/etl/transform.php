@@ -1,6 +1,6 @@
 <?php
 
-$file = "../../data/spotify_ch_2022.csv";
+$file = "../../data/spotify_ch_2014_2022.csv";
 
 $handle = fopen($file, "r");
 
@@ -8,10 +8,78 @@ if ($handle === false) {
     exit("CSV-Datei konnte nicht geöffnet werden.");
 }
 
-$data = [];
 
-// Kopfzeile lesen
+// --------------------------------------------------
+// Hauptgenre bestimmen
+// --------------------------------------------------
+
+function getMainGenre($genres)
+{
+    $genreText = strtolower(implode(" ", $genres));
+
+    $genreRules = [
+        "Electronic / Dance" => [
+            "edm",
+            "house",
+            "techno",
+            "electro",
+            "dance",
+            "brostep"
+        ],
+
+        "Hip-Hop / Rap" => [
+            "rap",
+            "hip hop",
+            "trap",
+            "drill"
+        ],
+
+        "Rock" => [
+            "rock",
+            "metal",
+            "punk"
+        ],
+
+        "R&B / Soul" => [
+            "r&b",
+            "soul"
+        ],
+
+        "Latin" => [
+            "latin",
+            "reggaeton",
+            "bachata"
+        ],
+
+        "Indie / Alternative" => [
+            "indie",
+            "alternative"
+        ],
+
+        "Pop" => [
+            "pop"
+        ]
+    ];
+
+    foreach ($genreRules as $mainGenre => $keywords) {
+        foreach ($keywords as $keyword) {
+            if (str_contains($genreText, $keyword)) {
+                return $mainGenre;
+            }
+        }
+    }
+
+    return "Other";
+}
+
+
+// --------------------------------------------------
+// CSV lesen
+// --------------------------------------------------
+
 $headers = fgetcsv($handle, 0, ",", '"', "\\");
+
+$monthlyGenreStreams = [];
 
 while (($row = fgetcsv($handle, 0, ",", '"', "\\")) !== false) {
 
@@ -20,32 +88,13 @@ while (($row = fgetcsv($handle, 0, ",", '"', "\\")) !== false) {
         continue;
     }
 
-    $data[] = array_combine($headers, $row);
-}
-
-fclose($handle);
+    $row = array_combine($headers, $row);
 
 
-// --------------------------------------------------
-// Daten transformieren
-// --------------------------------------------------
+    // --------------------------------------------------
+    // Genres aus CSV-Text in Array umwandeln
+    // --------------------------------------------------
 
-$transformedData = [];
-
-foreach ($data as $row) {
-
-    // Artists aus dem CSV-Text in ein Array umwandeln
-    $artists = json_decode(
-        str_replace("'", '"', $row["artists"]),
-        true
-    );
-
-    if (!is_array($artists)) {
-        $artists = [$row["artists"]];
-    }
-
-
-    // Genres aus dem CSV-Text in ein Array umwandeln
     $genres = json_decode(
         str_replace("'", '"', $row["artist_genres"]),
         true
@@ -56,37 +105,102 @@ foreach ($data as $row) {
     }
 
 
-    // Datum vereinheitlichen
-    $date = DateTime::createFromFormat("Y/m/d", $row["date"]);
+    // --------------------------------------------------
+    // Hauptgenre bestimmen
+    // --------------------------------------------------
 
-    if ($date !== false) {
-        $formattedDate = $date->format("Y-m-d");
-    } else {
-        $formattedDate = null;
+    $mainGenre = getMainGenre($genres);
+
+
+    // --------------------------------------------------
+    // Datum einlesen
+    // --------------------------------------------------
+
+    $date = DateTime::createFromFormat(
+        "Y/m/d",
+        $row["date"]
+    );
+
+    if ($date === false) {
+        continue;
     }
 
 
-    // Eine transformierte Zeile erstellen
-    $transformedData[] = [
-        "date" => $formattedDate,
-        "country" => $row["country"],
-        "position" => (int) $row["position"],
-        "streams" => (int) $row["streams"],
-        "track_id" => $row["track_id"],
-        "name" => $row["name"],
-        "artists" => $artists,
-        "genres" => $genres
-    ];
+    // Jahr und Monat bilden
+    // Beispiel: 2022-01
+    $monthKey = $date->format("Y-m");
+
+
+    // --------------------------------------------------
+    // Streams in Zahl umwandeln
+    // --------------------------------------------------
+
+    $streams = (int) $row["streams"];
+
+
+    // --------------------------------------------------
+    // Monat vorbereiten
+    // --------------------------------------------------
+
+    if (!isset($monthlyGenreStreams[$monthKey])) {
+        $monthlyGenreStreams[$monthKey] = [];
+    }
+
+
+    // --------------------------------------------------
+    // Genre vorbereiten
+    // --------------------------------------------------
+
+    if (!isset($monthlyGenreStreams[$monthKey][$mainGenre])) {
+        $monthlyGenreStreams[$monthKey][$mainGenre] = 0;
+    }
+
+
+    // --------------------------------------------------
+    // Streams addieren
+    // --------------------------------------------------
+
+    $monthlyGenreStreams[$monthKey][$mainGenre] += $streams;
 }
 
+fclose($handle);
+
 
 // --------------------------------------------------
-// Ergebnis zurückgeben
+// Nach Monaten sortieren
 // --------------------------------------------------
 
-if (basename($_SERVER['SCRIPT_FILENAME']) === basename(__FILE__)) {
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($transformedData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-} else {
-    return $transformedData;
+ksort($monthlyGenreStreams);
+
+
+// --------------------------------------------------
+// Genres innerhalb jedes Monats nach Streams sortieren
+// --------------------------------------------------
+
+foreach ($monthlyGenreStreams as $month => &$genres) {
+    arsort($genres);
+}
+
+unset($genres);
+
+
+// --------------------------------------------------
+// Ausgabe
+// --------------------------------------------------
+
+foreach ($monthlyGenreStreams as $month => $genres) {
+
+    echo $month . PHP_EOL;
+
+    foreach ($genres as $genre => $streams) {
+
+        echo "  "
+            . $genre
+            . ": "
+            . number_format($streams, 0, ".", "'")
+            . " Streams"
+            . PHP_EOL;
+    }
+
+    echo PHP_EOL;
 }

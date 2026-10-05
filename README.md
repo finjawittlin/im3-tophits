@@ -6,23 +6,29 @@ Data Story Projekt IM3: Analyse saisonaler Genre-Trends 2025
 
 ### 1. Datenquelle
 
-Wir verwenden eine CSV-Datei mit Spotify-Daten aus der Schweiz aus dem Jahr 2022.
+Wir verwenden den Kaggle-Datensatz "Spotify Chart Data" von jfreyberg.
 
-Die Datei liegt im Ordner:
+Quelle:
+https://www.kaggle.com/datasets/jfreyberg/spotify-chart-data/
 
-`data/spotify_ch_2022.csv`
+Aus der ursprünglichen Datei `charts.csv` filtern wir nur die Schweizer Daten (`country = ch`) für den Zeitraum 2014 bis 2022.
 
-Die CSV enthält unter anderem Informationen zu:
+Die gefilterte Datei liegt im Ordner:
 
+`data/spotify_ch_2014_2022.csv`
+
+Die CSV enthält unter anderem:
 - Datum
 - Land
-- Position des Songs in den Charts
+- Chartposition
 - Anzahl Streams
 - Track-ID
 - Künstler:innen
-- Genres
+- Artist-Genres
+- Dauer
+- Explicit-Kennzeichnung
 - Songname
-
+- 
 ### 2. Extract
 
 Mit `backend/etl/extract.php` lesen wir die CSV-Datei ein.
@@ -31,22 +37,16 @@ Die Daten werden dabei aus der CSV gelesen und in PHP als Array gespeichert.
 
 ### 3. Transform
 
-Mit `backend/etl/transform.php` bereiten wir die Rohdaten für unser Projekt auf.
+Mit `backend/etl/transform.php` bereiten wir die Rohdaten für unsere Forschungsfrage auf.
 
-Dabei werden die wichtigen Informationen aus der CSV beibehalten:
+Dabei:
+- werden die Genres aus der CSV eingelesen,
+- ähnliche Genres zu grösseren Hauptkategorien zusammengefasst,
+- jedem Datensatz ein Hauptgenre zugeordnet,
+- Datum und Monat bestimmt,
+- Streams pro Monat und Hauptgenre zusammengezählt.
 
-- Datum
-- Land
-- Position
-- Streams
-- Track-ID
-- Songname
-- Künstler:innen
-- Genres
-
-Die Genres werden ebenfalls übernommen. Wenn ein Song mehrere Genres hat, bleiben alle Genres erhalten.
-
-Die transformierten Daten werden anschliessend als JSON ausgegeben.
+Ziel ist es herauszufinden, welches Genre in jedem Monat zwischen 2014 und 2022 in der Schweiz die meisten Spotify-Streams erreicht hat.
 
 ### 4. Datenbank
 

@@ -1,6 +1,6 @@
 <?php
 
-$file = "../../data/spotify_ch_2022.csv";
+$file = "../../data/spotify_ch_2014_2022.csv";
 
 $handle = fopen($file, "r");
 
