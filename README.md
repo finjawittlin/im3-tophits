@@ -91,9 +91,9 @@ Damit soll verhindert werden, dass Pop-Artists nur wegen des Wortes `dance` auto
 
 ### 5. Datenbank
 
-Mit `backend/etl/schema.sql` wird die Tabelle `monthly_results` erstellt.
+Die transformierten Monatsresultate werden in der MySQL-Datenbank bei Hostpoint gespeichert.
 
-Diese Tabelle enthält pro Monat:
+Dafür verwenden wir die Tabelle `monthly_results` mit folgenden Feldern:
 
 - `id`
 - `month`
@@ -102,35 +102,23 @@ Diese Tabelle enthält pro Monat:
 - `top_artist`
 - `artist_streams`
 
-Damit wird nicht jeder einzelne Song gespeichert, sondern direkt das Resultat unserer monatlichen Analyse.
-
-Die Datenbank befindet sich bei Hostpoint.
+Die Tabelle wurde mit `backend/etl/schema.sql` erstellt.
 
 ### 6. Load
 
-Mit `backend/etl/load.php` werden die transformierten Monatsresultate in die MySQL-Datenbank geschrieben.
+Mit `backend/etl/load.php` werden die transformierten Daten in die Datenbank geschrieben.
 
-Dabei wird aus einem Monatswert wie:
+Der Import wurde erfolgreich auf dem Hostpoint-Server getestet.
 
-`2014-01`
+Aktuell werden genau 108 Monatsresultate für den Zeitraum 2014 bis 2022 in `monthly_results` gespeichert.
 
-für die Datenbank ein Datum wie:
+### 7. Unload / API
 
-`2014-01-01`
+Mit `backend/etl/unload.php` werden die gespeicherten Daten wieder aus MySQL gelesen und als JSON ausgegeben.
 
-gespeichert.
+Zusätzlich stellt `backend/api/index.php` die Daten für das Frontend bereit.
 
-Die Verbindung zur Hostpoint-Datenbank ist aktuell noch in Arbeit.
-
-Die Tabelle `monthly_results` wurde bereits in phpMyAdmin erstellt.
-
-Der lokale Zugriff auf die Datenbank wird momentan noch mit `Connection refused` abgelehnt. Als nächster Schritt müssen der korrekte MySQL-Host und die externe Host-Freigabe geprüft werden.
-
-### 7. API / JSON
-
-Als nächster Schritt soll ein Endpunkt vorbereitet werden, der die Daten aus `monthly_results` ausliest und als JSON an das Frontend weitergibt.
-
-Geplant ist eine Struktur mit folgenden Werten:
+Die API liest die Daten direkt aus der MySQL-Datenbank und gibt pro Monat folgende Werte zurück:
 
 - Monat
 - Top Genre
@@ -138,24 +126,25 @@ Geplant ist eine Struktur mit folgenden Werten:
 - Top Artist im Top Genre
 - Streams dieses Artists
 
-Damit kann das Frontend die monatlichen Veränderungen visualisieren.
+Die API ist online erreichbar unter:
 
-### 8. Datenfluss
+`https://im3.okurocic.myhostpoint.ch/im3-tophits/backend/api/`
 
-Der aktuelle Datenfluss sieht so aus:
+### 8. Aktueller Datenfluss
 
-CSV → Extract → Transform → MySQL-Datenbank → API → Frontend
+Der aktuelle Datenfluss funktioniert so:
 
-Aktuell sind folgende Schritte umgesetzt oder vorbereitet:
+CSV → Extract → Transform → Load → MySQL → API → Frontend
 
-- Schweizer Spotify-Daten von 2014 bis 2022 gefiltert
-- alle 108 Monate geprüft
+Aktuell umgesetzt:
+
+- Schweizer Spotify-Daten von 2014 bis 2022
+- alle 108 Monate vorhanden
 - Genre-Zuordnung umgesetzt
 - Top Genre pro Monat berechnet
 - Top Artist innerhalb des Top Genres berechnet
-- `transform.php` auf Monatsresultate umgestellt
-- Datenbankstruktur mit `monthly_results` vorbereitet
-- Tabelle in phpMyAdmin erstellt
-- `load.php` an die neue Struktur angepasst
-
-Der nächste Schritt ist die Verbindung zur Hostpoint-Datenbank herzustellen und danach die Monatsresultate in MySQL zu laden.
+- MySQL-Datenbank eingerichtet
+- 108 Monatsresultate erfolgreich gespeichert
+- JSON-Ausgabe getestet
+- API liest direkt aus der Datenbank
+- Backend läuft auf Hostpoint
