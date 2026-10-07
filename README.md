@@ -82,6 +82,13 @@ Bei Songs mit mehreren Artists wird aktuell nur der erste Artist als Hauptartist
 
 Für den Zeitraum 2014 bis 2022 entstehen insgesamt 108 Monatsresultate.
 
+Spezialfall bei der Genre-Zuordnung:
+
+- `dance pop` und `pop dance` werden `Pop` zugeordnet.
+- Eindeutig elektronische Genres wie `edm`, `house`, `techno`, `electro` und `brostep` werden `Electronic / Dance` zugeordnet.
+
+Damit soll verhindert werden, dass Pop-Artists nur wegen des Wortes `dance` automatisch als Electronic / Dance gezählt werden.
+
 ### 5. Datenbank
 
 Mit `backend/etl/schema.sql` wird die Tabelle `monthly_results` erstellt.
