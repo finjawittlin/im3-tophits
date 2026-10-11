@@ -1,52 +1,26 @@
--- Datenbankstruktur für unser Spotify-Data-Story-Projekt
+-- Datenbankstruktur für unsere Spotify-Data-Story
 --
--- Die CSV enthält Chart-Einträge für verschiedene Zeitpunkte.
--- Ein Song kann deshalb mehrfach vorkommen.
---
--- Wir trennen deshalb:
---
--- 1. songs
---    Informationen, die zum Song gehören:
---    Name, Artists und Genres
---
--- 2. chart_entries
---    Informationen, die sich pro Chart-Eintrag ändern:
---    Datum, Land, Position und Streams
+-- Für jeden Monat zwischen 2014 und 2022 speichern wir:
+-- 1. das meistgestreamte Genre
+-- 2. die Streams dieses Genres
+-- 3. den Top Artist innerhalb dieses Genres
+-- 4. die Streams dieses Artists
 
 
 -- ------------------------------------------------------------
--- 1. Songs
+-- Monatliche Resultate
 -- ------------------------------------------------------------
 
-CREATE TABLE songs (
-                       id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE monthly_results (
+                                 id INT AUTO_INCREMENT PRIMARY KEY,
 
-                       track_id VARCHAR(50) NOT NULL UNIQUE,
+                                 month DATE NOT NULL UNIQUE,
 
-                       name VARCHAR(255) NOT NULL,
+                                 top_genre VARCHAR(100) NOT NULL,
 
-                       artists TEXT,
+                                 genre_streams BIGINT NOT NULL,
 
-                       genres TEXT
-);
+                                 top_artist VARCHAR(255) NOT NULL,
 
-
--- ------------------------------------------------------------
--- 2. Chart-Einträge
--- ------------------------------------------------------------
-
-CREATE TABLE chart_entries (
-                               id INT AUTO_INCREMENT PRIMARY KEY,
-
-                               song_id INT NOT NULL,
-
-                               date DATE NOT NULL,
-
-                               country VARCHAR(10) NOT NULL,
-
-                               position INT NOT NULL,
-
-                               streams INT NOT NULL,
-
-                               FOREIGN KEY (song_id) REFERENCES songs(id)
+                                 artist_streams BIGINT NOT NULL
 );

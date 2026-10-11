@@ -1,113 +1,150 @@
 # im3-tophits
 
-Data Story Projekt IM3: Analyse saisonaler Genre-Trends 2025
+Data Story Projekt IM3: Analyse von Genre-Trends in der Schweiz von 2014 bis 2022
 
 ## Aktueller Stand
 
-### 1. Datenquelle
+### 1. Forschungsfrage
 
-Wir verwenden eine CSV-Datei mit Spotify-Daten aus der Schweiz aus dem Jahr 2022.
+Unsere Forschungsfrage lautet:
 
-Die Datei liegt im Ordner:
+Welches Genre wurde in welchem Monat in der Schweiz zwischen 2014 und 2022 am meisten gestreamt?
 
-`data/spotify_ch_2022.csv`
+Zusätzlich zeigen wir den Top Artist innerhalb des jeweiligen Top Genres.
 
-Die CSV enthält unter anderem Informationen zu:
+### 2. Datenquelle
+
+Wir verwenden den Kaggle-Datensatz "Spotify Chart Data" von jfreyberg.
+
+Quelle:
+https://www.kaggle.com/datasets/jfreyberg/spotify-chart-data/
+
+Aus der ursprünglichen Datei `charts.csv` filtern wir nur die Schweizer Daten (`country = ch`) für den Zeitraum 2014 bis 2022.
+
+Die gefilterte Datei liegt im Ordner:
+
+`data/spotify_ch_2014_2022.csv`
+
+Die CSV enthält unter anderem:
 
 - Datum
-- Land
-- Position des Songs in den Charts
+- Landwil
+- Chartposition
 - Anzahl Streams
 - Track-ID
 - Künstler:innen
-- Genres
+- Artist-Genres
+- Dauer
+- Explicit-Kennzeichnung
 - Songname
 
-### 2. Extract
+Die Daten liegen als wöchentliche Chart-Einträge vor.
 
-Mit `backend/etl/extract.php` lesen wir die CSV-Datei ein.
+Für die Monatsanalyse wird jeder Wochenwert dem Monat seines Datums zugeordnet.
 
-Die Daten werden dabei aus der CSV gelesen und in PHP als Array gespeichert.
+### 3. Extract
 
-### 3. Transform
+Mit `backend/etl/extract.php` werden die Daten aus der CSV-Datei eingelesen.
 
-Mit `backend/etl/transform.php` bereiten wir die Rohdaten für unser Projekt auf.
+Die Grundlage für die weitere Verarbeitung ist die gefilterte Datei:
 
-Dabei werden die wichtigen Informationen aus der CSV beibehalten:
+`data/spotify_ch_2014_2022.csv`
 
-- Datum
-- Land
-- Position
-- Streams
-- Track-ID
-- Songname
-- Künstler:innen
-- Genres
+### 4. Transform
 
-Die Genres werden ebenfalls übernommen. Wenn ein Song mehrere Genres hat, bleiben alle Genres erhalten.
+Mit `backend/etl/transform.php` werden die Rohdaten für unsere Forschungsfrage aufbereitet.
 
-Die transformierten Daten werden anschliessend als JSON ausgegeben.
+Dabei werden:
 
-### 4. Datenbank
+- Datum und Monat bestimmt
+- Genres aus der CSV eingelesen
+- ähnliche Genres zu grösseren Hauptkategorien zusammengefasst
+- jedem Datensatz ein Hauptgenre zugeordnet
+- Streams pro Monat und Hauptgenre summiert
+- das Top Genre pro Monat bestimmt
+- innerhalb des Top Genres die Streams pro Artist summiert
+- der Top Artist innerhalb des Top Genres bestimmt
 
-Mit `backend/etl/schema.sql` haben wir eine Datenbankstruktur vorbereitet.
+Die verwendeten Hauptgenres sind:
 
-Die Daten werden auf zwei Tabellen aufgeteilt.
+- Electronic / Dance
+- Hip-Hop / Rap
+- Rock
+- R&B / Soul
+- Latin
+- Indie / Alternative
+- Pop
+- Other
 
-Die Tabelle `songs` enthält:
+Genres, die keiner definierten Kategorie zugeordnet werden können, landen in `Other`.
+
+Bei Songs mit mehreren Artists wird aktuell nur der erste Artist als Hauptartist verwendet.
+
+Für den Zeitraum 2014 bis 2022 entstehen insgesamt 108 Monatsresultate.
+
+Spezialfall bei der Genre-Zuordnung:
+
+- `dance pop` und `pop dance` werden `Pop` zugeordnet.
+- Eindeutig elektronische Genres wie `edm`, `house`, `techno`, `electro` und `brostep` werden `Electronic / Dance` zugeordnet.
+
+Damit soll verhindert werden, dass Pop-Artists nur wegen des Wortes `dance` automatisch als Electronic / Dance gezählt werden.
+
+### 5. Datenbank
+
+Die transformierten Monatsresultate werden in der MySQL-Datenbank bei Hostpoint gespeichert.
+
+Dafür verwenden wir die Tabelle `monthly_results` mit folgenden Feldern:
 
 - `id`
-- `track_id`
-- `name`
-- `artists`
-- `genres`
+- `month`
+- `top_genre`
+- `genre_streams`
+- `top_artist`
+- `artist_streams`
 
-Die Tabelle `chart_entries` enthält:
+Die Tabelle wurde mit `backend/etl/schema.sql` erstellt.
 
-- `id`
-- `song_id`
-- `date`
-- `country`
-- `position`
-- `streams`
+### 6. Load
 
-Über `song_id` werden die Chart-Einträge mit dem jeweiligen Song verbunden.
+Mit `backend/etl/load.php` werden die transformierten Daten in die Datenbank geschrieben.
 
-### 5. Load
+Der Import wurde erfolgreich auf dem Hostpoint-Server getestet.
 
-Mit `backend/etl/load.php` ist der Import der transformierten Daten in die MySQL-Datenbank vorbereitet.
+Aktuell werden genau 108 Monatsresultate für den Zeitraum 2014 bis 2022 in `monthly_results` gespeichert.
 
-Dabei werden die Songs und die zugehörigen Chart-Einträge in die Datenbank geschrieben.
+### 7. Unload / API
 
-Die Datenbank befindet sich bei Hostpoint.
+Mit `backend/etl/unload.php` werden die gespeicherten Daten wieder aus MySQL gelesen und als JSON ausgegeben.
 
-Der Import wurde lokal bereits getestet. Die Verbindung zur Hostpoint-Datenbank funktioniert aus der lokalen Umgebung aktuell noch nicht, da der verwendete MySQL-Host intern bei Hostpoint erreichbar ist.
+Zusätzlich stellt `backend/api/index.php` die Daten für das Frontend bereit.
 
-### 6. API / JSON
+Die API liest die Daten direkt aus der MySQL-Datenbank und gibt pro Monat folgende Werte zurück:
 
-Mit `backend/etl/unload.php` haben wir einen ersten Endpunkt vorbereitet, der Daten aus der MySQL-Datenbank ausliest und als JSON zurückgibt.
+- Monat
+- Top Genre
+- Streams des Top Genres
+- Top Artist im Top Genre
+- Streams dieses Artists
 
-Die JSON-Daten enthalten:
+Die API ist online erreichbar unter:
 
-- Datum
-- Land
-- Position
-- Streams
-- Track-ID
-- Songname
-- Künstler:innen
-- Genres
+`https://im3.okurocic.myhostpoint.ch/im3-tophits/backend/api/`
 
-Damit ist die Grundlage geschaffen, damit das Frontend später mit den aufbereiteten Daten arbeiten kann.
+### 8. Aktueller Datenfluss
 
-### 7. Aktueller Datenfluss
+Der aktuelle Datenfluss funktioniert so:
 
-Der geplante Datenfluss sieht so aus:
+CSV → Extract → Transform → Load → MySQL → API → Frontend
 
-CSV → Extract → Transform → MySQL-Datenbank → API → Frontend
+Aktuell umgesetzt:
 
-Die Datenquelle und die Datenaufbereitung sind vorbereitet.
-
-Die Datenbankstruktur ist erstellt und der Import sowie die JSON-Ausgabe sind vorbereitet.
-
-Der nächste Schritt ist, die Datenbank auf dem Server mit den transformierten Daten zu befüllen und die API für das Frontend bereitzustellen.
+- Schweizer Spotify-Daten von 2014 bis 2022
+- alle 108 Monate vorhanden
+- Genre-Zuordnung umgesetzt
+- Top Genre pro Monat berechnet
+- Top Artist innerhalb des Top Genres berechnet
+- MySQL-Datenbank eingerichtet
+- 108 Monatsresultate erfolgreich gespeichert
+- JSON-Ausgabe getestet
+- API liest direkt aus der Datenbank
+- Backend läuft auf Hostpoint
