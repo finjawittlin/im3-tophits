@@ -1,1 +1,43 @@
 <?php
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Die Chartjägerinnen – Was hört die Schweiz?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <p class="kicker">Die Chartjägerinnen · Spotify Schweiz</p>
+    <h1>Was hört<br>die Schweiz?</h1>
+    <p class="lead">Wie verändert sich die Beliebtheit verschiedener Musikgenres auf Spotify in der Schweiz im Verlaufe eines Jahres – und welche monatlichen Muster lassen sich aufweisen?</p>
+    <div class="controls">
+        <label>Jahr <select id="year-select"></select></label>
+        <div class="toggle" role="group" aria-label="Ansicht">
+            <button data-mode="month" class="active">Monate</button>
+            <button data-mode="season">Jahreszeiten</button>
+        </div>
+    </div>
+    <div class="ticker" aria-hidden="true">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</div>
+</header>
+
+<main>
+    <section class="card dark">
+        <h2>Meistgehörtes Genre pro <span id="mode-label">Monat</span></h2>
+        <div id="chart"></div>
+        <p class="hint" id="hint"></p>
+    </section>
+
+    <section class="card light">
+        <h2>Top 10 Genres · <span id="rank-title"></span></h2>
+        <ol id="ranking"></ol>
+    </section>
+    <p id="status"></p>
+</main>
+<script src="script.js"></script>
+</body>
+</html>

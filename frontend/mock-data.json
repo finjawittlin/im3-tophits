@@ -1,0 +1,3026 @@
+[
+  {
+    "genre": "Pop",
+    "date": "2022-01-01",
+    "streamscount": 822928,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2022-01-01",
+    "streamscount": 901047,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2022-01-01",
+    "streamscount": 782593,
+    "country": "Switzerland",
+    "top_artist": "Imagine Dragons"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2022-01-01",
+    "streamscount": 495855,
+    "country": "Switzerland",
+    "top_artist": "Avicii"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2022-01-01",
+    "streamscount": 507046,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2022-01-01",
+    "streamscount": 555283,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2022-01-01",
+    "streamscount": 430415,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Indie",
+    "date": "2022-01-01",
+    "streamscount": 336320,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2022-01-01",
+    "streamscount": 390781,
+    "country": "Switzerland",
+    "top_artist": "Beatrice Egli"
+  },
+  {
+    "genre": "Country",
+    "date": "2022-01-01",
+    "streamscount": 372596,
+    "country": "Switzerland",
+    "top_artist": "Luke Combs"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2022-01-01",
+    "streamscount": 512116,
+    "country": "Switzerland",
+    "top_artist": "Max Richter"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2022-01-01",
+    "streamscount": 262207,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2022-02-01",
+    "streamscount": 661535,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2022-02-01",
+    "streamscount": 629602,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2022-02-01",
+    "streamscount": 460508,
+    "country": "Switzerland",
+    "top_artist": "Coldplay"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2022-02-01",
+    "streamscount": 599103,
+    "country": "Switzerland",
+    "top_artist": "Bakermat"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2022-02-01",
+    "streamscount": 473416,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2022-02-01",
+    "streamscount": 565964,
+    "country": "Switzerland",
+    "top_artist": "Rihanna"
+  },
+  {
+    "genre": "Latin",
+    "date": "2022-02-01",
+    "streamscount": 389210,
+    "country": "Switzerland",
+    "top_artist": "Shakira"
+  },
+  {
+    "genre": "Indie",
+    "date": "2022-02-01",
+    "streamscount": 409959,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2022-02-01",
+    "streamscount": 482829,
+    "country": "Switzerland",
+    "top_artist": "Beatrice Egli"
+  },
+  {
+    "genre": "Country",
+    "date": "2022-02-01",
+    "streamscount": 277551,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2022-02-01",
+    "streamscount": 486743,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2022-02-01",
+    "streamscount": 268443,
+    "country": "Switzerland",
+    "top_artist": "Diana Krall"
+  },
+  {
+    "genre": "Pop",
+    "date": "2022-03-01",
+    "streamscount": 935698,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2022-03-01",
+    "streamscount": 706851,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2022-03-01",
+    "streamscount": 547775,
+    "country": "Switzerland",
+    "top_artist": "Coldplay"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2022-03-01",
+    "streamscount": 548900,
+    "country": "Switzerland",
+    "top_artist": "Bakermat"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2022-03-01",
+    "streamscount": 486965,
+    "country": "Switzerland",
+    "top_artist": "Mani Matter"
+  },
+  {
+    "genre": "R&B",
+    "date": "2022-03-01",
+    "streamscount": 567018,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2022-03-01",
+    "streamscount": 385312,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Indie",
+    "date": "2022-03-01",
+    "streamscount": 404597,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2022-03-01",
+    "streamscount": 352382,
+    "country": "Switzerland",
+    "top_artist": "Helene Fischer"
+  },
+  {
+    "genre": "Country",
+    "date": "2022-03-01",
+    "streamscount": 316442,
+    "country": "Switzerland",
+    "top_artist": "Morgan Wallen"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2022-03-01",
+    "streamscount": 299085,
+    "country": "Switzerland",
+    "top_artist": "Hans Zimmer"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2022-03-01",
+    "streamscount": 228384,
+    "country": "Switzerland",
+    "top_artist": "Diana Krall"
+  },
+  {
+    "genre": "Pop",
+    "date": "2022-04-01",
+    "streamscount": 778724,
+    "country": "Switzerland",
+    "top_artist": "Dua Lipa"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2022-04-01",
+    "streamscount": 867249,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2022-04-01",
+    "streamscount": 447495,
+    "country": "Switzerland",
+    "top_artist": "Imagine Dragons"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2022-04-01",
+    "streamscount": 473463,
+    "country": "Switzerland",
+    "top_artist": "Calvin Harris"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2022-04-01",
+    "streamscount": 504611,
+    "country": "Switzerland",
+    "top_artist": "Lo & Leduc"
+  },
+  {
+    "genre": "R&B",
+    "date": "2022-04-01",
+    "streamscount": 422378,
+    "country": "Switzerland",
+    "top_artist": "Rihanna"
+  },
+  {
+    "genre": "Latin",
+    "date": "2022-04-01",
+    "streamscount": 380452,
+    "country": "Switzerland",
+    "top_artist": "Karol G"
+  },
+  {
+    "genre": "Indie",
+    "date": "2022-04-01",
+    "streamscount": 354323,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2022-04-01",
+    "streamscount": 412662,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2022-04-01",
+    "streamscount": 326901,
+    "country": "Switzerland",
+    "top_artist": "Morgan Wallen"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2022-04-01",
+    "streamscount": 254197,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2022-04-01",
+    "streamscount": 192050,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2022-05-01",
+    "streamscount": 768229,
+    "country": "Switzerland",
+    "top_artist": "Adele"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2022-05-01",
+    "streamscount": 680062,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2022-05-01",
+    "streamscount": 649025,
+    "country": "Switzerland",
+    "top_artist": "Imagine Dragons"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2022-05-01",
+    "streamscount": 609742,
+    "country": "Switzerland",
+    "top_artist": "Calvin Harris"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2022-05-01",
+    "streamscount": 409474,
+    "country": "Switzerland",
+    "top_artist": "Mani Matter"
+  },
+  {
+    "genre": "R&B",
+    "date": "2022-05-01",
+    "streamscount": 430060,
+    "country": "Switzerland",
+    "top_artist": "The Weeknd"
+  },
+  {
+    "genre": "Latin",
+    "date": "2022-05-01",
+    "streamscount": 345852,
+    "country": "Switzerland",
+    "top_artist": "Karol G"
+  },
+  {
+    "genre": "Indie",
+    "date": "2022-05-01",
+    "streamscount": 379211,
+    "country": "Switzerland",
+    "top_artist": "Tame Impala"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2022-05-01",
+    "streamscount": 350559,
+    "country": "Switzerland",
+    "top_artist": "Helene Fischer"
+  },
+  {
+    "genre": "Country",
+    "date": "2022-05-01",
+    "streamscount": 252165,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2022-05-01",
+    "streamscount": 282480,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2022-05-01",
+    "streamscount": 256938,
+    "country": "Switzerland",
+    "top_artist": "Diana Krall"
+  },
+  {
+    "genre": "Pop",
+    "date": "2022-06-01",
+    "streamscount": 885573,
+    "country": "Switzerland",
+    "top_artist": "Adele"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2022-06-01",
+    "streamscount": 936024,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2022-06-01",
+    "streamscount": 610772,
+    "country": "Switzerland",
+    "top_artist": "Coldplay"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2022-06-01",
+    "streamscount": 1266092,
+    "country": "Switzerland",
+    "top_artist": "Calvin Harris"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2022-06-01",
+    "streamscount": 541130,
+    "country": "Switzerland",
+    "top_artist": "Lo & Leduc"
+  },
+  {
+    "genre": "R&B",
+    "date": "2022-06-01",
+    "streamscount": 580219,
+    "country": "Switzerland",
+    "top_artist": "Rihanna"
+  },
+  {
+    "genre": "Latin",
+    "date": "2022-06-01",
+    "streamscount": 666872,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Indie",
+    "date": "2022-06-01",
+    "streamscount": 348525,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2022-06-01",
+    "streamscount": 440345,
+    "country": "Switzerland",
+    "top_artist": "Helene Fischer"
+  },
+  {
+    "genre": "Country",
+    "date": "2022-06-01",
+    "streamscount": 332741,
+    "country": "Switzerland",
+    "top_artist": "Luke Combs"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2022-06-01",
+    "streamscount": 311216,
+    "country": "Switzerland",
+    "top_artist": "Max Richter"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2022-06-01",
+    "streamscount": 200477,
+    "country": "Switzerland",
+    "top_artist": "Norah Jones"
+  },
+  {
+    "genre": "Pop",
+    "date": "2022-07-01",
+    "streamscount": 694316,
+    "country": "Switzerland",
+    "top_artist": "Adele"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2022-07-01",
+    "streamscount": 783225,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2022-07-01",
+    "streamscount": 471787,
+    "country": "Switzerland",
+    "top_artist": "Imagine Dragons"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2022-07-01",
+    "streamscount": 1093371,
+    "country": "Switzerland",
+    "top_artist": "Bakermat"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2022-07-01",
+    "streamscount": 585336,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2022-07-01",
+    "streamscount": 490055,
+    "country": "Switzerland",
+    "top_artist": "Rihanna"
+  },
+  {
+    "genre": "Latin",
+    "date": "2022-07-01",
+    "streamscount": 718098,
+    "country": "Switzerland",
+    "top_artist": "Karol G"
+  },
+  {
+    "genre": "Indie",
+    "date": "2022-07-01",
+    "streamscount": 495892,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2022-07-01",
+    "streamscount": 325000,
+    "country": "Switzerland",
+    "top_artist": "Beatrice Egli"
+  },
+  {
+    "genre": "Country",
+    "date": "2022-07-01",
+    "streamscount": 328223,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2022-07-01",
+    "streamscount": 279873,
+    "country": "Switzerland",
+    "top_artist": "Hans Zimmer"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2022-07-01",
+    "streamscount": 214939,
+    "country": "Switzerland",
+    "top_artist": "Norah Jones"
+  },
+  {
+    "genre": "Pop",
+    "date": "2022-08-01",
+    "streamscount": 932375,
+    "country": "Switzerland",
+    "top_artist": "Adele"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2022-08-01",
+    "streamscount": 700064,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2022-08-01",
+    "streamscount": 474280,
+    "country": "Switzerland",
+    "top_artist": "Coldplay"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2022-08-01",
+    "streamscount": 886348,
+    "country": "Switzerland",
+    "top_artist": "Bakermat"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2022-08-01",
+    "streamscount": 883108,
+    "country": "Switzerland",
+    "top_artist": "Mani Matter"
+  },
+  {
+    "genre": "R&B",
+    "date": "2022-08-01",
+    "streamscount": 403913,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2022-08-01",
+    "streamscount": 826235,
+    "country": "Switzerland",
+    "top_artist": "Shakira"
+  },
+  {
+    "genre": "Indie",
+    "date": "2022-08-01",
+    "streamscount": 438247,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2022-08-01",
+    "streamscount": 372554,
+    "country": "Switzerland",
+    "top_artist": "Helene Fischer"
+  },
+  {
+    "genre": "Country",
+    "date": "2022-08-01",
+    "streamscount": 319633,
+    "country": "Switzerland",
+    "top_artist": "Morgan Wallen"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2022-08-01",
+    "streamscount": 263550,
+    "country": "Switzerland",
+    "top_artist": "Hans Zimmer"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2022-08-01",
+    "streamscount": 267704,
+    "country": "Switzerland",
+    "top_artist": "Norah Jones"
+  },
+  {
+    "genre": "Pop",
+    "date": "2022-09-01",
+    "streamscount": 663844,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2022-09-01",
+    "streamscount": 633593,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2022-09-01",
+    "streamscount": 586936,
+    "country": "Switzerland",
+    "top_artist": "Gotthard"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2022-09-01",
+    "streamscount": 482424,
+    "country": "Switzerland",
+    "top_artist": "Calvin Harris"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2022-09-01",
+    "streamscount": 416934,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2022-09-01",
+    "streamscount": 463439,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2022-09-01",
+    "streamscount": 518187,
+    "country": "Switzerland",
+    "top_artist": "Karol G"
+  },
+  {
+    "genre": "Indie",
+    "date": "2022-09-01",
+    "streamscount": 452686,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2022-09-01",
+    "streamscount": 416509,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2022-09-01",
+    "streamscount": 459996,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2022-09-01",
+    "streamscount": 263373,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2022-09-01",
+    "streamscount": 286078,
+    "country": "Switzerland",
+    "top_artist": "Diana Krall"
+  },
+  {
+    "genre": "Pop",
+    "date": "2022-10-01",
+    "streamscount": 1004424,
+    "country": "Switzerland",
+    "top_artist": "Adele"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2022-10-01",
+    "streamscount": 903307,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Rock",
+    "date": "2022-10-01",
+    "streamscount": 419400,
+    "country": "Switzerland",
+    "top_artist": "Imagine Dragons"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2022-10-01",
+    "streamscount": 544348,
+    "country": "Switzerland",
+    "top_artist": "Avicii"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2022-10-01",
+    "streamscount": 402800,
+    "country": "Switzerland",
+    "top_artist": "Mani Matter"
+  },
+  {
+    "genre": "R&B",
+    "date": "2022-10-01",
+    "streamscount": 401323,
+    "country": "Switzerland",
+    "top_artist": "Rihanna"
+  },
+  {
+    "genre": "Latin",
+    "date": "2022-10-01",
+    "streamscount": 366364,
+    "country": "Switzerland",
+    "top_artist": "Shakira"
+  },
+  {
+    "genre": "Indie",
+    "date": "2022-10-01",
+    "streamscount": 478362,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2022-10-01",
+    "streamscount": 341484,
+    "country": "Switzerland",
+    "top_artist": "Beatrice Egli"
+  },
+  {
+    "genre": "Country",
+    "date": "2022-10-01",
+    "streamscount": 500566,
+    "country": "Switzerland",
+    "top_artist": "Luke Combs"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2022-10-01",
+    "streamscount": 259541,
+    "country": "Switzerland",
+    "top_artist": "Max Richter"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2022-10-01",
+    "streamscount": 201048,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2022-11-01",
+    "streamscount": 666992,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2022-11-01",
+    "streamscount": 638004,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2022-11-01",
+    "streamscount": 798782,
+    "country": "Switzerland",
+    "top_artist": "Imagine Dragons"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2022-11-01",
+    "streamscount": 476447,
+    "country": "Switzerland",
+    "top_artist": "Avicii"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2022-11-01",
+    "streamscount": 548529,
+    "country": "Switzerland",
+    "top_artist": "Lo & Leduc"
+  },
+  {
+    "genre": "R&B",
+    "date": "2022-11-01",
+    "streamscount": 439259,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2022-11-01",
+    "streamscount": 415198,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Indie",
+    "date": "2022-11-01",
+    "streamscount": 442064,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2022-11-01",
+    "streamscount": 371979,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2022-11-01",
+    "streamscount": 329098,
+    "country": "Switzerland",
+    "top_artist": "Luke Combs"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2022-11-01",
+    "streamscount": 266302,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2022-11-01",
+    "streamscount": 227311,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2022-12-01",
+    "streamscount": 1422095,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2022-12-01",
+    "streamscount": 755366,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2022-12-01",
+    "streamscount": 995172,
+    "country": "Switzerland",
+    "top_artist": "Gotthard"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2022-12-01",
+    "streamscount": 503333,
+    "country": "Switzerland",
+    "top_artist": "Bakermat"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2022-12-01",
+    "streamscount": 447225,
+    "country": "Switzerland",
+    "top_artist": "Mani Matter"
+  },
+  {
+    "genre": "R&B",
+    "date": "2022-12-01",
+    "streamscount": 491236,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2022-12-01",
+    "streamscount": 481620,
+    "country": "Switzerland",
+    "top_artist": "Shakira"
+  },
+  {
+    "genre": "Indie",
+    "date": "2022-12-01",
+    "streamscount": 467934,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2022-12-01",
+    "streamscount": 649809,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2022-12-01",
+    "streamscount": 364973,
+    "country": "Switzerland",
+    "top_artist": "Luke Combs"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2022-12-01",
+    "streamscount": 657171,
+    "country": "Switzerland",
+    "top_artist": "Max Richter"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2022-12-01",
+    "streamscount": 245338,
+    "country": "Switzerland",
+    "top_artist": "Diana Krall"
+  },
+  {
+    "genre": "Pop",
+    "date": "2023-01-01",
+    "streamscount": 966321,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2023-01-01",
+    "streamscount": 800884,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2023-01-01",
+    "streamscount": 960627,
+    "country": "Switzerland",
+    "top_artist": "Gotthard"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2023-01-01",
+    "streamscount": 701350,
+    "country": "Switzerland",
+    "top_artist": "Calvin Harris"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2023-01-01",
+    "streamscount": 580237,
+    "country": "Switzerland",
+    "top_artist": "Lo & Leduc"
+  },
+  {
+    "genre": "R&B",
+    "date": "2023-01-01",
+    "streamscount": 532607,
+    "country": "Switzerland",
+    "top_artist": "The Weeknd"
+  },
+  {
+    "genre": "Latin",
+    "date": "2023-01-01",
+    "streamscount": 493118,
+    "country": "Switzerland",
+    "top_artist": "Karol G"
+  },
+  {
+    "genre": "Indie",
+    "date": "2023-01-01",
+    "streamscount": 339612,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2023-01-01",
+    "streamscount": 371322,
+    "country": "Switzerland",
+    "top_artist": "Helene Fischer"
+  },
+  {
+    "genre": "Country",
+    "date": "2023-01-01",
+    "streamscount": 255504,
+    "country": "Switzerland",
+    "top_artist": "Luke Combs"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2023-01-01",
+    "streamscount": 445618,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2023-01-01",
+    "streamscount": 291962,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2023-02-01",
+    "streamscount": 733474,
+    "country": "Switzerland",
+    "top_artist": "Adele"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2023-02-01",
+    "streamscount": 864620,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Rock",
+    "date": "2023-02-01",
+    "streamscount": 594027,
+    "country": "Switzerland",
+    "top_artist": "Gotthard"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2023-02-01",
+    "streamscount": 724008,
+    "country": "Switzerland",
+    "top_artist": "Avicii"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2023-02-01",
+    "streamscount": 466789,
+    "country": "Switzerland",
+    "top_artist": "Lo & Leduc"
+  },
+  {
+    "genre": "R&B",
+    "date": "2023-02-01",
+    "streamscount": 461270,
+    "country": "Switzerland",
+    "top_artist": "Rihanna"
+  },
+  {
+    "genre": "Latin",
+    "date": "2023-02-01",
+    "streamscount": 363387,
+    "country": "Switzerland",
+    "top_artist": "Shakira"
+  },
+  {
+    "genre": "Indie",
+    "date": "2023-02-01",
+    "streamscount": 437086,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2023-02-01",
+    "streamscount": 532583,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2023-02-01",
+    "streamscount": 362364,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2023-02-01",
+    "streamscount": 456097,
+    "country": "Switzerland",
+    "top_artist": "Max Richter"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2023-02-01",
+    "streamscount": 258347,
+    "country": "Switzerland",
+    "top_artist": "Norah Jones"
+  },
+  {
+    "genre": "Pop",
+    "date": "2023-03-01",
+    "streamscount": 841267,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2023-03-01",
+    "streamscount": 963829,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2023-03-01",
+    "streamscount": 537655,
+    "country": "Switzerland",
+    "top_artist": "Imagine Dragons"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2023-03-01",
+    "streamscount": 573057,
+    "country": "Switzerland",
+    "top_artist": "Bakermat"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2023-03-01",
+    "streamscount": 527147,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2023-03-01",
+    "streamscount": 604445,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2023-03-01",
+    "streamscount": 437756,
+    "country": "Switzerland",
+    "top_artist": "Karol G"
+  },
+  {
+    "genre": "Indie",
+    "date": "2023-03-01",
+    "streamscount": 459355,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2023-03-01",
+    "streamscount": 437930,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2023-03-01",
+    "streamscount": 317730,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2023-03-01",
+    "streamscount": 339079,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2023-03-01",
+    "streamscount": 283467,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2023-04-01",
+    "streamscount": 1046893,
+    "country": "Switzerland",
+    "top_artist": "Adele"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2023-04-01",
+    "streamscount": 714994,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2023-04-01",
+    "streamscount": 677707,
+    "country": "Switzerland",
+    "top_artist": "Gotthard"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2023-04-01",
+    "streamscount": 612478,
+    "country": "Switzerland",
+    "top_artist": "Bakermat"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2023-04-01",
+    "streamscount": 481869,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2023-04-01",
+    "streamscount": 597291,
+    "country": "Switzerland",
+    "top_artist": "The Weeknd"
+  },
+  {
+    "genre": "Latin",
+    "date": "2023-04-01",
+    "streamscount": 463746,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Indie",
+    "date": "2023-04-01",
+    "streamscount": 419330,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2023-04-01",
+    "streamscount": 374083,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2023-04-01",
+    "streamscount": 321095,
+    "country": "Switzerland",
+    "top_artist": "Morgan Wallen"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2023-04-01",
+    "streamscount": 245217,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2023-04-01",
+    "streamscount": 250241,
+    "country": "Switzerland",
+    "top_artist": "Norah Jones"
+  },
+  {
+    "genre": "Pop",
+    "date": "2023-05-01",
+    "streamscount": 755788,
+    "country": "Switzerland",
+    "top_artist": "Dua Lipa"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2023-05-01",
+    "streamscount": 884952,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2023-05-01",
+    "streamscount": 552417,
+    "country": "Switzerland",
+    "top_artist": "Imagine Dragons"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2023-05-01",
+    "streamscount": 708690,
+    "country": "Switzerland",
+    "top_artist": "Avicii"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2023-05-01",
+    "streamscount": 618444,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2023-05-01",
+    "streamscount": 503029,
+    "country": "Switzerland",
+    "top_artist": "The Weeknd"
+  },
+  {
+    "genre": "Latin",
+    "date": "2023-05-01",
+    "streamscount": 478828,
+    "country": "Switzerland",
+    "top_artist": "Karol G"
+  },
+  {
+    "genre": "Indie",
+    "date": "2023-05-01",
+    "streamscount": 352258,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2023-05-01",
+    "streamscount": 377145,
+    "country": "Switzerland",
+    "top_artist": "Beatrice Egli"
+  },
+  {
+    "genre": "Country",
+    "date": "2023-05-01",
+    "streamscount": 293131,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2023-05-01",
+    "streamscount": 287384,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2023-05-01",
+    "streamscount": 260883,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2023-06-01",
+    "streamscount": 788186,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2023-06-01",
+    "streamscount": 775295,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Rock",
+    "date": "2023-06-01",
+    "streamscount": 487964,
+    "country": "Switzerland",
+    "top_artist": "Coldplay"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2023-06-01",
+    "streamscount": 1380633,
+    "country": "Switzerland",
+    "top_artist": "Avicii"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2023-06-01",
+    "streamscount": 484487,
+    "country": "Switzerland",
+    "top_artist": "Lo & Leduc"
+  },
+  {
+    "genre": "R&B",
+    "date": "2023-06-01",
+    "streamscount": 448779,
+    "country": "Switzerland",
+    "top_artist": "Rihanna"
+  },
+  {
+    "genre": "Latin",
+    "date": "2023-06-01",
+    "streamscount": 653512,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Indie",
+    "date": "2023-06-01",
+    "streamscount": 450388,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2023-06-01",
+    "streamscount": 393968,
+    "country": "Switzerland",
+    "top_artist": "Helene Fischer"
+  },
+  {
+    "genre": "Country",
+    "date": "2023-06-01",
+    "streamscount": 325145,
+    "country": "Switzerland",
+    "top_artist": "Luke Combs"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2023-06-01",
+    "streamscount": 285230,
+    "country": "Switzerland",
+    "top_artist": "Max Richter"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2023-06-01",
+    "streamscount": 215426,
+    "country": "Switzerland",
+    "top_artist": "Norah Jones"
+  },
+  {
+    "genre": "Pop",
+    "date": "2023-07-01",
+    "streamscount": 956522,
+    "country": "Switzerland",
+    "top_artist": "Adele"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2023-07-01",
+    "streamscount": 972659,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2023-07-01",
+    "streamscount": 538464,
+    "country": "Switzerland",
+    "top_artist": "Gotthard"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2023-07-01",
+    "streamscount": 1083267,
+    "country": "Switzerland",
+    "top_artist": "Bakermat"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2023-07-01",
+    "streamscount": 536479,
+    "country": "Switzerland",
+    "top_artist": "Lo & Leduc"
+  },
+  {
+    "genre": "R&B",
+    "date": "2023-07-01",
+    "streamscount": 501558,
+    "country": "Switzerland",
+    "top_artist": "The Weeknd"
+  },
+  {
+    "genre": "Latin",
+    "date": "2023-07-01",
+    "streamscount": 888940,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Indie",
+    "date": "2023-07-01",
+    "streamscount": 372184,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2023-07-01",
+    "streamscount": 307403,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2023-07-01",
+    "streamscount": 270351,
+    "country": "Switzerland",
+    "top_artist": "Morgan Wallen"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2023-07-01",
+    "streamscount": 222776,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2023-07-01",
+    "streamscount": 227371,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2023-08-01",
+    "streamscount": 798867,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2023-08-01",
+    "streamscount": 766005,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Rock",
+    "date": "2023-08-01",
+    "streamscount": 559360,
+    "country": "Switzerland",
+    "top_artist": "Gotthard"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2023-08-01",
+    "streamscount": 1194830,
+    "country": "Switzerland",
+    "top_artist": "Calvin Harris"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2023-08-01",
+    "streamscount": 1056151,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2023-08-01",
+    "streamscount": 460025,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2023-08-01",
+    "streamscount": 805920,
+    "country": "Switzerland",
+    "top_artist": "Shakira"
+  },
+  {
+    "genre": "Indie",
+    "date": "2023-08-01",
+    "streamscount": 340394,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2023-08-01",
+    "streamscount": 372719,
+    "country": "Switzerland",
+    "top_artist": "Beatrice Egli"
+  },
+  {
+    "genre": "Country",
+    "date": "2023-08-01",
+    "streamscount": 339288,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2023-08-01",
+    "streamscount": 243494,
+    "country": "Switzerland",
+    "top_artist": "Max Richter"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2023-08-01",
+    "streamscount": 262156,
+    "country": "Switzerland",
+    "top_artist": "Norah Jones"
+  },
+  {
+    "genre": "Pop",
+    "date": "2023-09-01",
+    "streamscount": 894000,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2023-09-01",
+    "streamscount": 858065,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2023-09-01",
+    "streamscount": 493964,
+    "country": "Switzerland",
+    "top_artist": "Imagine Dragons"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2023-09-01",
+    "streamscount": 636538,
+    "country": "Switzerland",
+    "top_artist": "Bakermat"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2023-09-01",
+    "streamscount": 633257,
+    "country": "Switzerland",
+    "top_artist": "Lo & Leduc"
+  },
+  {
+    "genre": "R&B",
+    "date": "2023-09-01",
+    "streamscount": 539989,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2023-09-01",
+    "streamscount": 405521,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Indie",
+    "date": "2023-09-01",
+    "streamscount": 503745,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2023-09-01",
+    "streamscount": 453613,
+    "country": "Switzerland",
+    "top_artist": "Helene Fischer"
+  },
+  {
+    "genre": "Country",
+    "date": "2023-09-01",
+    "streamscount": 567987,
+    "country": "Switzerland",
+    "top_artist": "Luke Combs"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2023-09-01",
+    "streamscount": 266053,
+    "country": "Switzerland",
+    "top_artist": "Hans Zimmer"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2023-09-01",
+    "streamscount": 295967,
+    "country": "Switzerland",
+    "top_artist": "Diana Krall"
+  },
+  {
+    "genre": "Pop",
+    "date": "2023-10-01",
+    "streamscount": 899292,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2023-10-01",
+    "streamscount": 683647,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2023-10-01",
+    "streamscount": 591097,
+    "country": "Switzerland",
+    "top_artist": "Coldplay"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2023-10-01",
+    "streamscount": 495816,
+    "country": "Switzerland",
+    "top_artist": "Avicii"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2023-10-01",
+    "streamscount": 581213,
+    "country": "Switzerland",
+    "top_artist": "Lo & Leduc"
+  },
+  {
+    "genre": "R&B",
+    "date": "2023-10-01",
+    "streamscount": 429375,
+    "country": "Switzerland",
+    "top_artist": "Rihanna"
+  },
+  {
+    "genre": "Latin",
+    "date": "2023-10-01",
+    "streamscount": 490147,
+    "country": "Switzerland",
+    "top_artist": "Shakira"
+  },
+  {
+    "genre": "Indie",
+    "date": "2023-10-01",
+    "streamscount": 431026,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2023-10-01",
+    "streamscount": 444084,
+    "country": "Switzerland",
+    "top_artist": "Helene Fischer"
+  },
+  {
+    "genre": "Country",
+    "date": "2023-10-01",
+    "streamscount": 480500,
+    "country": "Switzerland",
+    "top_artist": "Morgan Wallen"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2023-10-01",
+    "streamscount": 222998,
+    "country": "Switzerland",
+    "top_artist": "Max Richter"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2023-10-01",
+    "streamscount": 271155,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2023-11-01",
+    "streamscount": 875270,
+    "country": "Switzerland",
+    "top_artist": "Adele"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2023-11-01",
+    "streamscount": 704666,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2023-11-01",
+    "streamscount": 814608,
+    "country": "Switzerland",
+    "top_artist": "Coldplay"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2023-11-01",
+    "streamscount": 732433,
+    "country": "Switzerland",
+    "top_artist": "Avicii"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2023-11-01",
+    "streamscount": 442501,
+    "country": "Switzerland",
+    "top_artist": "Mani Matter"
+  },
+  {
+    "genre": "R&B",
+    "date": "2023-11-01",
+    "streamscount": 433693,
+    "country": "Switzerland",
+    "top_artist": "Rihanna"
+  },
+  {
+    "genre": "Latin",
+    "date": "2023-11-01",
+    "streamscount": 455081,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Indie",
+    "date": "2023-11-01",
+    "streamscount": 397770,
+    "country": "Switzerland",
+    "top_artist": "Tame Impala"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2023-11-01",
+    "streamscount": 374938,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2023-11-01",
+    "streamscount": 312964,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2023-11-01",
+    "streamscount": 264241,
+    "country": "Switzerland",
+    "top_artist": "Max Richter"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2023-11-01",
+    "streamscount": 281096,
+    "country": "Switzerland",
+    "top_artist": "Norah Jones"
+  },
+  {
+    "genre": "Pop",
+    "date": "2023-12-01",
+    "streamscount": 1442162,
+    "country": "Switzerland",
+    "top_artist": "Dua Lipa"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2023-12-01",
+    "streamscount": 767520,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2023-12-01",
+    "streamscount": 858212,
+    "country": "Switzerland",
+    "top_artist": "Coldplay"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2023-12-01",
+    "streamscount": 630449,
+    "country": "Switzerland",
+    "top_artist": "Calvin Harris"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2023-12-01",
+    "streamscount": 541092,
+    "country": "Switzerland",
+    "top_artist": "Mani Matter"
+  },
+  {
+    "genre": "R&B",
+    "date": "2023-12-01",
+    "streamscount": 476614,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2023-12-01",
+    "streamscount": 524086,
+    "country": "Switzerland",
+    "top_artist": "Karol G"
+  },
+  {
+    "genre": "Indie",
+    "date": "2023-12-01",
+    "streamscount": 501493,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2023-12-01",
+    "streamscount": 832002,
+    "country": "Switzerland",
+    "top_artist": "Beatrice Egli"
+  },
+  {
+    "genre": "Country",
+    "date": "2023-12-01",
+    "streamscount": 336994,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2023-12-01",
+    "streamscount": 754571,
+    "country": "Switzerland",
+    "top_artist": "Hans Zimmer"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2023-12-01",
+    "streamscount": 292866,
+    "country": "Switzerland",
+    "top_artist": "Diana Krall"
+  },
+  {
+    "genre": "Pop",
+    "date": "2024-01-01",
+    "streamscount": 835055,
+    "country": "Switzerland",
+    "top_artist": "Adele"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2024-01-01",
+    "streamscount": 948856,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2024-01-01",
+    "streamscount": 1000933,
+    "country": "Switzerland",
+    "top_artist": "Gotthard"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2024-01-01",
+    "streamscount": 529727,
+    "country": "Switzerland",
+    "top_artist": "Bakermat"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2024-01-01",
+    "streamscount": 657760,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2024-01-01",
+    "streamscount": 510280,
+    "country": "Switzerland",
+    "top_artist": "The Weeknd"
+  },
+  {
+    "genre": "Latin",
+    "date": "2024-01-01",
+    "streamscount": 541279,
+    "country": "Switzerland",
+    "top_artist": "Shakira"
+  },
+  {
+    "genre": "Indie",
+    "date": "2024-01-01",
+    "streamscount": 392952,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2024-01-01",
+    "streamscount": 329372,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2024-01-01",
+    "streamscount": 308800,
+    "country": "Switzerland",
+    "top_artist": "Morgan Wallen"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2024-01-01",
+    "streamscount": 414294,
+    "country": "Switzerland",
+    "top_artist": "Hans Zimmer"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2024-01-01",
+    "streamscount": 328880,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2024-02-01",
+    "streamscount": 741720,
+    "country": "Switzerland",
+    "top_artist": "Dua Lipa"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2024-02-01",
+    "streamscount": 1024186,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Rock",
+    "date": "2024-02-01",
+    "streamscount": 534528,
+    "country": "Switzerland",
+    "top_artist": "Coldplay"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2024-02-01",
+    "streamscount": 675685,
+    "country": "Switzerland",
+    "top_artist": "Avicii"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2024-02-01",
+    "streamscount": 485035,
+    "country": "Switzerland",
+    "top_artist": "Mani Matter"
+  },
+  {
+    "genre": "R&B",
+    "date": "2024-02-01",
+    "streamscount": 514967,
+    "country": "Switzerland",
+    "top_artist": "The Weeknd"
+  },
+  {
+    "genre": "Latin",
+    "date": "2024-02-01",
+    "streamscount": 515106,
+    "country": "Switzerland",
+    "top_artist": "Karol G"
+  },
+  {
+    "genre": "Indie",
+    "date": "2024-02-01",
+    "streamscount": 375682,
+    "country": "Switzerland",
+    "top_artist": "Tame Impala"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2024-02-01",
+    "streamscount": 786322,
+    "country": "Switzerland",
+    "top_artist": "Helene Fischer"
+  },
+  {
+    "genre": "Country",
+    "date": "2024-02-01",
+    "streamscount": 281043,
+    "country": "Switzerland",
+    "top_artist": "Morgan Wallen"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2024-02-01",
+    "streamscount": 485824,
+    "country": "Switzerland",
+    "top_artist": "Hans Zimmer"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2024-02-01",
+    "streamscount": 263905,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2024-03-01",
+    "streamscount": 742080,
+    "country": "Switzerland",
+    "top_artist": "Adele"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2024-03-01",
+    "streamscount": 912581,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2024-03-01",
+    "streamscount": 482940,
+    "country": "Switzerland",
+    "top_artist": "Gotthard"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2024-03-01",
+    "streamscount": 569221,
+    "country": "Switzerland",
+    "top_artist": "Bakermat"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2024-03-01",
+    "streamscount": 576139,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2024-03-01",
+    "streamscount": 521167,
+    "country": "Switzerland",
+    "top_artist": "Rihanna"
+  },
+  {
+    "genre": "Latin",
+    "date": "2024-03-01",
+    "streamscount": 499294,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Indie",
+    "date": "2024-03-01",
+    "streamscount": 478326,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2024-03-01",
+    "streamscount": 330378,
+    "country": "Switzerland",
+    "top_artist": "Beatrice Egli"
+  },
+  {
+    "genre": "Country",
+    "date": "2024-03-01",
+    "streamscount": 363261,
+    "country": "Switzerland",
+    "top_artist": "Morgan Wallen"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2024-03-01",
+    "streamscount": 278532,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2024-03-01",
+    "streamscount": 257045,
+    "country": "Switzerland",
+    "top_artist": "Norah Jones"
+  },
+  {
+    "genre": "Pop",
+    "date": "2024-04-01",
+    "streamscount": 1068917,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2024-04-01",
+    "streamscount": 898722,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2024-04-01",
+    "streamscount": 568173,
+    "country": "Switzerland",
+    "top_artist": "Gotthard"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2024-04-01",
+    "streamscount": 609419,
+    "country": "Switzerland",
+    "top_artist": "Avicii"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2024-04-01",
+    "streamscount": 538645,
+    "country": "Switzerland",
+    "top_artist": "Lo & Leduc"
+  },
+  {
+    "genre": "R&B",
+    "date": "2024-04-01",
+    "streamscount": 509260,
+    "country": "Switzerland",
+    "top_artist": "The Weeknd"
+  },
+  {
+    "genre": "Latin",
+    "date": "2024-04-01",
+    "streamscount": 481258,
+    "country": "Switzerland",
+    "top_artist": "Shakira"
+  },
+  {
+    "genre": "Indie",
+    "date": "2024-04-01",
+    "streamscount": 463007,
+    "country": "Switzerland",
+    "top_artist": "Tame Impala"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2024-04-01",
+    "streamscount": 435052,
+    "country": "Switzerland",
+    "top_artist": "Beatrice Egli"
+  },
+  {
+    "genre": "Country",
+    "date": "2024-04-01",
+    "streamscount": 307962,
+    "country": "Switzerland",
+    "top_artist": "Morgan Wallen"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2024-04-01",
+    "streamscount": 328219,
+    "country": "Switzerland",
+    "top_artist": "Max Richter"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2024-04-01",
+    "streamscount": 216281,
+    "country": "Switzerland",
+    "top_artist": "Norah Jones"
+  },
+  {
+    "genre": "Pop",
+    "date": "2024-05-01",
+    "streamscount": 887534,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2024-05-01",
+    "streamscount": 815501,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2024-05-01",
+    "streamscount": 650228,
+    "country": "Switzerland",
+    "top_artist": "Coldplay"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2024-05-01",
+    "streamscount": 654060,
+    "country": "Switzerland",
+    "top_artist": "Avicii"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2024-05-01",
+    "streamscount": 673753,
+    "country": "Switzerland",
+    "top_artist": "Mani Matter"
+  },
+  {
+    "genre": "R&B",
+    "date": "2024-05-01",
+    "streamscount": 611907,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2024-05-01",
+    "streamscount": 469822,
+    "country": "Switzerland",
+    "top_artist": "Shakira"
+  },
+  {
+    "genre": "Indie",
+    "date": "2024-05-01",
+    "streamscount": 401682,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2024-05-01",
+    "streamscount": 324896,
+    "country": "Switzerland",
+    "top_artist": "Helene Fischer"
+  },
+  {
+    "genre": "Country",
+    "date": "2024-05-01",
+    "streamscount": 403184,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2024-05-01",
+    "streamscount": 345849,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2024-05-01",
+    "streamscount": 327483,
+    "country": "Switzerland",
+    "top_artist": "Norah Jones"
+  },
+  {
+    "genre": "Pop",
+    "date": "2024-06-01",
+    "streamscount": 966610,
+    "country": "Switzerland",
+    "top_artist": "Adele"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2024-06-01",
+    "streamscount": 687760,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2024-06-01",
+    "streamscount": 574894,
+    "country": "Switzerland",
+    "top_artist": "Coldplay"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2024-06-01",
+    "streamscount": 1389859,
+    "country": "Switzerland",
+    "top_artist": "Bakermat"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2024-06-01",
+    "streamscount": 570704,
+    "country": "Switzerland",
+    "top_artist": "Mani Matter"
+  },
+  {
+    "genre": "R&B",
+    "date": "2024-06-01",
+    "streamscount": 508720,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2024-06-01",
+    "streamscount": 884953,
+    "country": "Switzerland",
+    "top_artist": "Shakira"
+  },
+  {
+    "genre": "Indie",
+    "date": "2024-06-01",
+    "streamscount": 471008,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2024-06-01",
+    "streamscount": 420554,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2024-06-01",
+    "streamscount": 318056,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2024-06-01",
+    "streamscount": 297109,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2024-06-01",
+    "streamscount": 324373,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2024-07-01",
+    "streamscount": 773908,
+    "country": "Switzerland",
+    "top_artist": "Dua Lipa"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2024-07-01",
+    "streamscount": 711637,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2024-07-01",
+    "streamscount": 659481,
+    "country": "Switzerland",
+    "top_artist": "Imagine Dragons"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2024-07-01",
+    "streamscount": 1454933,
+    "country": "Switzerland",
+    "top_artist": "Bakermat"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2024-07-01",
+    "streamscount": 507199,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2024-07-01",
+    "streamscount": 594677,
+    "country": "Switzerland",
+    "top_artist": "Rihanna"
+  },
+  {
+    "genre": "Latin",
+    "date": "2024-07-01",
+    "streamscount": 958242,
+    "country": "Switzerland",
+    "top_artist": "Karol G"
+  },
+  {
+    "genre": "Indie",
+    "date": "2024-07-01",
+    "streamscount": 407170,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2024-07-01",
+    "streamscount": 350625,
+    "country": "Switzerland",
+    "top_artist": "Helene Fischer"
+  },
+  {
+    "genre": "Country",
+    "date": "2024-07-01",
+    "streamscount": 338569,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2024-07-01",
+    "streamscount": 346653,
+    "country": "Switzerland",
+    "top_artist": "Max Richter"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2024-07-01",
+    "streamscount": 215893,
+    "country": "Switzerland",
+    "top_artist": "Norah Jones"
+  },
+  {
+    "genre": "Pop",
+    "date": "2024-08-01",
+    "streamscount": 725446,
+    "country": "Switzerland",
+    "top_artist": "Dua Lipa"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2024-08-01",
+    "streamscount": 828757,
+    "country": "Switzerland",
+    "top_artist": "Bad Bunny"
+  },
+  {
+    "genre": "Rock",
+    "date": "2024-08-01",
+    "streamscount": 467392,
+    "country": "Switzerland",
+    "top_artist": "Coldplay"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2024-08-01",
+    "streamscount": 1157300,
+    "country": "Switzerland",
+    "top_artist": "Calvin Harris"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2024-08-01",
+    "streamscount": 1065997,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2024-08-01",
+    "streamscount": 460619,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2024-08-01",
+    "streamscount": 820369,
+    "country": "Switzerland",
+    "top_artist": "Shakira"
+  },
+  {
+    "genre": "Indie",
+    "date": "2024-08-01",
+    "streamscount": 447833,
+    "country": "Switzerland",
+    "top_artist": "Tame Impala"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2024-08-01",
+    "streamscount": 354334,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2024-08-01",
+    "streamscount": 337419,
+    "country": "Switzerland",
+    "top_artist": "Morgan Wallen"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2024-08-01",
+    "streamscount": 336721,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2024-08-01",
+    "streamscount": 306507,
+    "country": "Switzerland",
+    "top_artist": "Diana Krall"
+  },
+  {
+    "genre": "Pop",
+    "date": "2024-09-01",
+    "streamscount": 1050047,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2024-09-01",
+    "streamscount": 984051,
+    "country": "Switzerland",
+    "top_artist": "Stress"
+  },
+  {
+    "genre": "Rock",
+    "date": "2024-09-01",
+    "streamscount": 571972,
+    "country": "Switzerland",
+    "top_artist": "Imagine Dragons"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2024-09-01",
+    "streamscount": 564337,
+    "country": "Switzerland",
+    "top_artist": "Calvin Harris"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2024-09-01",
+    "streamscount": 531315,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2024-09-01",
+    "streamscount": 621115,
+    "country": "Switzerland",
+    "top_artist": "Rihanna"
+  },
+  {
+    "genre": "Latin",
+    "date": "2024-09-01",
+    "streamscount": 447659,
+    "country": "Switzerland",
+    "top_artist": "Karol G"
+  },
+  {
+    "genre": "Indie",
+    "date": "2024-09-01",
+    "streamscount": 502279,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2024-09-01",
+    "streamscount": 393007,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2024-09-01",
+    "streamscount": 560348,
+    "country": "Switzerland",
+    "top_artist": "Luke Combs"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2024-09-01",
+    "streamscount": 341435,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2024-09-01",
+    "streamscount": 275783,
+    "country": "Switzerland",
+    "top_artist": "Diana Krall"
+  },
+  {
+    "genre": "Pop",
+    "date": "2024-10-01",
+    "streamscount": 950615,
+    "country": "Switzerland",
+    "top_artist": "Dua Lipa"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2024-10-01",
+    "streamscount": 975516,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2024-10-01",
+    "streamscount": 534529,
+    "country": "Switzerland",
+    "top_artist": "Coldplay"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2024-10-01",
+    "streamscount": 513889,
+    "country": "Switzerland",
+    "top_artist": "Calvin Harris"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2024-10-01",
+    "streamscount": 665394,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2024-10-01",
+    "streamscount": 441814,
+    "country": "Switzerland",
+    "top_artist": "The Weeknd"
+  },
+  {
+    "genre": "Latin",
+    "date": "2024-10-01",
+    "streamscount": 483709,
+    "country": "Switzerland",
+    "top_artist": "Karol G"
+  },
+  {
+    "genre": "Indie",
+    "date": "2024-10-01",
+    "streamscount": 416933,
+    "country": "Switzerland",
+    "top_artist": "Arctic Monkeys"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2024-10-01",
+    "streamscount": 355781,
+    "country": "Switzerland",
+    "top_artist": "Beatrice Egli"
+  },
+  {
+    "genre": "Country",
+    "date": "2024-10-01",
+    "streamscount": 557711,
+    "country": "Switzerland",
+    "top_artist": "Luke Combs"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2024-10-01",
+    "streamscount": 345437,
+    "country": "Switzerland",
+    "top_artist": "Hans Zimmer"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2024-10-01",
+    "streamscount": 295461,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2024-11-01",
+    "streamscount": 963016,
+    "country": "Switzerland",
+    "top_artist": "Taylor Swift"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2024-11-01",
+    "streamscount": 1012411,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2024-11-01",
+    "streamscount": 1009929,
+    "country": "Switzerland",
+    "top_artist": "Gotthard"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2024-11-01",
+    "streamscount": 619834,
+    "country": "Switzerland",
+    "top_artist": "Calvin Harris"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2024-11-01",
+    "streamscount": 538898,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2024-11-01",
+    "streamscount": 634987,
+    "country": "Switzerland",
+    "top_artist": "SZA"
+  },
+  {
+    "genre": "Latin",
+    "date": "2024-11-01",
+    "streamscount": 396340,
+    "country": "Switzerland",
+    "top_artist": "Shakira"
+  },
+  {
+    "genre": "Indie",
+    "date": "2024-11-01",
+    "streamscount": 356775,
+    "country": "Switzerland",
+    "top_artist": "Phoebe Bridgers"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2024-11-01",
+    "streamscount": 387297,
+    "country": "Switzerland",
+    "top_artist": "Andrea Berg"
+  },
+  {
+    "genre": "Country",
+    "date": "2024-11-01",
+    "streamscount": 382225,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2024-11-01",
+    "streamscount": 301361,
+    "country": "Switzerland",
+    "top_artist": "Hans Zimmer"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2024-11-01",
+    "streamscount": 275418,
+    "country": "Switzerland",
+    "top_artist": "Kamasi Washington"
+  },
+  {
+    "genre": "Pop",
+    "date": "2024-12-01",
+    "streamscount": 1805060,
+    "country": "Switzerland",
+    "top_artist": "Adele"
+  },
+  {
+    "genre": "Hip-Hop",
+    "date": "2024-12-01",
+    "streamscount": 702560,
+    "country": "Switzerland",
+    "top_artist": "Drake"
+  },
+  {
+    "genre": "Rock",
+    "date": "2024-12-01",
+    "streamscount": 1094949,
+    "country": "Switzerland",
+    "top_artist": "Gotthard"
+  },
+  {
+    "genre": "Electronic",
+    "date": "2024-12-01",
+    "streamscount": 717845,
+    "country": "Switzerland",
+    "top_artist": "Calvin Harris"
+  },
+  {
+    "genre": "Mundart",
+    "date": "2024-12-01",
+    "streamscount": 567621,
+    "country": "Switzerland",
+    "top_artist": "Hecht"
+  },
+  {
+    "genre": "R&B",
+    "date": "2024-12-01",
+    "streamscount": 460103,
+    "country": "Switzerland",
+    "top_artist": "The Weeknd"
+  },
+  {
+    "genre": "Latin",
+    "date": "2024-12-01",
+    "streamscount": 584101,
+    "country": "Switzerland",
+    "top_artist": "Karol G"
+  },
+  {
+    "genre": "Indie",
+    "date": "2024-12-01",
+    "streamscount": 518654,
+    "country": "Switzerland",
+    "top_artist": "Tame Impala"
+  },
+  {
+    "genre": "Schlager",
+    "date": "2024-12-01",
+    "streamscount": 590786,
+    "country": "Switzerland",
+    "top_artist": "Beatrice Egli"
+  },
+  {
+    "genre": "Country",
+    "date": "2024-12-01",
+    "streamscount": 309362,
+    "country": "Switzerland",
+    "top_artist": "Zach Bryan"
+  },
+  {
+    "genre": "Klassik",
+    "date": "2024-12-01",
+    "streamscount": 623003,
+    "country": "Switzerland",
+    "top_artist": "Ludovico Einaudi"
+  },
+  {
+    "genre": "Jazz",
+    "date": "2024-12-01",
+    "streamscount": 243708,
+    "country": "Switzerland",
+    "top_artist": "Norah Jones"
+  }
+]

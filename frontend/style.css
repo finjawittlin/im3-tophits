@@ -1,0 +1,66 @@
+:root {
+    --black: #0d0d0d; --cream: #f2ede4; --pink: #ff3eb5; --lilac: #c8b0f5; --lime: #d4f23c;
+    --chart-height: 460px;
+    --row: 50px;
+    --display: 'Anton', Impact, 'Arial Narrow', sans-serif;
+    --mono: 'Space Mono', 'Courier New', monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--black); color: var(--cream); font-family: var(--mono); font-size: 14px; }
+header, main { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem; }
+
+.kicker { text-transform: uppercase; letter-spacing: .15em; font-size: .75rem; color: var(--lilac); margin: 0; }
+h1 { font-family: var(--display); font-weight: 400; text-transform: uppercase; color: var(--pink);
+    font-size: clamp(3.2rem, 13vw, 9rem); line-height: .88; margin: .5rem 0 1rem; }
+h2 { font-family: var(--display); font-weight: 400; text-transform: uppercase; font-size: clamp(1.5rem, 4vw, 2.2rem); margin: 0 0 1.2rem; }
+.lead { max-width: 640px; line-height: 1.5; }
+.ticker { overflow: hidden; white-space: nowrap; color: var(--pink); margin-top: 1.5rem; letter-spacing: .2em; }
+
+.controls { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 1.5rem; }
+select, .toggle button { font: inherit; font-weight: 700; color: var(--cream); background: transparent;
+    border: 2px solid var(--cream); border-radius: 999px; padding: .45rem 1rem; cursor: pointer; }
+select option { color: var(--black); }
+.toggle { display: flex; gap: .4rem; }
+.toggle button.active { background: var(--lime); color: var(--black); border-color: var(--lime); }
+
+.card { border-radius: 28px; padding: 1.5rem; margin-bottom: 1.5rem; }
+.dark { background: #1b1b1b; border: 2px solid #333; }
+.light { background: var(--cream); color: var(--black); }
+
+#chart { display: flex; gap: .5rem; height: var(--chart-height); overflow-x: auto; padding-bottom: .2rem; }
+.col { flex: 1 0 66px; display: flex; flex-direction: column; }
+.bar-wrap { position: relative; flex: 1; }
+.bar { position: absolute; left: 0; right: 0; bottom: 0; height: 0; border-radius: 14px 14px 0 0; color: var(--black);
+    overflow: hidden; padding: .5rem; display: flex; flex-direction: column; justify-content: space-between;
+    transition: height .7s cubic-bezier(.2,.8,.2,1), background-color .7s; }
+.col.active .bar { outline: 3px solid var(--cream); outline-offset: 2px; }
+.streams { font-family: var(--display); font-size: 1.3rem; line-height: 1; }
+.streams small { display: block; font-family: var(--mono); font-size: .6rem; font-weight: 700; text-transform: uppercase; }
+.genre { font-weight: 700; font-size: .75rem; text-transform: uppercase; overflow-wrap: anywhere; }
+.artist { font-size: .7rem; line-height: 1.2; overflow-wrap: anywhere; }
+.artist small { display: block; font-size: .55rem; text-transform: uppercase; letter-spacing: .08em; opacity: .7; }
+.col-label { margin-top: .5rem; font: inherit; font-weight: 700; text-transform: uppercase; color: var(--cream);
+    background: transparent; border: 2px solid #555; border-radius: 999px; padding: .3rem 0; cursor: pointer; }
+.col.active .col-label { background: var(--cream); color: var(--black); border-color: var(--cream); }
+#chart.seasons .streams { font-size: 2.6rem; }
+#chart.seasons .genre { font-size: 1.1rem; }
+#chart.seasons .artist { font-size: .9rem; }
+.hint { margin: 1rem 0 0; opacity: .7; font-size: .8rem; }
+
+#ranking { position: relative; list-style: none; margin: 0; padding: 0; }
+#ranking li { position: absolute; left: 0; right: 0; height: var(--row); display: flex; align-items: center; gap: .6rem;
+    transition: transform .8s cubic-bezier(.2,.8,.2,1), opacity .4s; }
+#ranking li.out { opacity: 0; pointer-events: none; }
+.pos { font-family: var(--display); font-size: 1.3rem; width: 2rem; }
+.name { width: 7.5rem; font-weight: 700; font-size: .85rem; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.track { flex: 1; height: 62%; background: rgba(0,0,0,.08); border-radius: 999px; }
+.fill { height: 100%; width: 0; border: 2px solid var(--black); border-radius: 999px; transition: width .8s cubic-bezier(.2,.8,.2,1); }
+.val { width: 6rem; text-align: right; font-weight: 700; }
+
+@media (max-width: 600px) {
+    :root { --chart-height: 380px; }
+    .card { padding: 1rem; border-radius: 20px; }
+    .name { width: 5.5rem; font-size: .7rem; }
+    .val { width: 4.8rem; font-size: .75rem; }
+    #chart.seasons .streams { font-size: 1.8rem; }
+}
