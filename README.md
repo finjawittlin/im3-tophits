@@ -121,18 +121,24 @@ Die API ist online erreichbar unter:
 
 `https://im3.okurocic.myhostpoint.ch/im3-tophits/backend/api/`
 
-### Frontend
+### Frontend: Scrollytelling-Datenreportage
 
-`frontend/index.html` lädt die Daten live über `../backend/api/` (keine Mock-Daten mehr) und zeigt:
+`frontend/index.html` lädt die Daten live über `../backend/api/` (keine Mock-Daten) und erzählt sie als Geschichte:
 
-- Kennzahlen pro Jahr
-- Top Genre pro Monat / Jahreszeit mit Top Artist (Winter = Dezember des Vorjahres + Januar + Februar)
-- Details zum gewählten Monat bzw. zur Jahreszeit
-- Übersicht aller Monate (Heatmap) und monatliche Muster über alle Jahre
-- Streams im Zeitverlauf
-- Top Artists mit Suche und Genre-Filter
+1. **Hero** – «Was hört die Schweiz?» mit animierten Kennzahlen
+2. **Kapitel 1 – Pink** – die lange Pop-Phase am Anfang und ihre Top Artists
+3. **Kapitel 2 – Der Wandel** – die Heatmap bleibt fixiert und füllt sich beim Scrollen Monat für Monat; Textschritte erklären Wendepunkt, Hip-Hop-Phase, Pop-Comeback und das Dezember-Muster
+4. **Kapitel 3 – Die Artists** – vor/nach dem Wendepunkt, Zeitachse der wichtigsten Artists
+5. **Kapitel 4 – Die Streams** – Liniendiagramm mit Rekorden und das Duell Jahr für Jahr
+6. **Kapitel 5 – Dein Jahr** – der interaktive Explorer (Jahr, Monate/Jahreszeiten, Heatmap, Muster, Zeitverlauf, Artist-Suche)
 
-Sind Genre-Daten (`?resource=genres`) vorhanden, kommen automatisch dazu: Rangliste aller Genres, echte Jahreszeiten-Summen, „Ø pro Woche“, Top Song, Explicit-Anteil und Linien pro Genre.
+Alle Zahlen und Überschriften werden aus den Daten berechnet (`frontend/story.js`). Aussagen wie «2014 war die Schweiz pink» erscheinen nur, wenn die Daten sie stützen. Die Lade- und Scrollzustände sind oben in `story.js` dokumentiert.
+
+Farben: Pink = Pop, Neongrün = Hip-Hop / Rap. Die Akzentfarbe der Seite wechselt beim Scrollen mit der Geschichte.
+
+Ein letzter Monat mit auffällig wenigen Streams (unter 50 % des Medians der sechs Monate davor) wird als «vermutlich unvollständig» schraffiert – aktuell Dezember 2022.
+
+Sind Genre-Daten (`?resource=genres`) vorhanden, kommen im Explorer automatisch dazu: Rangliste aller Genres, echte Jahreszeiten-Summen, «Ø pro Woche», Top Song, Explicit-Anteil und Linien pro Genre.
 
 ### 8. Aktueller Datenfluss
 

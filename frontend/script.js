@@ -106,10 +106,21 @@ const db = {
 
 // ---------- Laden ----------
 
+const TIMEOUT_MS = 15000;
+
 async function fetchJson(url) {
-    const res = await fetch(url, { headers: { Accept: 'application/json' } });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    return res.json();
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+    try {
+        const res = await fetch(url, { headers: { Accept: 'application/json' }, signal: controller.signal });
+        if (!res.ok) throw new Error('Der Server antwortet mit HTTP ' + res.status + '.');
+        return await res.json();
+    } catch (err) {
+        if (err.name === 'AbortError') throw new Error('Der Server antwortet nicht (Zeitüberschreitung).');
+        throw err;
+    } finally {
+        clearTimeout(timer);
+    }
 }
 
 async function loadData() {
@@ -134,19 +145,30 @@ async function loadData() {
         showStatus('ready');
         init();
 
+        // Story separat starten: ein Fehler dort blockiert den Explorer nicht
+        try {
+            initStory();
+        } catch (err) {
+            console.error(err);
+            $('story').hidden = true;
+        }
+
     } catch (err) {
         showStatus('error', err.message);
     }
 }
 
+// Ladezustände: loading | ready | empty | error
 function showStatus(type, message = '') {
     const el = $('status');
-    $('app').hidden = type !== 'ready';
-    el.hidden = type === 'ready';
+    const ready = type === 'ready';
+    ['app', 'story', 'chapter-nav', 'hero-stats', 'scroll-cue'].forEach(id => ($(id).hidden = !ready));
+    el.hidden = ready;
     el.className = 'status ' + type;
+    document.documentElement.dataset.state = type;
 
     if (type === 'loading') {
-        el.innerHTML = '<div class="loader"><span></span><span></span><span></span></div><p>Lade Daten aus der Datenbank …</p>';
+        el.innerHTML = '<div class="loader"><span></span><span></span><span></span></div><p>Lade Chartdaten aus der Datenbank …</p>';
     } else if (type === 'empty') {
         el.innerHTML = '<p><strong>Noch keine Daten vorhanden.</strong><br>Die Datenbank enthält aktuell keine Monatsresultate.</p>';
     } else if (type === 'error') {
@@ -169,6 +191,15 @@ function prepareData(months, genres) {
         }))
         .sort((a, b) => a.key.localeCompare(b.key));
     db.monthByKey = new Map(db.months.map(r => [r.key, r]));
+
+    // Letzter Monat mit auffällig wenigen Streams (< 50 % des Medians der
+    // 6 Monate davor) gilt als vermutlich unvollständig erfasst.
+    const last = db.months[db.months.length - 1];
+    const before = db.months.slice(-7, -1).map(r => r.streams).sort((a, b) => a - b);
+    if (last && before.length >= 3) {
+        const med = before[Math.floor(before.length / 2)];
+        last.incomplete = last.streams < med * 0.5;
+    }
 
     // Nur gültige Genre-Zeilen verwenden (ältere API-Versionen ignorieren ?resource)
     db.genreRows = genres
@@ -274,8 +305,7 @@ function summarize(keys) {
 // ---------- Initialisierung ----------
 
 function init() {
-    const first = db.years[0], last = db.years[db.years.length - 1];
-    $('range').textContent = first === last ? first : `${first}–${last}`;
+    const last = db.years[db.years.length - 1];
 
     const yearSelect = $('year-select');
     yearSelect.innerHTML = db.years.map(y => `<option value="${y}">${y}</option>`).join('');
@@ -350,7 +380,8 @@ function renderKpis() {
     const [topGenre, genreWins] = count(rows, 'genre')[0];
     const [topArtist, artistWins] = count(rows, 'artist')[0];
     const peak = rows.reduce((a, b) => (b.streams > a.streams ? b : a));
-    const share = rows.reduce((a, b) => (b.artistStreams / b.streams > a.artistStreams / a.streams ? b : a));
+    const full = rows.filter(r => !r.incomplete);
+    const share = (full.length ? full : rows).reduce((a, b) => (b.artistStreams / b.streams > a.artistStreams / a.streams ? b : a));
 
     const tiles = [
         { label: 'Genre des Jahres', value: topGenre, note: `${genreWins} von ${rows.length} Monaten an der Spitze`, color: genreColor(topGenre) },
@@ -551,7 +582,7 @@ function buildHeatmap() {
         for (let m = 1; m <= 12; m++) {
             const r = db.monthByKey.get(monthKey(y, m));
             html += r
-                ? `<button type="button" class="hm-cell" data-key="${r.key}" style="background:${genreColor(r.genre)}"
+                ? `<button type="button" class="hm-cell${r.incomplete ? ' incomplete' : ''}" data-key="${r.key}" style="background:${genreColor(r.genre)}"
                      aria-label="${keyLabel(r.key)}: ${esc(r.genre)}, ${esc(r.artist)}"></button>`
                 : '<span class="hm-cell empty"></span>';
         }
@@ -592,7 +623,8 @@ function renderHeatmap() {
 }
 
 function monthTooltip(r) {
-    return `<b>${keyLabel(r.key)}</b><br>${chip(r.genre)}${esc(r.genre)} · ${fmtText(r.streams)} Streams<br>★ ${esc(r.artist)} · ${fmtText(r.artistStreams)}`;
+    return `<b>${keyLabel(r.key)}</b><br>${chip(r.genre)}${esc(r.genre)} · ${fmtText(r.streams)} Streams<br>★ ${esc(r.artist)} · ${fmtText(r.artistStreams)}`
+        + (r.incomplete ? '<br><i>⚠ vermutlich unvollständig erfasst</i>' : '');
 }
 
 // Monat oben im Hauptdiagramm anzeigen
@@ -855,6 +887,9 @@ function renderMethod() {
             + (db.hasGenres ? ' – die Ansicht „Ø pro Woche“ gleicht das aus.' : '.'),
         'Die Spotify-Genres jedes Artists werden zu Hauptgenres zusammengefasst (Pop, Hip-Hop / Rap, Electronic / Dance, Rock, R&amp;B / Soul, Latin, Indie / Alternative, Other).',
         'Bei Songs mit mehreren Artists zählt nur der erste Artist.',
+        ...db.months.filter(r => r.incomplete).map(r =>
+            `${keyLabel(r.key)} hat auffällig wenige Streams (${fmtText(r.streams)}) und ist vermutlich nicht vollständig erfasst. Er ist schraffiert markiert.`),
+        '«An der Spitze» bedeutet: meiste Chart-Streams im Monat. Das ist kein Marktanteil – erfasst sind nur Songs in den Spotify-Charts.',
         db.hasGenres
             ? 'Jahreszeiten und Ranglisten summieren die Streams aller Genres über die jeweiligen Monate.'
             : 'Jahreszeiten zeigen das Genre, das in den meisten der drei Monate an der Spitze war, mit den durchschnittlichen Streams dieser Monate.',

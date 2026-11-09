@@ -3,111 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Die Chartjägerinnen – Was hört die Schweiz?</title>
-    <meta name="description" content="Welches Genre wurde in welchem Monat in der Schweiz zwischen 2014 und 2022 auf Spotify am meisten gestreamt?">
+    <title>Was hört die Schweiz? – Die Chartjägerinnen</title>
+    <meta name="description" content="Eine Datenreportage: Wie sich die Schweizer Spotify-Charts zwischen 2014 und 2022 von Pop zu Hip-Hop/Rap verändert haben.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-    <p class="kicker">Die Chartjägerinnen · Spotify Schweiz · <span id="range">2014–2022</span></p>
-    <h1>Was hört<br>die Schweiz?</h1>
-    <p class="lead">Welches Genre wurde in welchem Monat in der Schweiz am meisten gestreamt – und wer war innerhalb dieses Genres der Top Artist? Eine Spurensuche in den wöchentlichen Spotify-Charts.</p>
-    <div class="ticker" aria-hidden="true">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</div>
+
+<!-- Lesefortschritt (Farbe folgt der Geschichte: Pink -> Neongrün) -->
+<div class="progress" aria-hidden="true"><div id="progress-bar"></div></div>
+
+<!-- Kapitel-Navigation -->
+<nav class="chapter-nav" id="chapter-nav" aria-label="Kapitel" hidden>
+    <a href="#kapitel-1" data-chapter="kapitel-1"><span>Pink</span></a>
+    <a href="#kapitel-2" data-chapter="kapitel-2"><span>Der Wandel</span></a>
+    <a href="#kapitel-3" data-chapter="kapitel-3"><span>Die Artists</span></a>
+    <a href="#kapitel-4" data-chapter="kapitel-4"><span>Die Streams</span></a>
+    <a href="#kapitel-5" data-chapter="kapitel-5"><span>Dein Jahr</span></a>
+</nav>
+
+<header class="hero" id="hero" data-chapter-section data-mix="0">
+    <div class="hero-inner">
+        <p class="kicker">Die Chartjägerinnen · Eine Datenreportage über Spotify Schweiz</p>
+        <h1>Was hört<br>die <span class="h1-mix">Schweiz?</span></h1>
+        <p class="lead">Wie sich unser Musikgeschmack verändert hat – erzählt in <span id="hero-months">108</span> Monaten Schweizer Spotify-Charts.</p>
+
+        <!-- Lade- und Fehlerzustand -->
+        <div id="status" class="status" role="status" aria-live="polite">
+            <div class="loader"><span></span><span></span><span></span></div>
+            <p>Lade Chartdaten aus der Datenbank …</p>
+        </div>
+
+        <div id="hero-stats" class="hero-stats" hidden></div>
+        <a href="#kapitel-1" class="scroll-cue" id="scroll-cue" hidden>Scroll dich durch die Geschichte <span aria-hidden="true">↓</span></a>
+    </div>
+    <div class="ticker" aria-hidden="true">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</div>
 </header>
 
-<!-- Lade- und Fehlerzustand -->
-<div id="status" class="status" role="status" aria-live="polite">
-    <div class="loader"><span></span><span></span><span></span></div>
-    <p>Lade Daten aus der Datenbank …</p>
-</div>
+<main>
+    <div id="story" hidden>
+        <!-- Kapitel 1 -->
+        <section class="chapter" id="kapitel-1" data-chapter-section data-mix="0"></section>
 
-<main id="app" hidden>
+        <!-- Kapitel 2: fixierte Heatmap mit scrollenden Textschritten -->
+        <section class="chapter scrolly" id="kapitel-2" data-chapter-section aria-label="Kapitel 2: Der Sound verändert sich">
+            <div class="scrolly-head chapter-inner">
+                <p class="chapter-kicker reveal">Kapitel 2 · Der Wandel</p>
+                <h2 class="chapter-title reveal">Der Sound verändert sich.</h2>
+            </div>
+            <div class="scrolly-grid">
+                <div class="stage">
+                    <div class="stage-inner">
+                        <div class="stage-head">
+                            <div class="stage-date"><strong id="stage-year"></strong><span id="stage-month"></span></div>
+                            <div id="stage-tally" class="tally" aria-live="off"></div>
+                        </div>
+                        <div id="story-heatmap" class="heatmap story-heatmap"></div>
+                    </div>
+                </div>
+                <div id="steps" class="steps"></div>
+            </div>
+        </section>
 
-    <!-- Steuerung -->
-    <nav class="controls" aria-label="Filter">
-        <label>Jahr <select id="year-select"></select></label>
-        <div class="toggle" role="group" aria-label="Ansicht">
-            <button type="button" data-mode="month" class="active" aria-pressed="true">Monate</button>
-            <button type="button" data-mode="season" aria-pressed="false">Jahreszeiten</button>
+        <!-- Kapitel 3 + 4 -->
+        <section class="chapter" id="kapitel-3" data-chapter-section></section>
+        <section class="chapter" id="kapitel-4" data-chapter-section></section>
+    </div>
+
+    <!-- Kapitel 5: selbst entdecken -->
+    <section id="app" class="explore" data-chapter-section data-mix="0.5" hidden>
+        <div id="kapitel-5" class="chapter-inner explore-head">
+            <p class="chapter-kicker">Kapitel 5 · Jetzt bist du dran</p>
+            <h2 class="chapter-title">Und wie klang dein Jahr?</h2>
+            <p class="chapter-lead">Wähle ein Jahr, wechsle zwischen Monaten und Jahreszeiten, suche deine Artists – und finde eigene Muster in den Charts.</p>
         </div>
-        <div class="toggle" id="metric-toggle" role="group" aria-label="Messgrösse" hidden>
-            <button type="button" data-metric="total" class="active" aria-pressed="true">Summe</button>
-            <button type="button" data-metric="weekly" aria-pressed="false">Ø pro Woche</button>
-        </div>
-    </nav>
 
-    <!-- Kennzahlen des Jahres -->
-    <section aria-labelledby="kpi-title">
-        <h2 id="kpi-title" class="section-title"><span id="kpi-year"></span> in Zahlen</h2>
-        <div id="kpis" class="kpis"></div>
-    </section>
+        <!-- Steuerung -->
+        <nav class="controls" aria-label="Filter">
+            <label>Jahr <select id="year-select"></select></label>
+            <div class="toggle" role="group" aria-label="Ansicht">
+                <button type="button" data-mode="month" class="active" aria-pressed="true">Monate</button>
+                <button type="button" data-mode="season" aria-pressed="false">Jahreszeiten</button>
+            </div>
+            <div class="toggle" id="metric-toggle" role="group" aria-label="Messgrösse" hidden>
+                <button type="button" data-metric="total" class="active" aria-pressed="true">Summe</button>
+                <button type="button" data-metric="weekly" aria-pressed="false">Ø pro Woche</button>
+            </div>
+        </nav>
 
-    <!-- Hauptdiagramm -->
-    <section class="card dark">
-        <h2>Meistgehörtes Genre pro <span id="mode-label">Monat</span></h2>
-        <div id="chart"></div>
-        <p class="hint" id="hint"></p>
-    </section>
+        <!-- Kennzahlen des Jahres -->
+        <section aria-labelledby="kpi-title">
+            <h2 id="kpi-title" class="section-title"><span id="kpi-year"></span> in Zahlen</h2>
+            <div id="kpis" class="kpis"></div>
+        </section>
 
-    <!-- Details zum gewählten Zeitraum -->
-    <section class="card light" aria-live="polite">
-        <h2><span id="detail-kicker">Im Fokus</span> · <span id="rank-title"></span></h2>
-        <div id="detail" class="detail"></div>
-        <div id="ranking-wrap" hidden>
-            <h3>Alle Genres im Vergleich</h3>
-            <ol id="ranking"></ol>
-        </div>
-    </section>
+        <!-- Hauptdiagramm -->
+        <section class="card dark">
+            <h2>Meistgehörtes Genre pro <span id="mode-label">Monat</span></h2>
+            <div id="chart"></div>
+            <p class="hint" id="hint"></p>
+        </section>
 
-    <!-- Alle Monate auf einen Blick -->
-    <section class="card dark">
-        <h2>Alle Monate auf einen Blick</h2>
-        <p class="sub">Jedes Feld ist ein Monat, die Farbe zeigt das meistgehörte Genre. Klicke auf ein Feld, um den Monat oben anzuzeigen.</p>
-        <div id="heatmap" class="heatmap"></div>
-        <div id="legend" class="legend"></div>
-    </section>
+        <!-- Details zum gewählten Zeitraum -->
+        <section class="card light" aria-live="polite">
+            <h2><span id="detail-kicker">Im Fokus</span> · <span id="rank-title"></span></h2>
+            <div id="detail" class="detail"></div>
+            <div id="ranking-wrap" hidden>
+                <h3>Alle Genres im Vergleich</h3>
+                <ol id="ranking"></ol>
+            </div>
+        </section>
 
-    <!-- Saisonale Muster -->
-    <section class="card dark">
-        <h2>Gibt es monatliche Muster?</h2>
-        <p class="sub">Wie oft war welches Genre in einem Kalendermonat an der Spitze – über alle Jahre gezählt.</p>
-        <div id="pattern" class="pattern"></div>
-    </section>
+        <!-- Alle Monate auf einen Blick -->
+        <section class="card dark">
+            <h2>Alle Monate auf einen Blick</h2>
+            <p class="sub">Jedes Feld ist ein Monat, die Farbe zeigt das meistgehörte Genre. Klicke auf ein Feld, um den Monat oben anzuzeigen.</p>
+            <div id="heatmap" class="heatmap"></div>
+            <div id="legend" class="legend"></div>
+        </section>
 
-    <!-- Zeitverlauf -->
-    <section class="card dark">
-        <h2 id="timeline-title">Streams im Zeitverlauf</h2>
-        <p class="sub" id="timeline-sub"></p>
-        <div id="timeline-legend" class="legend"></div>
-        <div class="timeline-scroll">
-            <div id="timeline" class="timeline"></div>
-        </div>
-    </section>
+        <!-- Saisonale Muster -->
+        <section class="card dark">
+            <h2>Gibt es monatliche Muster?</h2>
+            <p class="sub">Wie oft war welches Genre in einem Kalendermonat an der Spitze – über alle Jahre gezählt.</p>
+            <div id="pattern" class="pattern"></div>
+        </section>
 
-    <!-- Top Artists -->
-    <section class="card light">
-        <h2>Die Top Artists</h2>
-        <p class="sub" id="artists-sub"></p>
-        <div class="artist-tools">
-            <input type="search" id="artist-search" placeholder="Artist suchen …" aria-label="Artist suchen">
-            <div id="artist-genres" class="chips" role="group" aria-label="Nach Genre filtern"></div>
-        </div>
-        <p id="artist-highlight" class="highlight-note" hidden></p>
-        <ol id="artists" class="artists"></ol>
-        <button type="button" id="artists-more" class="more"></button>
-    </section>
+        <!-- Zeitverlauf -->
+        <section class="card dark">
+            <h2 id="timeline-title">Streams im Zeitverlauf</h2>
+            <p class="sub" id="timeline-sub"></p>
+            <div id="timeline-legend" class="legend"></div>
+            <div class="timeline-scroll">
+                <div id="timeline" class="timeline"></div>
+            </div>
+        </section>
 
-    <!-- Methode -->
-    <section class="method">
-        <h2 class="section-title">Daten &amp; Methode</h2>
-        <ul id="method"></ul>
+        <!-- Top Artists -->
+        <section class="card light">
+            <h2>Die Top Artists</h2>
+            <p class="sub" id="artists-sub"></p>
+            <div class="artist-tools">
+                <input type="search" id="artist-search" placeholder="Artist suchen …" aria-label="Artist suchen">
+                <div id="artist-genres" class="chips" role="group" aria-label="Nach Genre filtern"></div>
+            </div>
+            <p id="artist-highlight" class="highlight-note" hidden></p>
+            <ol id="artists" class="artists"></ol>
+            <button type="button" id="artists-more" class="more"></button>
+        </section>
+
+        <!-- Methode -->
+        <section class="method">
+            <h2 class="section-title">Daten &amp; Methode</h2>
+            <ul id="method"></ul>
+        </section>
     </section>
 </main>
 
 <div id="tooltip" class="tooltip" hidden></div>
+<script src="story.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
