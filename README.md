@@ -28,7 +28,7 @@ Die gefilterte Datei liegt im Ordner:
 Die CSV enthält unter anderem:
 
 - Datum
-- Landwil
+- Land
 - Chartposition
 - Anzahl Streams
 - Track-ID
@@ -78,57 +78,61 @@ Die verwendeten Hauptgenres sind:
 
 Genres, die keiner definierten Kategorie zugeordnet werden können, landen in `Other`.
 
-Bei Songs mit mehreren Artists wird aktuell nur der erste Artist als Hauptartist verwendet.
+Bei Songs mit mehreren Artists wird nur der erste Artist als Hauptartist verwendet.
 
-Für den Zeitraum 2014 bis 2022 entstehen insgesamt 108 Monatsresultate.
+Regeln der Genre-Zuordnung:
 
-Spezialfall bei der Genre-Zuordnung:
+- Jedes Spotify-Genre eines Artists wird einzeln geprüft. Die Reihenfolge der Kategorien bestimmt die Priorität: Latin, Hip-Hop / Rap, R&B / Soul, Rock, Indie / Alternative, Electronic / Dance, Pop.
+- `dance pop`, `pop dance` und `electropop` zählen als `Pop`, nicht als Electronic.
+- Eindeutig elektronische Genres wie `edm`, `house`, `techno`, `electro` und `brostep` werden `Electronic / Dance` zugeordnet – auch wenn der Artist zusätzlich `dance pop` hat.
+- `trap latino` zählt zu `Latin` (Latin steht vor Hip-Hop).
+- Listen aus der CSV (`['…']`) werden zeichenweise gelesen, damit Namen mit Apostroph (z.B. `Guns N' Roses`) korrekt erkannt werden.
 
-- `dance pop` und `pop dance` werden `Pop` zugeordnet.
-- Eindeutig elektronische Genres wie `edm`, `house`, `techno`, `electro` und `brostep` werden `Electronic / Dance` zugeordnet.
-
-Damit soll verhindert werden, dass Pop-Artists nur wegen des Wortes `dance` automatisch als Electronic / Dance gezählt werden.
+Zusätzlich werden pro Monat **und Genre** berechnet: Streams, Anzahl Chart-Wochen, Chart-Einträge, Explicit-Streams, Top Artist und Top Song.
 
 ### 5. Datenbank
 
-Die transformierten Monatsresultate werden in der MySQL-Datenbank bei Hostpoint gespeichert.
+Die transformierten Resultate werden in der MySQL-Datenbank bei Hostpoint gespeichert (`backend/etl/schema.sql`):
 
-Dafür verwenden wir die Tabelle `monthly_results` mit folgenden Feldern:
-
-- `id`
-- `month`
-- `top_genre`
-- `genre_streams`
-- `top_artist`
-- `artist_streams`
-
-Die Tabelle wurde mit `backend/etl/schema.sql` erstellt.
+- `monthly_results`: pro Monat `month`, `top_genre`, `genre_streams`, `top_artist`, `artist_streams`
+- `monthly_genre_streams`: pro Monat und Genre `streams`, `chart_weeks`, `chart_entries`, `explicit_streams`, `top_artist`, `artist_streams`, `top_track`, `top_track_artist`, `top_track_streams`
 
 ### 6. Load
 
-Mit `backend/etl/load.php` werden die transformierten Daten in die Datenbank geschrieben.
+`backend/etl/load.php` führt Transform aus, legt fehlende Tabellen an und ersetzt den Inhalt beider Tabellen **in einer Transaktion** (bei einem Fehler bleiben die alten Daten erhalten).
 
-Der Import wurde erfolgreich auf dem Hostpoint-Server getestet.
+Aufruf:
 
-Aktuell werden genau 108 Monatsresultate für den Zeitraum 2014 bis 2022 in `monthly_results` gespeichert.
+- Terminal: `php backend/etl/load.php`
+- Browser: `backend/etl/load.php?token=…` – dafür in `config.php` `$etlToken = '…';` setzen. Ohne gültigen Token ist der Load gesperrt.
 
-### 7. Unload / API
+`data/.htaccess` verhindert, dass die CSV öffentlich heruntergeladen werden kann.
 
-Mit `backend/etl/unload.php` werden die gespeicherten Daten wieder aus MySQL gelesen und als JSON ausgegeben.
+### 7. API
 
-Zusätzlich stellt `backend/api/index.php` die Daten für das Frontend bereit.
+`backend/api/index.php` liest die Daten aus MySQL und gibt JSON zurück:
 
-Die API liest die Daten direkt aus der MySQL-Datenbank und gibt pro Monat folgende Werte zurück:
+- `backend/api/` oder `?resource=months` – Top Genre und Top Artist pro Monat
+- `backend/api/?resource=genres` – alle Genres pro Monat (leere Liste, solange `monthly_genre_streams` nicht befüllt ist)
 
-- Monat
-- Top Genre
-- Streams des Top Genres
-- Top Artist im Top Genre
-- Streams dieses Artists
+`backend/etl/unload.php` nutzt dieselbe Logik.
 
 Die API ist online erreichbar unter:
 
 `https://im3.okurocic.myhostpoint.ch/im3-tophits/backend/api/`
+
+### Frontend
+
+`frontend/index.html` lädt die Daten live über `../backend/api/` (keine Mock-Daten mehr) und zeigt:
+
+- Kennzahlen pro Jahr
+- Top Genre pro Monat / Jahreszeit mit Top Artist (Winter = Dezember des Vorjahres + Januar + Februar)
+- Details zum gewählten Monat bzw. zur Jahreszeit
+- Übersicht aller Monate (Heatmap) und monatliche Muster über alle Jahre
+- Streams im Zeitverlauf
+- Top Artists mit Suche und Genre-Filter
+
+Sind Genre-Daten (`?resource=genres`) vorhanden, kommen automatisch dazu: Rangliste aller Genres, echte Jahreszeiten-Summen, „Ø pro Woche“, Top Song, Explicit-Anteil und Linien pro Genre.
 
 ### 8. Aktueller Datenfluss
 

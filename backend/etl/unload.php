@@ -1,52 +1,12 @@
 <?php
 
-header('Content-Type: application/json; charset=utf-8');
+// ------------------------------------------------------------
+// Unload
+//
+// Liest die gespeicherten Daten aus der Datenbank und gibt sie als
+// JSON aus. Die Logik liegt in der API, damit es sie nur einmal gibt:
+//   unload.php                   -> monthly_results
+//   unload.php?resource=genres   -> monthly_genre_streams
+// ------------------------------------------------------------
 
-require __DIR__ . '/../../config.php';
-
-try {
-
-    $pdo = new PDO(
-        $dsn,
-        $username,
-        $password,
-        $options
-    );
-
-} catch (PDOException $e) {
-
-    http_response_code(500);
-
-    echo json_encode([
-        "error" => "Datenbankverbindung fehlgeschlagen"
-    ]);
-
-    exit;
-}
-
-$sql = "
-    SELECT
-        DATE_FORMAT(month, '%Y-%m') AS month,
-        top_genre,
-        genre_streams,
-        top_artist,
-        artist_streams
-    FROM monthly_results
-    ORDER BY month
-";
-
-$stmt = $pdo->query($sql);
-
-$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-
-// Zahlen wirklich als Integer ausgeben
-foreach ($data as &$row) {
-    $row['genre_streams'] = (int) $row['genre_streams'];
-    $row['artist_streams'] = (int) $row['artist_streams'];
-}
-
-echo json_encode(
-    $data,
-    JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
-);
+require __DIR__ . '/../api/index.php';

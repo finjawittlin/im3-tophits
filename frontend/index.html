@@ -1,10 +1,10 @@
-<?php
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Die Chartjägerinnen – Was hört die Schweiz?</title>
+    <meta name="description" content="Welches Genre wurde in welchem Monat in der Schweiz zwischen 2014 und 2022 auf Spotify am meisten gestreamt?">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -12,32 +12,102 @@
 </head>
 <body>
 <header>
-    <p class="kicker">Die Chartjägerinnen · Spotify Schweiz</p>
+    <p class="kicker">Die Chartjägerinnen · Spotify Schweiz · <span id="range">2014–2022</span></p>
     <h1>Was hört<br>die Schweiz?</h1>
-    <p class="lead">Wie verändert sich die Beliebtheit verschiedener Musikgenres auf Spotify in der Schweiz im Verlaufe eines Jahres – und welche monatlichen Muster lassen sich aufweisen?</p>
-    <div class="controls">
-        <label>Jahr <select id="year-select"></select></label>
-        <div class="toggle" role="group" aria-label="Ansicht">
-            <button data-mode="month" class="active">Monate</button>
-            <button data-mode="season">Jahreszeiten</button>
-        </div>
-    </div>
-    <div class="ticker" aria-hidden="true">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</div>
+    <p class="lead">Welches Genre wurde in welchem Monat in der Schweiz am meisten gestreamt – und wer war innerhalb dieses Genres der Top Artist? Eine Spurensuche in den wöchentlichen Spotify-Charts.</p>
+    <div class="ticker" aria-hidden="true">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</div>
 </header>
 
-<main>
+<!-- Lade- und Fehlerzustand -->
+<div id="status" class="status" role="status" aria-live="polite">
+    <div class="loader"><span></span><span></span><span></span></div>
+    <p>Lade Daten aus der Datenbank …</p>
+</div>
+
+<main id="app" hidden>
+
+    <!-- Steuerung -->
+    <nav class="controls" aria-label="Filter">
+        <label>Jahr <select id="year-select"></select></label>
+        <div class="toggle" role="group" aria-label="Ansicht">
+            <button type="button" data-mode="month" class="active" aria-pressed="true">Monate</button>
+            <button type="button" data-mode="season" aria-pressed="false">Jahreszeiten</button>
+        </div>
+        <div class="toggle" id="metric-toggle" role="group" aria-label="Messgrösse" hidden>
+            <button type="button" data-metric="total" class="active" aria-pressed="true">Summe</button>
+            <button type="button" data-metric="weekly" aria-pressed="false">Ø pro Woche</button>
+        </div>
+    </nav>
+
+    <!-- Kennzahlen des Jahres -->
+    <section aria-labelledby="kpi-title">
+        <h2 id="kpi-title" class="section-title"><span id="kpi-year"></span> in Zahlen</h2>
+        <div id="kpis" class="kpis"></div>
+    </section>
+
+    <!-- Hauptdiagramm -->
     <section class="card dark">
         <h2>Meistgehörtes Genre pro <span id="mode-label">Monat</span></h2>
         <div id="chart"></div>
         <p class="hint" id="hint"></p>
     </section>
 
-    <section class="card light">
-        <h2>Top 10 Genres · <span id="rank-title"></span></h2>
-        <ol id="ranking"></ol>
+    <!-- Details zum gewählten Zeitraum -->
+    <section class="card light" aria-live="polite">
+        <h2><span id="detail-kicker">Im Fokus</span> · <span id="rank-title"></span></h2>
+        <div id="detail" class="detail"></div>
+        <div id="ranking-wrap" hidden>
+            <h3>Alle Genres im Vergleich</h3>
+            <ol id="ranking"></ol>
+        </div>
     </section>
-    <p id="status"></p>
+
+    <!-- Alle Monate auf einen Blick -->
+    <section class="card dark">
+        <h2>Alle Monate auf einen Blick</h2>
+        <p class="sub">Jedes Feld ist ein Monat, die Farbe zeigt das meistgehörte Genre. Klicke auf ein Feld, um den Monat oben anzuzeigen.</p>
+        <div id="heatmap" class="heatmap"></div>
+        <div id="legend" class="legend"></div>
+    </section>
+
+    <!-- Saisonale Muster -->
+    <section class="card dark">
+        <h2>Gibt es monatliche Muster?</h2>
+        <p class="sub">Wie oft war welches Genre in einem Kalendermonat an der Spitze – über alle Jahre gezählt.</p>
+        <div id="pattern" class="pattern"></div>
+    </section>
+
+    <!-- Zeitverlauf -->
+    <section class="card dark">
+        <h2 id="timeline-title">Streams im Zeitverlauf</h2>
+        <p class="sub" id="timeline-sub"></p>
+        <div id="timeline-legend" class="legend"></div>
+        <div class="timeline-scroll">
+            <div id="timeline" class="timeline"></div>
+        </div>
+    </section>
+
+    <!-- Top Artists -->
+    <section class="card light">
+        <h2>Die Top Artists</h2>
+        <p class="sub" id="artists-sub"></p>
+        <div class="artist-tools">
+            <input type="search" id="artist-search" placeholder="Artist suchen …" aria-label="Artist suchen">
+            <div id="artist-genres" class="chips" role="group" aria-label="Nach Genre filtern"></div>
+        </div>
+        <p id="artist-highlight" class="highlight-note" hidden></p>
+        <ol id="artists" class="artists"></ol>
+        <button type="button" id="artists-more" class="more"></button>
+    </section>
+
+    <!-- Methode -->
+    <section class="method">
+        <h2 class="section-title">Daten &amp; Methode</h2>
+        <ul id="method"></ul>
+    </section>
 </main>
+
+<div id="tooltip" class="tooltip" hidden></div>
 <script src="script.js"></script>
 </body>
-</html>⁄
+</html>

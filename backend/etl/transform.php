@@ -1,8 +1,20 @@
 <?php
 
-$file = __DIR__ . "/../../data/spotify_ch_2014_2022.csv";
+// ------------------------------------------------------------
+// Transform
+//
+// Liest die Schweizer Spotify-Charts (wöchentlich) und berechnet:
+//
+// 1. monthly_results          pro Monat: Top Genre + Top Artist darin
+// 2. monthly_genre_streams    pro Monat UND Genre: Streams, Top Artist,
+//                             Top Song, Explicit-Streams, Chart-Wochen
+//
+// Wird von load.php per include aufgerufen und gibt beide Listen zurück.
+// ------------------------------------------------------------
 
-$handle = fopen($file, "r");
+$csvFile = $csvFile ?? __DIR__ . "/../../data/spotify_ch_2014_2022.csv";
+
+$handle = fopen($csvFile, "r");
 
 if ($handle === false) {
     exit("CSV-Datei konnte nicht geöffnet werden.");
@@ -10,74 +22,117 @@ if ($handle === false) {
 
 
 // --------------------------------------------------
-// Hauptgenre bestimmen
+// Python-Liste aus der CSV lesen
 // --------------------------------------------------
+// Die CSV speichert Listen im Python-Format, z.B.
+//   ['dance pop', 'edm']   oder   ["Guns N' Roses"]
+// Ein einfaches Ersetzen von ' durch " scheitert bei Apostrophen
+// in Namen. Darum wird die Liste Zeichen für Zeichen gelesen.
 
-function getMainGenre($genres)
+function parsePythonList(string $text): array
 {
-    $genreText = strtolower(implode(" ", $genres));
+    $items = [];
+    $length = strlen($text);
+    $i = 0;
 
-    // Spezieller Fall:
-    // "dance pop" oder "pop dance" soll zu Pop gehören
-    if (
-        str_contains($genreText, "dance pop") ||
-        str_contains($genreText, "pop dance")
-    ) {
-        return "Pop";
+    while ($i < $length) {
+
+        $quote = $text[$i];
+
+        if ($quote !== "'" && $quote !== '"') {
+            $i++;
+            continue;
+        }
+
+        $value = "";
+        $i++;
+
+        while ($i < $length && $text[$i] !== $quote) {
+
+            if ($text[$i] === "\\" && $i + 1 < $length) {
+                $i++;
+            }
+
+            $value .= $text[$i];
+            $i++;
+        }
+
+        $items[] = $value;
+        $i++;
     }
 
-    $genreRules = [
+    return $items;
+}
 
-        "Hip-Hop / Rap" => [
-            "rap",
-            "hip hop",
-            "trap",
-            "drill"
-        ],
 
-        "R&B / Soul" => [
-            "r&b",
-            "soul"
-        ],
+// --------------------------------------------------
+// Hauptgenre bestimmen
+// --------------------------------------------------
+// Jedes Spotify-Genre eines Artists wird einzeln geprüft.
+// Die Reihenfolge der Kategorien bestimmt die Priorität:
+// besitzt ein Artist ein Genre einer früheren Kategorie,
+// gewinnt diese Kategorie.
+//
+// - Latin steht vor Hip-Hop, damit "trap latino" zu Latin zählt.
+// - "dance pop", "pop dance" und "electropop" zählen nicht als
+//   Electronic. Eindeutig elektronische Genres (edm, house, …)
+//   gewinnen aber vor Pop – so wie im README beschrieben.
 
-        "Rock" => [
-            "rock",
-            "metal",
-            "punk"
-        ],
+const GENRE_RULES = [
 
-        "Latin" => [
-            "latin",
-            "reggaeton",
-            "bachata"
-        ],
+    "Latin" => '/latin|reggaeton|bachata|urbano|cumbia|salsa|\bsertanejo/',
 
-        "Indie / Alternative" => [
-            "indie",
-            "alternative"
-        ],
+    "Hip-Hop / Rap" => '/hip hop|rap\b|\btrap\b|drill|grime/',
 
-        "Electronic / Dance" => [
-            "edm",
-            "house",
-            "techno",
-            "electro",
-            "dance",
-            "brostep"
-        ],
+    "R&B / Soul" => '/r&b|\bsoul\b|neo soul/',
 
-        "Pop" => [
-            "pop"
-        ]
-    ];
+    "Rock" => '/rock|metal|punk|grunge/',
 
-    foreach ($genreRules as $mainGenre => $keywords) {
+    "Indie / Alternative" => '/indie|alternative/',
 
-        foreach ($keywords as $keyword) {
+    "Electronic / Dance" => '/\bedm\b|house|techno|\belectro\b|electro house|brostep|dubstep|trance|big room|drum and bass|\bdance\b/',
 
-            if (str_contains($genreText, $keyword)) {
-                return $mainGenre;
-            }
+    "Pop" => '/pop/'
+];
+
+function classifyGenreTag(string $tag): ?string
+{
+    $tag = strtolower(trim($tag));
+
+    foreach (GENRE_RULES as $mainGenre => $pattern) {
+
+        // Pop-Varianten sollen nicht wegen "dance"/"electro" Electronic werden
+        if (
+            $mainGenre === "Electronic / Dance" &&
+            preg_match('/dance pop|pop dance|electropop|dancehall/', $tag)
+        ) {
+            continue;
+        }
+
+        if (preg_match($pattern, $tag)) {
+            return $mainGenre;
+        }
+    }
+
+    return null;
+}
+
+function getMainGenre(array $genres): string
+{
+    $found = [];
+
+    foreach ($genres as $tag) {
+        $mainGenre = classifyGenreTag($tag);
+
+        if ($mainGenre !== null) {
+            $found[$mainGenre] = true;
+        }
+    }
+
+    // Kategorie mit der höchsten Priorität gewinnt
+    foreach (array_keys(GENRE_RULES) as $mainGenre) {
+        if (isset($found[$mainGenre])) {
+            return $mainGenre;
         }
     }
 
@@ -96,11 +151,11 @@ $headers = fgetcsv($handle, 0, ",", '"', "\\");
 // Speicher vorbereiten
 // --------------------------------------------------
 
-// Streams pro Monat und Genre
-$monthlyGenreStreams = [];
+// Chart-Wochen pro Monat (verschiedene Chart-Daten)
+$monthWeeks = [];
 
-// Streams pro Monat, Genre und Artist
-$monthlyGenreArtistStreams = [];
+// Pro Monat + Genre: Streams, Artists, Songs, Explicit
+$stats = [];
 
 
 // --------------------------------------------------
@@ -115,141 +170,125 @@ while (($row = fgetcsv($handle, 0, ",", '"', "\\")) !== false) {
 
     $row = array_combine($headers, $row);
 
-
-    // --------------------------------------------------
     // Datum
-    // --------------------------------------------------
-
-    $date = DateTime::createFromFormat(
-        "Y/m/d",
-        $row["date"]
-    );
+    $date = DateTime::createFromFormat("Y/m/d", $row["date"]);
 
     if ($date === false) {
         continue;
     }
 
     $monthKey = $date->format("Y-m");
+    $monthWeeks[$monthKey][$date->format("Y-m-d")] = true;
 
-
-    // --------------------------------------------------
     // Streams
-    // --------------------------------------------------
-
     $streams = (int) $row["streams"];
 
+    // Genre
+    $mainGenre = getMainGenre(parsePythonList($row["artist_genres"] ?? ""));
 
-    // --------------------------------------------------
-    // Genres
-    // --------------------------------------------------
+    // Artist (nur der erste Artist zählt als Hauptartist)
+    $artists = parsePythonList($row["artists"] ?? "");
+    $mainArtist = $artists[0] ?? "Unknown";
 
-    $genres = json_decode(
-        str_replace("'", '"', $row["artist_genres"]),
-        true
-    );
+    // Song
+    $trackId = $row["track_id"] ?? "";
+    $trackName = $row["name"] ?? "";
+    $trackKey = $trackId !== "" ? $trackId : $trackName . "|" . $mainArtist;
 
-    if (!is_array($genres)) {
-        $genres = [];
+    $explicit = in_array(strtolower($row["explicit"] ?? ""), ["true", "1"], true);
+
+    // Summieren
+    $s = &$stats[$monthKey][$mainGenre];
+
+    if ($s === null) {
+        $s = [
+            "streams" => 0,
+            "entries" => 0,
+            "explicit_streams" => 0,
+            "artists" => [],
+            "tracks" => []
+        ];
     }
 
-    $mainGenre = getMainGenre($genres);
+    $s["streams"] += $streams;
+    $s["entries"]++;
 
-
-    // --------------------------------------------------
-    // Artists
-    // --------------------------------------------------
-
-    $artists = json_decode(
-        str_replace("'", '"', $row["artists"]),
-        true
-    );
-
-    if (!is_array($artists) || count($artists) === 0) {
-        $artists = ["Unknown"];
+    if ($explicit) {
+        $s["explicit_streams"] += $streams;
     }
 
-    // Nur erster Artist zählt als Hauptartist
-    $mainArtist = $artists[0];
+    $s["artists"][$mainArtist] = ($s["artists"][$mainArtist] ?? 0) + $streams;
 
-
-    // --------------------------------------------------
-    // Streams pro Monat + Genre addieren
-    // --------------------------------------------------
-
-    if (!isset($monthlyGenreStreams[$monthKey])) {
-        $monthlyGenreStreams[$monthKey] = [];
+    if (!isset($s["tracks"][$trackKey])) {
+        $s["tracks"][$trackKey] = [
+            "name" => $trackName,
+            "artist" => $mainArtist,
+            "streams" => 0
+        ];
     }
 
-    if (!isset($monthlyGenreStreams[$monthKey][$mainGenre])) {
-        $monthlyGenreStreams[$monthKey][$mainGenre] = 0;
-    }
+    $s["tracks"][$trackKey]["streams"] += $streams;
 
-    $monthlyGenreStreams[$monthKey][$mainGenre] += $streams;
-
-
-    // --------------------------------------------------
-    // Streams pro Monat + Genre + Artist addieren
-    // --------------------------------------------------
-
-    if (!isset($monthlyGenreArtistStreams[$monthKey])) {
-        $monthlyGenreArtistStreams[$monthKey] = [];
-    }
-
-    if (!isset($monthlyGenreArtistStreams[$monthKey][$mainGenre])) {
-        $monthlyGenreArtistStreams[$monthKey][$mainGenre] = [];
-    }
-
-    if (!isset($monthlyGenreArtistStreams[$monthKey][$mainGenre][$mainArtist])) {
-        $monthlyGenreArtistStreams[$monthKey][$mainGenre][$mainArtist] = 0;
-    }
-
-    $monthlyGenreArtistStreams[$monthKey][$mainGenre][$mainArtist] += $streams;
+    unset($s);
 }
 
 fclose($handle);
 
-
-// --------------------------------------------------
-// Monate sortieren
-// --------------------------------------------------
-
-ksort($monthlyGenreStreams);
+ksort($stats);
 
 
 // --------------------------------------------------
 // Resultate vorbereiten
 // --------------------------------------------------
 
-$results = [];
+$monthlyResults = [];
+$monthlyGenreStreams = [];
 
-foreach ($monthlyGenreStreams as $month => $genres) {
+foreach ($stats as $month => $genres) {
 
-    // Genres nach Streams sortieren
-    arsort($genres);
+    // Genres nach Streams sortieren (grösste zuerst)
+    uasort($genres, fn($a, $b) => $b["streams"] <=> $a["streams"]);
 
-    // Top Genre
-    $topGenre = array_key_first($genres);
-    $topGenreStreams = $genres[$topGenre];
+    $weeks = count($monthWeeks[$month]);
+    $first = true;
 
-    // Artists nur aus dem Top Genre holen
-    $artistsInTopGenre =
-        $monthlyGenreArtistStreams[$month][$topGenre] ?? [];
+    foreach ($genres as $genre => $s) {
 
-    arsort($artistsInTopGenre);
+        arsort($s["artists"]);
+        $topArtist = array_key_first($s["artists"]);
 
-    $topArtist = array_key_first($artistsInTopGenre);
+        usort($s["tracks"], fn($a, $b) => $b["streams"] <=> $a["streams"]);
+        $topTrack = $s["tracks"][0];
 
-    $topArtistStreams = $topArtist !== null
-        ? $artistsInTopGenre[$topArtist]
-        : 0;
+        $monthlyGenreStreams[] = [
+            "month" => $month,
+            "genre" => $genre,
+            "streams" => $s["streams"],
+            "chart_weeks" => $weeks,
+            "chart_entries" => $s["entries"],
+            "explicit_streams" => $s["explicit_streams"],
+            "top_artist" => $topArtist,
+            "artist_streams" => $s["artists"][$topArtist],
+            "top_track" => $topTrack["name"],
+            "top_track_artist" => $topTrack["artist"],
+            "top_track_streams" => $topTrack["streams"]
+        ];
 
-    $results[] = [
-        "month" => $month,
-        "top_genre" => $topGenre,
-        "genre_streams" => $topGenreStreams,
-        "top_artist" => $topArtist,
-        "artist_streams" => $topArtistStreams
-    ];
+        // Erstes Genre = Top Genre des Monats
+        if ($first) {
+            $monthlyResults[] = [
+                "month" => $month,
+                "top_genre" => $genre,
+                "genre_streams" => $s["streams"],
+                "top_artist" => $topArtist,
+                "artist_streams" => $s["artists"][$topArtist]
+            ];
+            $first = false;
+        }
+    }
 }
 
-return $results;
+return [
+    "monthly_results" => $monthlyResults,
+    "monthly_genre_streams" => $monthlyGenreStreams
+];

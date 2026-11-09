@@ -1,33 +1,66 @@
 :root {
     --black: #0d0d0d; --cream: #f2ede4; --pink: #ff3eb5; --lilac: #c8b0f5; --lime: #d4f23c;
+    --card-dark: #1b1b1b; --line: #333;
     --chart-height: 460px;
-    --row: 50px;
+    --row: 46px;
     --display: 'Anton', Impact, 'Arial Narrow', sans-serif;
     --mono: 'Space Mono', 'Courier New', monospace;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { margin: 0; background: var(--black); color: var(--cream); font-family: var(--mono); font-size: 14px; }
-header, main { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem; }
+header, main, .status { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem; }
+a { color: inherit; }
+button { font: inherit; }
+:focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; }
 
+/* ---------- Header ---------- */
 .kicker { text-transform: uppercase; letter-spacing: .15em; font-size: .75rem; color: var(--lilac); margin: 0; }
 h1 { font-family: var(--display); font-weight: 400; text-transform: uppercase; color: var(--pink);
-    font-size: clamp(3.2rem, 13vw, 9rem); line-height: .88; margin: .5rem 0 1rem; }
+    font-size: clamp(3.2rem, 13vw, 9rem); line-height: .88; margin: .5rem 0 1rem; padding-top: .14em; }
 h2 { font-family: var(--display); font-weight: 400; text-transform: uppercase; font-size: clamp(1.5rem, 4vw, 2.2rem); margin: 0 0 1.2rem; }
+h2 small { font-family: var(--mono); font-size: .8rem; text-transform: none; opacity: .7; }
+h3 { font-family: var(--display); font-weight: 400; text-transform: uppercase; font-size: 1.3rem; margin: 1.8rem 0 .8rem; }
 .lead { max-width: 640px; line-height: 1.5; }
+.sub { margin: -.6rem 0 1.2rem; opacity: .75; line-height: 1.5; max-width: 760px; }
 .ticker { overflow: hidden; white-space: nowrap; color: var(--pink); margin-top: 1.5rem; letter-spacing: .2em; }
+.section-title { font-size: clamp(1.3rem, 3vw, 1.8rem); color: var(--lilac); }
 
-.controls { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 1.5rem; }
+/* ---------- Lade- / Fehlerzustand ---------- */
+.status { text-align: center; padding: 4rem 1rem; line-height: 1.6; }
+.status strong { color: var(--pink); }
+.loader { display: flex; justify-content: center; gap: .5rem; height: 60px; align-items: flex-end; margin-bottom: 1rem; }
+.loader span { width: 18px; background: var(--pink); border-radius: 8px 8px 0 0; animation: grow 1s ease-in-out infinite; }
+.loader span:nth-child(2) { background: var(--lilac); animation-delay: .15s; }
+.loader span:nth-child(3) { background: var(--lime); animation-delay: .3s; }
+@keyframes grow { 0%, 100% { height: 20%; } 50% { height: 100%; } }
+.retry, .more { font-weight: 700; color: var(--black); background: var(--lime); border: 0; border-radius: 999px;
+    padding: .6rem 1.4rem; cursor: pointer; margin-top: 1rem; }
+
+/* ---------- Steuerung ---------- */
+.controls { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: .8rem 1rem; align-items: center;
+    padding: .8rem 0; margin-bottom: 1rem; background: rgba(13,13,13,.92); backdrop-filter: blur(6px); }
 select, .toggle button { font: inherit; font-weight: 700; color: var(--cream); background: transparent;
     border: 2px solid var(--cream); border-radius: 999px; padding: .45rem 1rem; cursor: pointer; }
 select option { color: var(--black); }
 .toggle { display: flex; gap: .4rem; }
 .toggle button.active { background: var(--lime); color: var(--black); border-color: var(--lime); }
 
+/* ---------- Kennzahlen ---------- */
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+.kpi { --accent: var(--cream); background: var(--card-dark); border: 2px solid var(--line); border-top: 6px solid var(--accent);
+    border-radius: 20px; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: .35rem; min-width: 0; }
+.kpi small { text-transform: uppercase; letter-spacing: .08em; font-size: .65rem; opacity: .7; }
+.kpi strong { font-family: var(--display); font-weight: 400; font-size: 1.7rem; line-height: 1.05; color: var(--accent); overflow-wrap: anywhere; }
+.kpi span { font-size: .75rem; opacity: .85; line-height: 1.4; }
+
+/* ---------- Karten ---------- */
 .card { border-radius: 28px; padding: 1.5rem; margin-bottom: 1.5rem; }
-.dark { background: #1b1b1b; border: 2px solid #333; }
+.dark { background: var(--card-dark); border: 2px solid var(--line); }
 .light { background: var(--cream); color: var(--black); }
 
-#chart { display: flex; gap: .5rem; height: var(--chart-height); overflow-x: auto; padding-bottom: .2rem; }
+/* ---------- Hauptdiagramm ---------- */
+#chart { display: flex; gap: .5rem; height: var(--chart-height); overflow-x: auto; padding: 6px 6px .2rem; }
 .col { flex: 1 0 66px; display: flex; flex-direction: column; }
 .bar-wrap { position: relative; flex: 1; }
 .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 0; border-radius: 14px 14px 0 0; color: var(--black);
@@ -37,9 +70,10 @@ select option { color: var(--black); }
 .streams { font-family: var(--display); font-size: 1.3rem; line-height: 1; }
 .streams small { display: block; font-family: var(--mono); font-size: .6rem; font-weight: 700; text-transform: uppercase; }
 .genre { font-weight: 700; font-size: .75rem; text-transform: uppercase; overflow-wrap: anywhere; }
+.genre .wins { display: block; font-size: .6rem; text-transform: none; font-weight: 400; }
 .artist { font-size: .7rem; line-height: 1.2; overflow-wrap: anywhere; }
 .artist small { display: block; font-size: .55rem; text-transform: uppercase; letter-spacing: .08em; opacity: .7; }
-.col-label { margin-top: .5rem; font: inherit; font-weight: 700; text-transform: uppercase; color: var(--cream);
+.col-label { margin-top: .5rem; font-weight: 700; text-transform: uppercase; color: var(--cream);
     background: transparent; border: 2px solid #555; border-radius: 999px; padding: .3rem 0; cursor: pointer; }
 .col.active .col-label { background: var(--cream); color: var(--black); border-color: var(--cream); }
 #chart.seasons .streams { font-size: 2.6rem; }
@@ -47,20 +81,125 @@ select option { color: var(--black); }
 #chart.seasons .artist { font-size: .9rem; }
 .hint { margin: 1rem 0 0; opacity: .7; font-size: .8rem; }
 
-#ranking { position: relative; list-style: none; margin: 0; padding: 0; }
+/* ---------- Detailkarte ---------- */
+.detail { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+.fact { background: rgba(0,0,0,.05); border-radius: 18px; padding: 1rem; display: flex; flex-direction: column; gap: .35rem; min-width: 0; }
+.fact.wide { grid-column: 1 / -1; }
+.fact small { text-transform: uppercase; letter-spacing: .08em; font-size: .65rem; opacity: .65; }
+.fact strong { font-family: var(--display); font-weight: 400; font-size: 1.5rem; line-height: 1.1; overflow-wrap: anywhere; }
+.fact span { font-size: .78rem; line-height: 1.4; }
+.share { height: 10px; border: 2px solid var(--black); border-radius: 999px; overflow: hidden; }
+.share div { height: 100%; background: var(--pink); transition: width .6s; }
+.months-list { list-style: none; margin: .3rem 0 0; padding: 0; display: grid; gap: .4rem; }
+.months-list b { display: inline-block; width: 5.5rem; }
+.muted { opacity: .5; }
+.empty { opacity: .7; }
+.chip-dot { display: inline-block; width: .8em; height: .8em; border-radius: 50%; margin-right: .4em; vertical-align: -.05em;
+    border: 1.5px solid rgba(0,0,0,.6); flex-shrink: 0; }
+
+/* ---------- Genre-Rangliste ---------- */
+#ranking { position: relative; list-style: none; margin: 0; padding: 0; transition: height .6s; }
 #ranking li { position: absolute; left: 0; right: 0; height: var(--row); display: flex; align-items: center; gap: .6rem;
     transition: transform .8s cubic-bezier(.2,.8,.2,1), opacity .4s; }
 #ranking li.out { opacity: 0; pointer-events: none; }
-.pos { font-family: var(--display); font-size: 1.3rem; width: 2rem; }
-.name { width: 7.5rem; font-weight: 700; font-size: .85rem; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pos { font-family: var(--display); font-size: 1.3rem; width: 2rem; flex-shrink: 0; }
+.name { width: 10rem; font-weight: 700; font-size: .85rem; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .track { flex: 1; height: 62%; background: rgba(0,0,0,.08); border-radius: 999px; }
 .fill { height: 100%; width: 0; border: 2px solid var(--black); border-radius: 999px; transition: width .8s cubic-bezier(.2,.8,.2,1); }
 .val { width: 6rem; text-align: right; font-weight: 700; }
 
+/* ---------- Heatmap ---------- */
+.heatmap { display: grid; grid-template-columns: 3.4rem repeat(12, minmax(0, 1fr)); gap: 4px; }
+.hm-head { font-size: .65rem; text-transform: uppercase; text-align: center; opacity: .6; }
+.hm-year { font-weight: 700; font-size: .8rem; color: var(--cream); background: transparent; border: 0; border-radius: 8px; cursor: pointer; text-align: left; }
+.hm-year.active { background: var(--cream); color: var(--black); }
+.hm-cell { aspect-ratio: 1.6; border: 0; border-radius: 6px; cursor: pointer; transition: opacity .3s, transform .2s; padding: 0; }
+.hm-cell.empty { background: #262626; cursor: default; }
+.hm-cell:hover { transform: scale(1.12); }
+.hm-cell.active { outline: 3px solid var(--cream); outline-offset: 1px; }
+.hm-cell.dim { opacity: .15; }
+.hm-cell.hit { box-shadow: 0 0 0 3px var(--black), 0 0 0 5px var(--cream); }
+
+.legend { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-top: 1rem; align-items: center; font-size: .78rem; }
+.legend-item { display: inline-flex; align-items: center; gap: .1rem; }
+.legend-item b { margin-left: .3rem; }
+.legend-note { opacity: .55; font-size: .7rem; }
+button.legend-item { color: inherit; background: transparent; border: 2px solid #444; border-radius: 999px; padding: .25rem .7rem; cursor: pointer; }
+button.legend-item.off { opacity: .35; text-decoration: line-through; }
+.line-key { display: inline-block; width: 22px; border-top: 3px solid var(--cream); margin-right: .4rem; }
+.line-key.dashed { border-top: 3px dashed var(--lilac); }
+
+/* ---------- Saisonale Muster ---------- */
+.pattern { display: flex; gap: .5rem; height: 260px; }
+.pcol { flex: 1; display: flex; flex-direction: column; gap: .4rem; min-width: 0; }
+.pstack { flex: 1; display: flex; flex-direction: column-reverse; border-radius: 10px; overflow: hidden; background: #262626; }
+.seg { display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: .8rem;
+    border-top: 2px solid var(--card-dark); }
+.pcol > span { text-align: center; font-size: .7rem; text-transform: uppercase; font-weight: 700; }
+
+/* ---------- Zeitverlauf ---------- */
+.timeline-scroll { overflow-x: auto; margin-top: .5rem; }
+.timeline { min-width: 680px; }
+.timeline svg { display: block; width: 100%; height: auto; }
+.tl-grid { stroke: #333; stroke-width: 1; }
+.tl-axis { fill: var(--cream); opacity: .6; font-family: var(--mono); font-size: 12px; }
+.tl-year { fill: rgba(242,237,228,.07); }
+.tl-cursor { stroke: var(--cream); stroke-width: 1; stroke-dasharray: 3 3; }
+.tl-hit { stroke: var(--cream); stroke-width: 2.5; }
+#tl-hover { cursor: pointer; }
+
+/* ---------- Top Artists ---------- */
+.artist-tools { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; margin-bottom: 1rem; }
+#artist-search { font: inherit; padding: .5rem 1rem; border: 2px solid var(--black); border-radius: 999px; background: transparent; min-width: 220px; }
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.chip { font-size: .75rem; font-weight: 700; padding: .3rem .8rem; border: 2px solid var(--black); border-radius: 999px;
+    background: transparent; color: var(--black); cursor: pointer; display: inline-flex; align-items: center; }
+.chip.active { background: var(--black); color: var(--cream); }
+.highlight-note { margin: 0 0 1rem; }
+.highlight-note button { margin-left: .5rem; font-size: .75rem; border: 2px solid var(--black); border-radius: 999px; background: transparent; cursor: pointer; padding: .15rem .6rem; }
+.artists { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; }
+.artist-row { width: 100%; display: grid; grid-template-columns: 2.4rem minmax(0, 1.6fr) minmax(0, 1fr) 4.5rem 6.5rem; gap: .8rem;
+    align-items: center; text-align: left; color: inherit; background: transparent; border: 0; border-radius: 14px; padding: .5rem .6rem; cursor: pointer; }
+.artist-row:hover { background: rgba(0,0,0,.06); }
+.artist-row.active { background: var(--black); color: var(--cream); }
+.a-name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; }
+.a-name small, .a-val small, .a-share small { display: block; font-weight: 400; font-size: .65rem; opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.a-bar { height: 12px; background: rgba(0,0,0,.08); border-radius: 999px; overflow: hidden; }
+.a-bar span { display: block; height: 100%; background: var(--pink); border-radius: 999px; }
+.a-val { font-family: var(--display); font-size: 1.4rem; text-align: right; line-height: 1; }
+.a-share { text-align: right; font-weight: 700; }
+
+/* ---------- Methode ---------- */
+.method { padding: 0 .5rem 2rem; }
+.method ul { margin: 0; padding-left: 1.2rem; line-height: 1.7; opacity: .85; max-width: 820px; }
+
+/* ---------- Tooltip ---------- */
+.tooltip { position: fixed; z-index: 20; pointer-events: none; max-width: 280px; background: var(--cream); color: var(--black);
+    border-radius: 12px; padding: .6rem .8rem; font-size: .75rem; line-height: 1.5; box-shadow: 0 6px 24px rgba(0,0,0,.5); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .artist-row { grid-template-columns: 2.2rem minmax(0, 1fr) 4rem 5.5rem; }
+    .a-bar { display: none; }
+}
 @media (max-width: 600px) {
     :root { --chart-height: 380px; }
     .card { padding: 1rem; border-radius: 20px; }
-    .name { width: 5.5rem; font-size: .7rem; }
+    .kpi strong { font-size: 1.3rem; }
+    .name { width: 6.5rem; font-size: .7rem; }
     .val { width: 4.8rem; font-size: .75rem; }
     #chart.seasons .streams { font-size: 1.8rem; }
+    .heatmap { grid-template-columns: 2.4rem repeat(12, minmax(0, 1fr)); gap: 2px; }
+    .hm-year { font-size: .62rem; padding: 0; }
+    .hm-head { font-size: .5rem; }
+    .pattern { height: 200px; gap: 3px; }
+    .seg { font-size: .6rem; }
+    .pcol > span { font-size: .55rem; }
+    .artist-row { grid-template-columns: 1.8rem minmax(0, 1fr) 3.4rem; gap: .5rem; }
+    .a-share { display: none; }
+    #artist-search { min-width: 0; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
 }
