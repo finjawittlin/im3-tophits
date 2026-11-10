@@ -340,8 +340,7 @@ function init() {
     $('artists-more').addEventListener('click', () => { state.artistsShown += ARTISTS_PAGE * 2; renderArtists(); });
 
     buildChart();
-    buildHeatmap();
-    renderPattern();
+    buildMachine();
     renderMethod();
     update();
 }
@@ -359,7 +358,7 @@ function update() {
     renderChart();
     markActive();
     renderDetail();
-    renderHeatmap();
+    renderMachine();
     renderTimeline();
     renderArtists();
 }
@@ -456,7 +455,7 @@ function select(i) {
     state.selected = i;
     markActive();
     renderDetail();
-    renderHeatmap();
+    renderMachine();
 }
 
 function markActive() {
@@ -572,54 +571,92 @@ function renderRanking(s) {
     });
 }
 
-// ---------- Heatmap: alle Monate ----------
+// ---------- Zeitmaschine: 108 Monate mit einem Regler ----------
 
-function buildHeatmap() {
-    const el = $('heatmap');
-    let html = '<span></span>' + MONTHS_SHORT.map(m => `<span class="hm-head">${m}</span>`).join('');
-    db.years.forEach(y => {
-        html += `<button type="button" class="hm-year" data-year="${y}">${y}</button>`;
-        for (let m = 1; m <= 12; m++) {
-            const r = db.monthByKey.get(monthKey(y, m));
-            html += r
-                ? `<button type="button" class="hm-cell${r.incomplete ? ' incomplete' : ''}" data-key="${r.key}" style="background:${genreColor(r.genre)}"
-                     aria-label="${keyLabel(r.key)}: ${esc(r.genre)}, ${esc(r.artist)}"></button>`
-                : '<span class="hm-cell empty"></span>';
-        }
-    });
-    el.innerHTML = html;
+function buildMachine() {
+    const rows = db.months;
+    const bars = $('scrubber-bars');
+    bars.innerHTML = skylineHTML(rows);
+    bindSkylineTooltips(bars, rows);
 
-    el.querySelectorAll('.hm-cell[data-key]').forEach(cell => {
-        const r = db.monthByKey.get(cell.dataset.key);
-        cell.addEventListener('pointerenter', e => showTooltip(e, monthTooltip(r)));
-        cell.addEventListener('pointermove', moveTooltip);
-        cell.addEventListener('pointerleave', hideTooltip);
-        cell.addEventListener('click', () => goToMonth(r.year, r.month));
+    const range = $('scrubber');
+    range.max = rows.length - 1;
+    range.value = rows.length - 1;
+    range.addEventListener('input', () => renderMachineCard(+range.value));
+    // Beim Loslassen den Rest des Explorers auf diesen Monat setzen
+    range.addEventListener('change', () => {
+        const r = rows[+range.value];
+        goToMonth(r.year, r.month, false);
     });
-    el.querySelectorAll('.hm-year').forEach(btn => btn.addEventListener('click', () => {
-        state.year = +btn.dataset.year;
-        $('year-select').value = state.year;
-        update();
+    bars.querySelectorAll('.sky-bar').forEach(bar => bar.addEventListener('click', () => {
+        range.value = bar.dataset.i;
+        range.dispatchEvent(new Event('input'));
+        range.dispatchEvent(new Event('change'));
     }));
+
+    // Jahresachse unter der Skyline
+    $('scrubber-axis').innerHTML = db.years.map(y => {
+        const i = rows.findIndex(r => r.year === y);
+        return `<span style="left:${i / Math.max(1, rows.length - 1) * 100}%">${y}</span>`;
+    }).join('');
 
     // Legende mit Anzahl Monatssiegen
     const wins = {};
-    db.months.forEach(r => (wins[r.genre] = (wins[r.genre] || 0) + 1));
+    rows.forEach(r => (wins[r.genre] = (wins[r.genre] || 0) + 1));
     $('legend').innerHTML = db.genres.filter(g => wins[g]).map(g =>
         `<span class="legend-item">${chip(g)}${esc(g)} <b>${wins[g]}</b></span>`).join('') +
-        `<span class="legend-note">Anzahl Monate an der Spitze (von ${db.months.length})</span>`;
+        `<span class="legend-note">Monate an der Spitze (von ${rows.length}) · Balkenhöhe = Streams des Spitzengenres</span>`;
+
+    renderMachineCard(rows.length - 1);
 }
 
-function renderHeatmap() {
-    const el = $('heatmap');
+function renderMachineCard(i) {
+    const rows = db.months;
+    const r = rows[i];
+    if (!r) return;
+
+    // Wie viele Monate in Folge liegt dieses Genre schon vorne?
+    let streak = 1;
+    while (i - streak >= 0 && rows[i - streak].genre === r.genre) streak++;
+    const lastYear = db.monthByKey.get(monthKey(r.year - 1, r.month));
+    const yoy = lastYear ? (r.streams - lastYear.streams) / lastYear.streams * 100 : null;
+    const share = r.artistStreams / (r.streams || 1);
+
+    $('scrubber').setAttribute('aria-valuetext', `${keyLabel(r.key)}: ${r.genre}, Top Artist ${r.artist}`);
+    $('scrubber-bars').querySelectorAll('.sky-bar').forEach((b, j) => b.classList.toggle('current', j === i));
+
+    $('machine-card').style.setProperty('--c', genreColor(r.genre));
+    $('machine-card').innerHTML = `
+        <div class="m-date"><span>${MONTHS_FULL[r.month - 1]}</span><strong>${r.year}</strong></div>
+        <div class="m-genre"><small>An der Spitze</small><strong>${esc(r.genre)}</strong>
+            <span>${streak === 1 ? 'Neu an der Spitze' : `${streak}. Monat in Folge`}</span></div>
+        <div class="m-facts">
+            <div><small>Streams im Genre</small><b>${fmtText(r.streams)}</b>
+                <span>${yoy === null ? '–' : `${yoy >= 0 ? '+' : ''}${yoy.toLocaleString('de-CH', { maximumFractionDigits: 0 })} % zum Vorjahresmonat`}</span></div>
+            <div><small>★ Top Artist</small><b>${esc(r.artist)}</b>
+                <span class="m-share"><i style="width:${Math.min(100, share * 100)}%"></i></span>
+                <span>${pct(r.artistStreams, r.streams)} der Genre-Streams</span></div>
+        </div>
+        ${r.incomplete ? '<p class="m-warn">⚠ Dieser Monat ist vermutlich unvollständig erfasst.</p>' : ''}`;
+}
+
+// Zeitmaschine an den Explorer anpassen (gewählter Monat, hervorgehobener Artist)
+function renderMachine() {
+    const rows = db.months;
     const activeKeys = new Set(periodKeys(state.year, PERIODS[state.mode][state.selected]));
-    el.querySelectorAll('.hm-cell[data-key]').forEach(cell => {
-        const r = db.monthByKey.get(cell.dataset.key);
-        cell.classList.toggle('active', activeKeys.has(r.key));
-        cell.classList.toggle('dim', state.artist !== null && r.artist !== state.artist);
-        cell.classList.toggle('hit', state.artist !== null && r.artist === state.artist);
+    $('scrubber-bars').querySelectorAll('.sky-bar').forEach((bar, i) => {
+        const r = rows[i];
+        bar.classList.toggle('in-period', activeKeys.has(r.key));
+        bar.classList.toggle('dim', state.artist !== null && r.artist !== state.artist);
+        bar.classList.toggle('hit', state.artist !== null && r.artist === state.artist);
     });
-    el.querySelectorAll('.hm-year').forEach(b => b.classList.toggle('active', +b.dataset.year === state.year));
+    if (state.mode === 'month') {
+        const i = rows.findIndex(r => r.key === monthKey(state.year, state.selected + 1));
+        if (i >= 0) {
+            $('scrubber').value = i;
+            renderMachineCard(i);
+        }
+    }
 }
 
 function monthTooltip(r) {
@@ -627,8 +664,8 @@ function monthTooltip(r) {
         + (r.incomplete ? '<br><i>⚠ vermutlich unvollständig erfasst</i>' : '');
 }
 
-// Monat oben im Hauptdiagramm anzeigen
-function goToMonth(year, month) {
+// Monat im Hauptdiagramm anzeigen (scroll = false: Ansicht bleibt stehen)
+function goToMonth(year, month, scroll = true) {
     state.year = year;
     $('year-select').value = year;
     if (state.mode !== 'month') {
@@ -638,22 +675,7 @@ function goToMonth(year, month) {
     }
     state.selected = month - 1;
     update();
-    $('chart').scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-// ---------- Saisonale Muster ----------
-
-function renderPattern() {
-    const years = db.years.length;
-    $('pattern').innerHTML = MONTHS_SHORT.map((label, i) => {
-        const rows = db.months.filter(r => r.month === i + 1);
-        const c = {};
-        rows.forEach(r => (c[r.genre] = (c[r.genre] || 0) + 1));
-        const segs = db.genres.filter(g => c[g]).map(g =>
-            `<div class="seg" style="height:${c[g] / years * 100}%;background:${genreColor(g)}"
-                  title="${MONTHS_FULL[i]}: ${esc(g)} ${c[g]}× an der Spitze">${c[g] > 1 ? c[g] : ''}</div>`).join('');
-        return `<div class="pcol"><div class="pstack">${segs}</div><span>${label}</span></div>`;
-    }).join('');
+    if (scroll) $('chart').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
 }
 
 // ---------- Zeitverlauf (SVG) ----------
@@ -816,8 +838,8 @@ function renderArtists() {
     all.forEach((a, i) => (a.rank = i + 1));
 
     $('artists-sub').textContent = db.hasGenres
-        ? 'Wie oft war ein Artist in einem Monat die Nummer 1 innerhalb seines Genres? Klicke auf einen Artist, um seine Monate oben in der Übersicht und im Zeitverlauf hervorzuheben.'
-        : 'Wie oft war ein Artist in einem Monat der Top Artist im meistgehörten Genre? Klicke auf einen Artist, um seine Monate in der Übersicht und im Zeitverlauf hervorzuheben.';
+        ? 'Wie oft war ein Artist in einem Monat die Nummer 1 innerhalb seines Genres? Klicke auf einen Artist, um seine Monate in der Zeitmaschine und im Zeitverlauf hervorzuheben.'
+        : 'Wie oft war ein Artist in einem Monat der Top Artist im meistgehörten Genre? Klicke auf einen Artist, um seine Monate in der Zeitmaschine und im Zeitverlauf hervorzuheben.';
 
     // Genre-Filter
     const genresHere = db.genres.filter(g => all.some(a => a.genres[g]));
@@ -855,7 +877,7 @@ function renderArtists() {
     $('artists').querySelectorAll('.artist-row').forEach(btn => btn.addEventListener('click', () => {
         state.artist = state.artist === btn.dataset.artist ? null : btn.dataset.artist;
         renderArtists();
-        renderHeatmap();
+        renderMachine();
         renderTimeline();
     }));
 
@@ -870,7 +892,7 @@ function renderArtists() {
         note.querySelector('button').addEventListener('click', () => {
             state.artist = null;
             renderArtists();
-            renderHeatmap();
+            renderMachine();
             renderTimeline();
         });
     }

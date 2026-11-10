@@ -121,20 +121,28 @@ Die API ist online erreichbar unter:
 
 `https://im3.okurocic.myhostpoint.ch/im3-tophits/backend/api/`
 
-### Frontend: Scrollytelling-Datenreportage
+### Frontend: «Pink gegen Neon» – interaktive Datenreportage
 
-`frontend/index.html` lädt die Daten live über `../backend/api/` (keine Mock-Daten) und erzählt sie als Geschichte:
+`frontend/index.html` lädt die Daten live über `../backend/api/` und erzählt sie als Scrollytelling:
 
-1. **Hero** – «Was hört die Schweiz?» mit animierten Kennzahlen
-2. **Kapitel 1 – Pink** – die lange Pop-Phase am Anfang und ihre Top Artists
-3. **Kapitel 2 – Der Wandel** – die Heatmap bleibt fixiert und füllt sich beim Scrollen Monat für Monat; Textschritte erklären Wendepunkt, Hip-Hop-Phase, Pop-Comeback und das Dezember-Muster
-4. **Kapitel 3 – Die Artists** – vor/nach dem Wendepunkt, Zeitachse der wichtigsten Artists
-5. **Kapitel 4 – Die Streams** – Liniendiagramm mit Rekorden und das Duell Jahr für Jahr
-6. **Kapitel 5 – Dein Jahr** – der interaktive Explorer (Jahr, Monate/Jahreszeiten, Heatmap, Muster, Zeitverlauf, Artist-Suche)
+| | Kapitel | Inhalt |
+|---|---|---|
+| Hero | Was hört die Schweiz? | Skyline aus allen Monaten (Farbe = Genre, Höhe = Streams), animierte Kennzahlen |
+| 01 | Pink | Die lange Pop-Phase, ihre Artists und der «Machtmoment» (höchster Anteil eines Artists an seinem Genre) |
+| – | Quiz | «In welchem Jahr lag Hip-Hop zum ersten Mal vorne?» – Auflösung beim Wendepunkt |
+| – | Farbwischer | Pink wird beim Scrollen von Neongrün überwischt: «Dann änderte sich der Beat.» |
+| 02 | Der Wandel | Fixierte Heatmap, füllt sich Monat für Monat; Wendepunkt, Hip-Hop-Phase, Pop-Comeback |
+| 03 | Die Jahresuhr | Radiale Heatmap (Ringe = Jahre, Segmente = Monate) – Saisonmuster, Filter |
+| 04 | Die Gesichter | Artists vor/nach dem Wendepunkt, Zeitachse der wichtigsten Artists |
+| 05 | Die Streams | Liniendiagramm mit Rekorden, Duell Jahr für Jahr |
+| 06 | Fazit | Drei Kernaussagen und «Was die Daten nicht sagen» |
+| 07 | Dein Jahr | Zeitmaschine (Regler über alle Monate) und Explorer: Jahr, Monate/Jahreszeiten, Zeitverlauf, Artist-Suche |
 
-Alle Zahlen und Überschriften werden aus den Daten berechnet (`frontend/story.js`). Aussagen wie «2014 war die Schweiz pink» erscheinen nur, wenn die Daten sie stützen. Die Lade- und Scrollzustände sind oben in `story.js` dokumentiert.
+Alle Zahlen und Überschriften werden aus den Daten berechnet (`frontend/story.js`). Aussagen wie «2014 war die Schweiz pink» erscheinen nur, wenn die Daten sie stützen. Lade- und Scrollzustände sind oben in `story.js` dokumentiert.
 
-Farben: Pink = Pop, Neongrün = Hip-Hop / Rap. Die Akzentfarbe der Seite wechselt beim Scrollen mit der Geschichte.
+Farben: Pink = Pop, Neongrün = Hip-Hop / Rap. Die Akzentfarbe der ganzen Seite wechselt mit der Geschichte.
+
+Barrierefreiheit: Skip-Link zum Explorer, Tastaturbedienung (Regler mit Pfeiltasten), sichtbarer Fokus, `prefers-reduced-motion` schaltet Animationen ab.
 
 Ein letzter Monat mit auffällig wenigen Streams (unter 50 % des Medians der sechs Monate davor) wird als «vermutlich unvollständig» schraffiert – aktuell Dezember 2022.
 

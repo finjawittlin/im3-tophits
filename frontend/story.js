@@ -114,7 +114,24 @@ function storyFacts() {
         .map(([artist, list]) => ({ artist, list, months: list.length, genres: countBy(list, r => r.genre) }))
         .sort((a, b) => b.months - a.months || b.list[b.list.length - 1].key.localeCompare(a.list[a.list.length - 1].key));
 
+    // Machtmoment: grösster Anteil eines einzelnen Artists an den Streams seines Genres
+    const power = complete.reduce((a, b) => (b.artistStreams / b.streams > a.artistStreams / a.streams ? b : a));
+    const typicalShare = median(complete.map(r => r.artistStreams / r.streams));
+
+    // Saison: Monatssiege des Herausforderers seit dem Wendepunkt, nach Kalendermonat
+    const seasonRows = turnIdx > 0 ? complete.slice(complete.indexOf(rows[turnIdx])) : [];
+    const seasonGroup = months => {
+        const list = seasonRows.filter(r => months.includes(r.month));
+        return { months, total: list.length, wins: list.filter(r => r.genre === challenger).length };
+    };
+    const season = {
+        early: seasonGroup([1, 2, 3, 4]),
+        summer: seasonGroup([6, 7, 8, 9, 10, 11]),
+        december: seasonGroup([12]),
+    };
+
     return {
+        power, typicalShare, season,
         rows, n, main, challenger, turnIdx, streaks, firstYear, lastYear, calmEnd, comeback, takeoverEnd,
         years, bestChallengerYear, peak, peakMain, peakYear, lastYearStats, decembers, artists,
         wins: Object.fromEntries(countBy(rows, r => r.genre)),
@@ -129,9 +146,13 @@ function initStory() {
     const F = storyFacts();
     renderHero(F);
     renderChapter1(F);
+    renderQuiz(F);
+    renderWipe(F);
     buildScrolly(F);
+    renderClock(F);
     renderChapter3(F);
     renderChapter4(F);
+    renderFinale(F);
     setupScrollEffects();
 }
 
@@ -145,6 +166,10 @@ function renderHero(F) {
         { value: F.wins[F.main] ?? 0, label: `Monate ${F.main} vorne`, color: genreColor(F.main) },
     ];
     if (F.challenger) stats.push({ value: F.wins[F.challenger] ?? 0, label: `Monate ${F.challenger} vorne`, color: genreColor(F.challenger) });
+
+    // Skyline: jeder Balken ein Monat, Höhe = Streams des Spitzengenres, Farbe = Genre
+    $('hero-skyline').innerHTML = skylineHTML(F.rows, 'hero');
+    bindSkylineTooltips($('hero-skyline'), F.rows);
 
     $('hero-stats').innerHTML = stats.map(s => `
         <div class="hero-stat"${s.color ? ` style="--c:${s.color}"` : ''}>
@@ -193,6 +218,20 @@ function renderChapter1(F) {
                 }).join('')}
             </ol>
 
+            ${F.power.genre === F.main && F.power.key < (F.rows[F.turnIdx]?.key ?? '9999') ? `
+            <div class="power reveal" style="--c:${genreColor(F.power.genre)}">
+                <p class="power-kicker">Der Machtmoment</p>
+                <div class="power-body">
+                    <div class="power-ring" style="--p:${(F.power.artistStreams / F.power.streams * 100).toFixed(1)}">
+                        <strong>${pct(F.power.artistStreams, F.power.streams)}</strong>
+                    </div>
+                    <p>Im <b>${label(F.power)}</b> stammte ${F.power.artistStreams / F.power.streams >= .25 ? 'mehr als jeder vierte' : F.power.artistStreams / F.power.streams >= .2 ? 'fast jeder vierte' : 'ein grosser Teil aller'}
+                    ${esc(F.power.genre)}-Stream in den Charts von <b>${esc(F.power.artist)}</b> –
+                    so viel wie bei keinem anderen Artist in einem anderen Monat.
+                    Üblich sind rund ${pct(F.typicalShare, 1)} für den Top Artist eines Genres.</p>
+                </div>
+            </div>` : ''}
+
             <aside class="note reveal">
                 <b>Was heisst «an der Spitze»?</b>
                 Wir summieren pro Monat die Streams aller Songs in den wöchentlichen Spotify-Charts der Schweiz – getrennt nach Genre.
@@ -234,10 +273,11 @@ function buildSteps(F) {
         const t = rows[F.turnIdx];
         steps.push({
             id: 'turn', reveal: F.turnIdx + 1, kicker: 'Der Wendepunkt', turn: true,
-            title: 'Dann änderte sich der Beat.',
-            text: `<b>${label(t)}:</b> Zum ersten Mal seit Beginn unserer Daten liegt ${g(C)} vorne –
+            title: `${label(t)}.`,
+            text: `Zum ersten Mal seit Beginn unserer Daten liegt ${g(C)} vorne –
                    nach ${F.streaks[0].len} Monaten ${esc(F.main)} in Folge.
-                   Top Artist im Genre: <b>${esc(t.artist)}</b> mit ${fmtText(t.artistStreams)} Streams.`,
+                   Top Artist im Genre: <b>${esc(t.artist)}</b> mit ${fmtText(t.artistStreams)} Streams.
+                   <span class="quiz-echo" data-quiz-echo></span>`,
         });
 
         const phase = rows.slice(F.turnIdx, F.takeoverEnd + 1);
@@ -282,20 +322,6 @@ function buildSteps(F) {
         });
     }
 
-    // Dezember-Muster nur zeigen, wenn die Daten es tragen
-    const dec = F.decembers;
-    const decMain = dec.filter(r => r.genre === F.main);
-    if (dec.length >= 3 && decMain.length === dec.length && F.turnIdx > 0) {
-        const decArtists = [...new Set(dec.map(r => r.artist))];
-        steps.push({
-            id: 'december', reveal: F.n, kicker: 'Ein Muster', highlight: r => r.month === 12 && !r.incomplete,
-            title: F.main === 'Pop' ? 'Nur der Dezember bleibt pink.' : `Der Dezember gehört ${esc(F.main)}.`,
-            text: `In allen ${dec.length} vollständig erfassten Dezembern liegt ${g(F.main)} vorne – auch mitten in den ${esc(F.challenger)}-Jahren.
-                   Top Artists dieser Dezember: ${nameList(decArtists)}.
-                   Weihnachtsmusik? Möglich. Unsere Daten zeigen das Muster – den Grund kennen sie nicht.`,
-        });
-    }
-
     return steps;
 }
 
@@ -314,7 +340,7 @@ function buildScrolly(F) {
             const i = index.get(monthKey(y, m));
             html += i === undefined
                 ? '<span class="s-cell missing"></span>'
-                : `<button type="button" class="s-cell${F.rows[i].incomplete ? ' incomplete' : ''}" data-i="${i}" style="--c:${genreColor(F.rows[i].genre)};--d:${(m - 1) * 25}ms" aria-label="${keyLabel(F.rows[i].key)}: ${esc(F.rows[i].genre)}"></button>`;
+                : `<button type="button" tabindex="-1" class="s-cell${F.rows[i].incomplete ? ' incomplete' : ''}" data-i="${i}" style="--c:${genreColor(F.rows[i].genre)};--d:${(m - 1) * 25}ms" aria-label="${keyLabel(F.rows[i].key)}: ${esc(F.rows[i].genre)}"></button>`;
         }
     });
     grid.innerHTML = html;
@@ -390,7 +416,7 @@ function scrollyMix() {
 
 function renderChapter3(F) {
     const rows = F.rows;
-    const el = $('kapitel-3');
+    const el = $('kapitel-4');
     const constant = F.artists[0];
     const cArtists = F.challenger ? countBy(rows.filter(r => r.genre === F.challenger), r => r.artist) : [];
     const face = cArtists[0];
@@ -406,7 +432,7 @@ function renderChapter3(F) {
 
     el.innerHTML = `
         <div class="chapter-inner">
-            <p class="chapter-kicker reveal">Kapitel 3 · Die Artists</p>
+            <p class="chapter-kicker reveal">Kapitel 4 · Die Gesichter</p>
             <h2 class="chapter-title reveal">Die Gesichter hinter dem neuen Sound.</h2>
             <p class="chapter-lead reveal">${F.artists.length} verschiedene Artists waren mindestens einmal Top Artist im meistgehörten Genre eines Monats.
                 Mit dem Wechsel an der Spitze wechseln auch die Namen.</p>
@@ -469,8 +495,8 @@ function renderChapter3(F) {
 
 function renderChapter4(F) {
     const rows = F.rows;
-    const el = $('kapitel-4');
-    el.dataset.mix = '0.5';
+    const el = $('kapitel-5');
+    el.dataset.mix = '1';
     const first = rows[0];
     const factor = F.peak.streams / first.streams;
     const firstMedian = F.years[0].median;
@@ -479,7 +505,7 @@ function renderChapter4(F) {
 
     el.innerHTML = `
         <div class="chapter-inner">
-            <p class="chapter-kicker reveal">Kapitel 4 · Die Streams</p>
+            <p class="chapter-kicker reveal">Kapitel 5 · Die Streams</p>
             <h2 class="chapter-title reveal">Mehr Streams. Neue Spitze.</h2>
             <p class="chapter-lead reveal">
                 Im ${label(first)} kam das meistgehörte Genre auf <b>${fmtText(first.streams)}</b> Chart-Streams.
@@ -600,6 +626,209 @@ function drawStoryLine(F) {
     });
 }
 
+// ---------- Skyline (Hero + Zeitmaschine) ----------
+
+function skylineHTML(rows, cls) {
+    const max = Math.max(...rows.map(r => r.streams));
+    return rows.map((r, i) => `<span class="sky-bar${r.incomplete ? ' incomplete' : ''}" data-i="${i}"
+        style="--c:${genreColor(r.genre)};--h:${Math.max(4, r.streams / max * 100).toFixed(1)}%;--d:${i * 9}ms"></span>`).join('');
+}
+
+function bindSkylineTooltips(el, rows) {
+    el.querySelectorAll('.sky-bar').forEach(bar => {
+        const r = rows[+bar.dataset.i];
+        bar.addEventListener('pointerenter', e => showTooltip(e, monthTooltip(r)));
+        bar.addEventListener('pointermove', moveTooltip);
+        bar.addEventListener('pointerleave', hideTooltip);
+    });
+}
+
+// ---------- Quiz ----------
+
+const quiz = { guess: null };
+
+function renderQuiz(F) {
+    const el = $('quiz');
+    if (F.turnIdx <= 0) { el.remove(); return; }
+    const answer = F.rows[F.turnIdx].year;
+    const years = [...new Set(F.rows.map(r => r.year))];
+
+    el.innerHTML = `
+        <div class="chapter-inner">
+            <p class="chapter-kicker reveal">Kurze Frage, bevor es weitergeht</p>
+            <h2 class="quiz-q reveal">Was schätzt du: In welchem Jahr lag ${g(F.challenger)} zum ersten Mal vorne?</h2>
+            <div class="quiz-options reveal" role="group" aria-label="Jahr wählen">
+                ${years.map(y => `<button type="button" class="quiz-btn" data-year="${y}">${y}</button>`).join('')}
+            </div>
+            <p class="quiz-feedback" id="quiz-feedback" aria-live="polite">Tipp abgeben – die Auflösung kommt beim Scrollen.</p>
+        </div>`;
+
+    el.querySelectorAll('.quiz-btn').forEach(btn => btn.addEventListener('click', () => {
+        const guess = +btn.dataset.year;
+        quiz.guess = guess;
+        el.querySelectorAll('.quiz-btn').forEach(b => {
+            b.classList.toggle('chosen', b === btn);
+            b.setAttribute('aria-pressed', b === btn);
+        });
+        const diff = guess - answer;
+        $('quiz-feedback').textContent = diff === 0 ? 'Gespeichert. Mal sehen, ob du recht hast …' : 'Gespeichert. Scroll weiter – gleich siehst du es.';
+
+        const echo = diff === 0
+            ? `Dein Tipp war ${guess} – <b>Volltreffer.</b>`
+            : `Dein Tipp war ${guess} – ${Math.abs(diff)} ${Math.abs(diff) === 1 ? 'Jahr' : 'Jahre'} zu ${diff < 0 ? 'früh' : 'spät'}.`;
+        document.querySelectorAll('[data-quiz-echo]').forEach(e => (e.innerHTML = echo));
+    }));
+}
+
+// ---------- Farbwischer: Pink wird Neongrün ----------
+
+function renderWipe(F) {
+    const el = $('wipe');
+    if (F.turnIdx <= 0) { el.remove(); return; }
+    const first = F.streaks[0];
+    // Beide Ebenen haben das gleiche Layout: «Dann» bleibt stehen und wechselt nur die Farbe,
+    // auf der neongrünen Ebene erscheint darunter die Fortsetzung.
+    const layer = (cls, color, hidden) => `
+        <div class="wipe-layer ${cls}" style="--c:${color}"${hidden ? ' aria-hidden="true"' : ''}>
+            <p>${first.len} Monate lang lag in den Schweizer Spotify-Charts ${esc(F.main)} vorne.</p>
+            <strong class="w1">Dann</strong>
+            <strong class="w2">änderte sich<br>der Beat.</strong>
+        </div>`;
+    el.innerHTML = `<div class="wipe-sticky">${layer('wipe-a', genreColor(F.main), false)}${layer('wipe-b', genreColor(F.challenger), true)}</div>`;
+}
+
+// ---------- Die Jahresuhr: radiale Heatmap ----------
+
+function renderClock(F) {
+    const el = $('kapitel-3');
+    const rows = F.rows;
+    const years = [...new Set(rows.map(r => r.year))];
+    const S = F.season;
+    const C = F.challenger;
+    const size = 640, cx = size / 2, cy = size / 2, r0 = 78, r1 = 292;
+    const ring = (r1 - r0) / years.length;
+    const gap = .012;
+
+    const arc = (ra, rb, a0, a1) => {
+        const pt = (r, a) => `${(cx + r * Math.sin(a)).toFixed(2)},${(cy - r * Math.cos(a)).toFixed(2)}`;
+        return `M${pt(rb, a0)}A${rb},${rb} 0 0 1 ${pt(rb, a1)}L${pt(ra, a1)}A${ra},${ra} 0 0 0 ${pt(ra, a0)}Z`;
+    };
+
+    let segs = '';
+    rows.forEach((r, i) => {
+        const yi = years.indexOf(r.year);
+        const a0 = (r.month - 1) / 12 * 2 * Math.PI + gap, a1 = r.month / 12 * 2 * Math.PI - gap;
+        const ra = r0 + yi * ring + 1.2, rb = r0 + (yi + 1) * ring - 1.2;
+        segs += `<path class="clock-seg${r.incomplete ? ' incomplete' : ''}" data-i="${i}" data-genre="${esc(r.genre)}" d="${arc(ra, rb, a0, a1)}"
+            fill="${genreColor(r.genre)}" style="--d:${yi * 90 + (r.month - 1) * 12}ms"/>`;
+    });
+    const labels = MONTHS_SHORT.map((m, i) => {
+        const a = (i + .5) / 12 * 2 * Math.PI, rr = r1 + 22;
+        return `<text class="clock-month${i === 11 ? ' dec' : ''}" x="${(cx + rr * Math.sin(a)).toFixed(1)}" y="${(cy - rr * Math.cos(a) + 5).toFixed(1)}" text-anchor="middle">${m}</text>`;
+    }).join('');
+    const yearTicks = [0, years.length - 1].map(yi =>
+        `<text class="clock-year" x="${cx + 6}" y="${(cy - (r0 + (yi + .5) * ring) + 4).toFixed(1)}">${years[yi]}</text>`).join('');
+
+    const pctOf = g => Math.round(g.wins / (g.total || 1) * 100);
+    const hasSeason = C && S.summer.total >= 6;
+
+    el.dataset.mix = '1';
+    el.innerHTML = `
+        <div class="chapter-inner clock-layout">
+            <div class="clock-text">
+                <p class="chapter-kicker reveal">Kapitel 3 · Die Jahresuhr</p>
+                <h2 class="chapter-title reveal">${hasSeason && pctOf(S.summer) >= 70 && S.december.wins === 0
+                    ? `${esc(C)} im Sommer. ${esc(F.main)} im Dezember.` : 'Hat Musik Jahreszeiten?'}</h2>
+                <p class="chapter-lead reveal">Die gleiche Heatmap, im Kreis gelegt: Jeder Ring ist ein Jahr – innen ${years[0]}, aussen ${years[years.length - 1]}.
+                    Jedes Stück ist ein Monat. So wird sichtbar, ob sich Muster im Jahreslauf wiederholen.</p>
+                ${hasSeason ? `
+                <div class="season-stats">
+                    <div class="season reveal" style="--c:${genreColor(C)}"><strong data-count="${S.summer.wins}">${S.summer.wins}</strong><span>von ${S.summer.total}</span>
+                        <p>Monaten zwischen <b>Juni und November</b> gewinnt ${esc(C)} seit dem Wendepunkt.</p></div>
+                    <div class="season reveal" style="--c:${genreColor(C)};--d:120ms"><strong data-count="${S.early.wins}">${S.early.wins}</strong><span>von ${S.early.total}</span>
+                        <p>sind es zwischen <b>Januar und April</b>.</p></div>
+                    <div class="season reveal" style="--c:${genreColor(F.main)};--d:240ms"><strong data-count="${S.december.wins}">${S.december.wins}</strong><span>von ${S.december.total}</span>
+                        <p><b>Dezembern</b> gehen an ${esc(C)}. In allen ${F.decembers.length} vollständig erfassten Dezembern liegt ${esc(F.main)} vorne.</p></div>
+                </div>
+                <p class="muted-text reveal">Ein Muster, kein Naturgesetz: Es sind nur ${years.length} Jahre. Warum Pop im Dezember gewinnt – etwa wegen Weihnachtsmusik –, zeigen unsere Daten nicht.
+                    Unter den Dezember-Top-Artists finden sich ${nameList([...new Set(F.decembers.map(r => r.artist))].slice(0, 5))}.</p>` : ''}
+                <div class="clock-filter reveal" role="group" aria-label="Genre hervorheben">
+                    <button type="button" class="chip-btn active" data-clock="all" aria-pressed="true">Alle</button>
+                    ${[F.main, C].filter(Boolean).map(gn => `<button type="button" class="chip-btn" data-clock="${esc(gn)}" aria-pressed="false">${chip(gn)}${esc(gn)}</button>`).join('')}
+                    <button type="button" class="chip-btn" data-clock="dec" aria-pressed="false">Nur Dezember</button>
+                </div>
+            </div>
+            <figure class="clock reveal">
+                <svg viewBox="-30 -30 ${size + 60} ${size + 60}" role="img" aria-label="Radiale Heatmap: ${rows.length} Monate, Ringe = Jahre, Segmente = Kalendermonate">
+                    ${segs}${labels}${yearTicks}
+                    <circle cx="${cx}" cy="${cy}" r="${r0 - 6}" class="clock-hole"/>
+                    <text id="clock-center-a" class="clock-center-a" x="${cx}" y="${cy - 4}" text-anchor="middle">${rows.length}</text>
+                    <text id="clock-center-b" class="clock-center-b" x="${cx}" y="${cy + 18}" text-anchor="middle">Monate</text>
+                </svg>
+            </figure>
+        </div>`;
+
+    const centerA = $('clock-center-a'), centerB = $('clock-center-b');
+    el.querySelectorAll('.clock-seg').forEach(seg => {
+        const r = rows[+seg.dataset.i];
+        seg.addEventListener('pointerenter', e => {
+            showTooltip(e, monthTooltip(r));
+            centerA.textContent = MONTHS_SHORT[r.month - 1];
+            centerB.textContent = r.year;
+        });
+        seg.addEventListener('pointermove', moveTooltip);
+        seg.addEventListener('pointerleave', () => { hideTooltip(); centerA.textContent = rows.length; centerB.textContent = 'Monate'; });
+    });
+    el.querySelectorAll('[data-clock]').forEach(btn => btn.addEventListener('click', () => {
+        const f = btn.dataset.clock;
+        el.querySelectorAll('[data-clock]').forEach(b => { b.classList.toggle('active', b === btn); b.setAttribute('aria-pressed', b === btn); });
+        el.querySelectorAll('.clock-seg').forEach(seg => {
+            const r = rows[+seg.dataset.i];
+            const keep = f === 'all' || (f === 'dec' ? r.month === 12 : r.genre === f);
+            seg.classList.toggle('dim', !keep);
+        });
+    }));
+}
+
+// ---------- Fazit ----------
+
+function renderFinale(F) {
+    const el = $('kapitel-6');
+    el.dataset.mix = '1';
+    const rows = F.rows;
+    const takeaways = [];
+    if (F.turnIdx > 0) {
+        const since = rows.slice(F.turnIdx);
+        const sinceC = since.filter(r => r.genre === F.challenger).length;
+        takeaways.push({ c: F.main, big: `${F.streaks[0].len}`, text: `Monate lag ${esc(F.main)} ununterbrochen vorne – bis im ${label(rows[F.turnIdx])} ${esc(F.challenger)} übernahm.` });
+        takeaways.push({ c: F.challenger, big: `${sinceC}/${since.length}`, text: `Monate gewinnt ${esc(F.challenger)} seit dem Wendepunkt. Über alle ${F.n} Monate liegt aber ${esc(F.main)} vorne: ${F.wins[F.main]} zu ${F.wins[F.challenger]}.` });
+        if (F.season.summer.total >= 6) takeaways.push({ c: F.challenger, big: `${Math.round(F.season.summer.wins / F.season.summer.total * 100)} %`, text: `der Sommer- und Herbstmonate gehen seit ${rows[F.turnIdx].year} an ${esc(F.challenger)}. Der Dezember bleibt ${esc(F.main)}.` });
+    } else {
+        takeaways.push({ c: F.main, big: `${F.n}`, text: `Monate lag ${esc(F.main)} vorne.` });
+    }
+
+    el.innerHTML = `
+        <div class="chapter-inner">
+            <p class="chapter-kicker reveal">Kapitel 6 · Fazit</p>
+            <h2 class="chapter-title reveal">Die Schweiz hört nicht mehr nur Pink.</h2>
+            <ol class="takeaways">
+                ${takeaways.map((t, i) => `<li class="reveal" style="--c:${genreColor(t.c)};--d:${i * 120}ms">
+                    <strong>${t.big}</strong><p>${t.text}</p></li>`).join('')}
+            </ol>
+            <div class="limits reveal">
+                <h3>Was die Daten nicht sagen</h3>
+                <ul>
+                    <li><b>Keine Marktanteile.</b> Wir sehen nur Songs, die es in die wöchentlichen Spotify-Charts der Schweiz geschafft haben – nicht alles, was gestreamt wurde.</li>
+                    <li><b>Nur Spotify.</b> Radio, YouTube, Apple Music oder Konzerte fehlen. «Die Schweiz» heisst hier: Spotify-Nutzer:innen in der Schweiz.</li>
+                    <li><b>Genre = Artist-Genre.</b> Spotify ordnet Genres Artists zu, nicht einzelnen Songs. Bei mehreren Artists zählt der erste.</li>
+                    <li><b>Mehr Streams heisst nicht beliebter.</b> Die Streams wachsen vor allem, weil Spotify gewachsen ist.</li>
+                    ${F.incomplete.length ? `<li><b>${F.incomplete.map(label).join(', ')}</b> ist vermutlich unvollständig erfasst und schraffiert markiert.</li>` : ''}
+                </ul>
+            </div>
+            <a class="cta reveal" href="#kapitel-7">Jetzt selbst entdecken <span aria-hidden="true">→</span></a>
+        </div>`;
+}
+
 // ---------- Scroll-Effekte ----------
 
 function setupScrollEffects() {
@@ -617,7 +846,7 @@ function setupScrollEffects() {
     }, { threshold: .15 }) : null;
 
     if (io && !reduceMotion) document.querySelectorAll('[data-count]').forEach(el => (el.textContent = '0'));
-    document.querySelectorAll('.reveal, .story-chart, .lanes, [data-count]').forEach(el => {
+    document.querySelectorAll('.reveal, .story-chart, .lanes, .sky, [data-count]').forEach(el => {
         if (io) io.observe(el); else el.classList.add('is-visible');
     });
 
@@ -625,6 +854,7 @@ function setupScrollEffects() {
     const chapters = [...document.querySelectorAll('[data-chapter-section]')];
     const navLinks = [...document.querySelectorAll('#chapter-nav a')];
     const scrollyEl = $('kapitel-2');
+    const wipeEl = document.getElementById('wipe');
     let ticking = false;
 
     function update() {
@@ -642,12 +872,21 @@ function setupScrollEffects() {
         const to = scrolly.steps[active].reveal;
         renderScrolly(Math.round(from + (to - from) * progress), active);
 
+        // Farbwischer: Fortschritt 0..1 über die Höhe der Sektion
+        let wipeMix = null;
+        if (wipeEl) {
+            const r = wipeEl.getBoundingClientRect();
+            const p = reduceMotion ? (r.top < -r.height / 3 ? 1 : 0) : clamp(-r.top / (r.height - vh), 0, 1);
+            wipeEl.style.setProperty('--wipe', p.toFixed(3));
+            if (r.top <= vh / 2 && r.bottom > vh / 2) wipeMix = p > .5 ? 1 : 0;
+        }
+
         // Kapitel in der Bildschirmmitte -> Farbe + Navigation
         const current = chapters.find(c => {
             const r = c.getBoundingClientRect();
             return r.top <= vh / 2 && r.bottom > vh / 2;
         });
-        const mix = current === scrollyEl ? scrollyMix() : +(current?.dataset.mix ?? 0);
+        const mix = wipeMix ?? (current === scrollyEl ? scrollyMix() : +(current?.dataset.mix ?? 0));
         // Klar Pink oder Neongrün (Zwischentöne wirken schlammig); der Wechsel wird per CSS animiert
         root.style.setProperty('--story-mix', mix >= .5 ? '1' : '0');
         navLinks.forEach(a => a.classList.toggle('active', !!current && (current.id === a.dataset.chapter || !!current.querySelector('#' + a.dataset.chapter))));

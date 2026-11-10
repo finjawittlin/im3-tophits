@@ -3,32 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Was hört die Schweiz? – Die Chartjägerinnen</title>
-    <meta name="description" content="Eine Datenreportage: Wie sich die Schweizer Spotify-Charts zwischen 2014 und 2022 von Pop zu Hip-Hop/Rap verändert haben.">
+    <title>Pink gegen Neon – Was hört die Schweiz?</title>
+    <meta name="description" content="Eine interaktive Datenreportage: Wie Hip-Hop/Rap in den Schweizer Spotify-Charts 2014–2022 den Pop herausforderte – Monat für Monat.">
+    <meta name="theme-color" content="#0d0d0d">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="story.js" defer></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
+<a class="skip-link" href="#kapitel-7">Direkt zum Daten-Explorer</a>
 
 <!-- Lesefortschritt (Farbe folgt der Geschichte: Pink -> Neongrün) -->
 <div class="progress" aria-hidden="true"><div id="progress-bar"></div></div>
 
 <!-- Kapitel-Navigation -->
 <nav class="chapter-nav" id="chapter-nav" aria-label="Kapitel" hidden>
-    <a href="#kapitel-1" data-chapter="kapitel-1"><span>Pink</span></a>
-    <a href="#kapitel-2" data-chapter="kapitel-2"><span>Der Wandel</span></a>
-    <a href="#kapitel-3" data-chapter="kapitel-3"><span>Die Artists</span></a>
-    <a href="#kapitel-4" data-chapter="kapitel-4"><span>Die Streams</span></a>
-    <a href="#kapitel-5" data-chapter="kapitel-5"><span>Dein Jahr</span></a>
+    <a href="#kapitel-1" data-chapter="kapitel-1"><span>01 Pink</span></a>
+    <a href="#kapitel-2" data-chapter="kapitel-2"><span>02 Der Wandel</span></a>
+    <a href="#kapitel-3" data-chapter="kapitel-3"><span>03 Die Jahresuhr</span></a>
+    <a href="#kapitel-4" data-chapter="kapitel-4"><span>04 Die Gesichter</span></a>
+    <a href="#kapitel-5" data-chapter="kapitel-5"><span>05 Die Streams</span></a>
+    <a href="#kapitel-6" data-chapter="kapitel-6"><span>06 Fazit</span></a>
+    <a href="#kapitel-7" data-chapter="kapitel-7"><span>07 Dein Jahr</span></a>
 </nav>
 
 <header class="hero" id="hero" data-chapter-section data-mix="0">
     <div class="hero-inner">
         <p class="kicker">Die Chartjägerinnen · Eine Datenreportage über Spotify Schweiz</p>
         <h1>Was hört<br>die <span class="h1-mix">Schweiz?</span></h1>
-        <p class="lead">Wie sich unser Musikgeschmack verändert hat – erzählt in <span id="hero-months">108</span> Monaten Schweizer Spotify-Charts.</p>
+        <p class="lead">Pink gegen Neon: Wie sich der Sound der Schweizer Spotify-Charts verändert hat – erzählt in <span id="hero-months">108</span> Monaten.</p>
 
         <!-- Lade- und Fehlerzustand -->
         <div id="status" class="status" role="status" aria-live="polite">
@@ -37,28 +43,38 @@
         </div>
 
         <div id="hero-stats" class="hero-stats" hidden></div>
-        <a href="#kapitel-1" class="scroll-cue" id="scroll-cue" hidden>Scroll dich durch die Geschichte <span aria-hidden="true">↓</span></a>
     </div>
-    <div class="ticker" aria-hidden="true">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</div>
+
+    <figure class="sky hero-sky" aria-label="Alle Monate als Balken: Farbe zeigt das Genre an der Spitze, Höhe die Streams">
+        <div id="hero-skyline" class="skyline"></div>
+        <figcaption>Jeder Balken ein Monat · Farbe = Genre an der Spitze · Höhe = Streams</figcaption>
+    </figure>
+    <a href="#kapitel-1" class="scroll-cue" id="scroll-cue" hidden>Scroll dich durch die Geschichte <span aria-hidden="true">↓</span></a>
 </header>
 
 <main>
     <div id="story" hidden>
-        <!-- Kapitel 1 -->
-        <section class="chapter" id="kapitel-1" data-chapter-section data-mix="0"></section>
+        <div class="marquee" aria-hidden="true"><span>POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ </span><span>POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ </span></div>
 
-        <!-- Kapitel 2: fixierte Heatmap mit scrollenden Textschritten -->
-        <section class="chapter scrolly" id="kapitel-2" data-chapter-section aria-label="Kapitel 2: Der Sound verändert sich">
+        <!-- 01 -->
+        <section class="chapter" id="kapitel-1" data-chapter-section data-mix="0" data-num="01"></section>
+
+        <!-- Quiz + Farbwischer -->
+        <section class="chapter quiz" id="quiz" data-chapter-section data-mix="0"></section>
+        <section class="wipe" id="wipe" aria-label="Übergang: Dann änderte sich der Beat"></section>
+
+        <!-- 02: fixierte Heatmap mit scrollenden Textschritten -->
+        <section class="chapter scrolly" id="kapitel-2" data-chapter-section data-num="02" aria-label="Kapitel 2: Der Wandel">
             <div class="scrolly-head chapter-inner">
                 <p class="chapter-kicker reveal">Kapitel 2 · Der Wandel</p>
-                <h2 class="chapter-title reveal">Der Sound verändert sich.</h2>
+                <h2 class="chapter-title reveal">Monat für Monat.</h2>
             </div>
             <div class="scrolly-grid">
                 <div class="stage">
                     <div class="stage-inner">
                         <div class="stage-head">
                             <div class="stage-date"><strong id="stage-year"></strong><span id="stage-month"></span></div>
-                            <div id="stage-tally" class="tally" aria-live="off"></div>
+                            <div id="stage-tally" class="tally" aria-hidden="true"></div>
                         </div>
                         <div id="story-heatmap" class="heatmap story-heatmap"></div>
                     </div>
@@ -67,18 +83,34 @@
             </div>
         </section>
 
-        <!-- Kapitel 3 + 4 -->
-        <section class="chapter" id="kapitel-3" data-chapter-section></section>
-        <section class="chapter" id="kapitel-4" data-chapter-section></section>
+        <!-- 03–06 -->
+        <section class="chapter" id="kapitel-3" data-chapter-section data-num="03"></section>
+        <div class="marquee lime" aria-hidden="true"><span>HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ </span><span>HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ </span></div>
+        <section class="chapter" id="kapitel-4" data-chapter-section data-num="04"></section>
+        <section class="chapter" id="kapitel-5" data-chapter-section data-num="05"></section>
+        <section class="chapter finale" id="kapitel-6" data-chapter-section data-num="06"></section>
     </div>
 
-    <!-- Kapitel 5: selbst entdecken -->
-    <section id="app" class="explore" data-chapter-section data-mix="0.5" hidden>
-        <div id="kapitel-5" class="chapter-inner explore-head">
-            <p class="chapter-kicker">Kapitel 5 · Jetzt bist du dran</p>
+    <!-- 07: selbst entdecken -->
+    <section id="app" class="explore" data-chapter-section data-mix="1" hidden>
+        <div id="kapitel-7" class="chapter-inner explore-head">
+            <p class="chapter-kicker">Kapitel 7 · Jetzt bist du dran</p>
             <h2 class="chapter-title">Und wie klang dein Jahr?</h2>
-            <p class="chapter-lead">Wähle ein Jahr, wechsle zwischen Monaten und Jahreszeiten, suche deine Artists – und finde eigene Muster in den Charts.</p>
+            <p class="chapter-lead">Reise mit der Zeitmaschine durch alle Monate, vergleiche Jahre und Jahreszeiten, such deine Artists – und finde eigene Muster.</p>
         </div>
+
+        <!-- Zeitmaschine -->
+        <section class="card dark machine" aria-labelledby="machine-title">
+            <h2 id="machine-title">Die Zeitmaschine</h2>
+            <p class="sub">Zieh den Regler oder klick auf einen Balken. Mit den Pfeiltasten geht es Monat für Monat.</p>
+            <div id="machine-card" class="machine-card" aria-live="polite"></div>
+            <div class="scrubber">
+                <div id="scrubber-bars" class="skyline small"></div>
+                <input type="range" id="scrubber" min="0" max="107" step="1" value="107" aria-label="Monat wählen">
+            </div>
+            <div id="scrubber-axis" class="scrubber-axis" aria-hidden="true"></div>
+            <div id="legend" class="legend"></div>
+        </section>
 
         <!-- Steuerung -->
         <nav class="controls" aria-label="Filter">
@@ -116,21 +148,6 @@
             </div>
         </section>
 
-        <!-- Alle Monate auf einen Blick -->
-        <section class="card dark">
-            <h2>Alle Monate auf einen Blick</h2>
-            <p class="sub">Jedes Feld ist ein Monat, die Farbe zeigt das meistgehörte Genre. Klicke auf ein Feld, um den Monat oben anzuzeigen.</p>
-            <div id="heatmap" class="heatmap"></div>
-            <div id="legend" class="legend"></div>
-        </section>
-
-        <!-- Saisonale Muster -->
-        <section class="card dark">
-            <h2>Gibt es monatliche Muster?</h2>
-            <p class="sub">Wie oft war welches Genre in einem Kalendermonat an der Spitze – über alle Jahre gezählt.</p>
-            <div id="pattern" class="pattern"></div>
-        </section>
-
         <!-- Zeitverlauf -->
         <section class="card dark">
             <h2 id="timeline-title">Streams im Zeitverlauf</h2>
@@ -162,8 +179,10 @@
     </section>
 </main>
 
-<div id="tooltip" class="tooltip" hidden></div>
-<script src="story.js"></script>
-<script src="script.js"></script>
+<footer class="footer">
+    <p><span class="h1-mix">Pink gegen Neon.</span> Eine Datenreportage der Chartjägerinnen · IM3 · Daten: Spotify-Charts Schweiz (Kaggle, jfreyberg)</p>
+</footer>
+
+<div id="tooltip" class="tooltip" role="tooltip" hidden></div>
 </body>
 </html>
