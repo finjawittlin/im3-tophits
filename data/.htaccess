@@ -1,0 +1,2 @@
+# Rohdaten nicht öffentlich ausliefern (PHP liest sie direkt vom Dateisystem)
+Require all denied

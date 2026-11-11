@@ -1,43 +1,179 @@
-<?php
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Die Chartjägerinnen – Was hört die Schweiz?</title>
+    <title>Pink gegen Neon – Was hört die Schweiz?</title>
+    <meta name="description" content="Eine interaktive Datenreportage: Wie Hip-Hop/Rap in den Schweizer Spotify-Charts 2014–2022 den Pop herausforderte – Monat für Monat.">
+    <meta name="theme-color" content="#0d0d0d">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="story.js" defer></script>
+    <script src="script.js" defer></script>
+    <script src="guide.js" defer></script>
 </head>
 <body>
-<header>
-    <p class="kicker">Die Chartjägerinnen · Spotify Schweiz</p>
-    <h1>Was hört<br>die Schweiz?</h1>
-    <p class="lead">Wie verändert sich die Beliebtheit verschiedener Musikgenres auf Spotify in der Schweiz im Verlaufe eines Jahres – und welche monatlichen Muster lassen sich aufweisen?</p>
-    <div class="controls">
-        <label>Jahr <select id="year-select"></select></label>
-        <div class="toggle" role="group" aria-label="Ansicht">
-            <button data-mode="month" class="active">Monate</button>
-            <button data-mode="season">Jahreszeiten</button>
+<a class="skip-link" href="#kapitel-7">Direkt zum Daten-Explorer</a>
+
+<!-- Lesefortschritt (Farbe folgt der Geschichte: Pink -> Neongrün) -->
+<div class="progress" aria-hidden="true"><div id="progress-bar"></div></div>
+
+
+<header class="hero" id="hero" data-chapter-section data-mix="0">
+    <div class="hero-inner">
+        <p class="kicker">Die Chartjägerinnen · Eine Datenreportage über Spotify Schweiz</p>
+        <h1>Was hört<br>die <span class="h1-mix">Schweiz?</span></h1>
+        <p class="lead">Pink gegen Neon: Wie sich der Sound der Schweizer Spotify-Charts verändert hat – erzählt in <span id="hero-months">108</span> Monaten.</p>
+
+        <!-- Lade- und Fehlerzustand -->
+        <div id="status" class="status" role="status" aria-live="polite">
+            <div class="loader"><span></span><span></span><span></span></div>
+            <p>Lade Chartdaten aus der Datenbank …</p>
         </div>
+
+        <div id="hero-stats" class="hero-stats" hidden></div>
     </div>
-    <div class="ticker" aria-hidden="true">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</div>
+
+    <figure class="sky hero-sky" aria-label="Alle Monate als Balken: Farbe zeigt das Genre an der Spitze, Höhe die Streams">
+        <div id="hero-skyline" class="skyline"></div>
+        <figcaption>Jeder Balken ein Monat · Farbe = Genre an der Spitze · Höhe = Streams</figcaption>
+    </figure>
+    <a href="#kapitel-1" class="scroll-cue" id="scroll-cue" hidden>Drück Play: einfach scrollen <span aria-hidden="true">↓</span></a>
 </header>
 
 <main>
-    <section class="card dark">
-        <h2>Meistgehörtes Genre pro <span id="mode-label">Monat</span></h2>
-        <div id="chart"></div>
-        <p class="hint" id="hint"></p>
-    </section>
+    <div id="story" hidden>
+        <div class="marquee" aria-hidden="true"><span>POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ </span><span>POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ </span></div>
 
-    <section class="card light">
-        <h2>Top 10 Genres · <span id="rank-title"></span></h2>
-        <ol id="ranking"></ol>
+        <!-- 01 -->
+        <section class="chapter" id="kapitel-1" data-chapter-section data-mix="0" data-num="01"></section>
+
+        <!-- Quiz + Farbwischer -->
+        <section class="chapter quiz" id="quiz" data-chapter-section data-mix="0"></section>
+        <section class="wipe" id="wipe" aria-label="Übergang: Dann änderte sich der Beat"></section>
+
+        <!-- 02: fixierte Heatmap mit scrollenden Textschritten -->
+        <section class="chapter scrolly" id="kapitel-2" data-chapter-section data-num="02" aria-label="Kapitel 2: Der Wandel">
+            <div class="scrolly-head chapter-inner">
+                <p class="chapter-kicker reveal">Kapitel 2 · Der Wandel</p>
+                <h2 class="chapter-title reveal">Monat für Monat.</h2>
+            </div>
+            <div class="scrolly-grid">
+                <div class="stage">
+                    <div class="stage-inner">
+                        <div class="stage-head">
+                            <div class="stage-date"><strong id="stage-year"></strong><span id="stage-month"></span></div>
+                            <div id="stage-tally" class="tally" aria-hidden="true"></div>
+                        </div>
+                        <div id="story-heatmap" class="heatmap story-heatmap"></div>
+                    </div>
+                </div>
+                <div id="steps" class="steps"></div>
+            </div>
+        </section>
+
+        <!-- 03–06 -->
+        <section class="chapter" id="kapitel-3" data-chapter-section data-num="03"></section>
+        <div class="marquee lime" aria-hidden="true"><span>HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ </span><span>HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ HIP-HOP +++ POP +++ </span></div>
+        <section class="chapter" id="kapitel-4" data-chapter-section data-num="04"></section>
+        <section class="chapter" id="kapitel-5" data-chapter-section data-num="05"></section>
+        <section class="chapter finale" id="kapitel-6" data-chapter-section data-num="06"></section>
+    </div>
+
+    <!-- 07: selbst entdecken -->
+    <section id="app" class="explore" data-chapter-section data-mix="1" hidden>
+        <div id="kapitel-7" class="chapter-inner explore-head">
+            <p class="chapter-kicker">Kapitel 7 · Jetzt bist du dran</p>
+            <h2 class="chapter-title">Und wie klang dein Jahr?</h2>
+            <p class="chapter-lead">Reise mit der Zeitmaschine durch alle Monate, vergleiche Jahre und Jahreszeiten, such deine Artists – und finde eigene Muster.</p>
+        </div>
+
+        <!-- Zeitmaschine -->
+        <section class="card dark machine" aria-labelledby="machine-title">
+            <h2 id="machine-title">Die Zeitmaschine</h2>
+            <p class="sub">Zieh den Regler oder klick auf einen Balken. Mit den Pfeiltasten geht es Monat für Monat.</p>
+            <div id="machine-card" class="machine-card" aria-live="polite"></div>
+            <div class="scrubber">
+                <div id="scrubber-bars" class="skyline small"></div>
+                <input type="range" id="scrubber" min="0" max="107" step="1" value="107" aria-label="Monat wählen">
+            </div>
+            <div id="scrubber-axis" class="scrubber-axis" aria-hidden="true"></div>
+            <div id="legend" class="legend"></div>
+        </section>
+
+        <!-- Steuerung -->
+        <nav class="controls" aria-label="Filter">
+            <label>Jahr <select id="year-select"></select></label>
+            <div class="toggle" role="group" aria-label="Ansicht">
+                <button type="button" data-mode="month" class="active" aria-pressed="true">Monate</button>
+                <button type="button" data-mode="season" aria-pressed="false">Jahreszeiten</button>
+            </div>
+            <div class="toggle" id="metric-toggle" role="group" aria-label="Messgrösse" hidden>
+                <button type="button" data-metric="total" class="active" aria-pressed="true">Summe</button>
+                <button type="button" data-metric="weekly" aria-pressed="false">Ø pro Woche</button>
+            </div>
+        </nav>
+
+        <!-- Kennzahlen des Jahres -->
+        <section aria-labelledby="kpi-title">
+            <h2 id="kpi-title" class="section-title"><span id="kpi-year"></span> in Zahlen</h2>
+            <div id="kpis" class="kpis"></div>
+        </section>
+
+        <!-- Hauptdiagramm -->
+        <section class="card dark">
+            <h2>Meistgehörtes Genre pro <span id="mode-label">Monat</span></h2>
+            <div id="chart"></div>
+            <p class="hint" id="hint"></p>
+        </section>
+
+        <!-- Details zum gewählten Zeitraum -->
+        <section class="card light" aria-live="polite">
+            <h2><span id="detail-kicker">Im Fokus</span> · <span id="rank-title"></span></h2>
+            <div id="detail" class="detail"></div>
+            <div id="ranking-wrap" hidden>
+                <h3>Alle Genres im Vergleich</h3>
+                <ol id="ranking"></ol>
+            </div>
+        </section>
+
+        <!-- Zeitverlauf -->
+        <section class="card dark">
+            <h2 id="timeline-title">Streams im Zeitverlauf</h2>
+            <p class="sub" id="timeline-sub"></p>
+            <div id="timeline-legend" class="legend"></div>
+            <div class="timeline-scroll">
+                <div id="timeline" class="timeline"></div>
+            </div>
+        </section>
+
+        <!-- Top Artists -->
+        <section class="card light">
+            <h2>Die Top Artists</h2>
+            <p class="sub" id="artists-sub"></p>
+            <div class="artist-tools">
+                <input type="search" id="artist-search" placeholder="Artist suchen …" aria-label="Artist suchen">
+                <div id="artist-genres" class="chips" role="group" aria-label="Nach Genre filtern"></div>
+            </div>
+            <p id="artist-highlight" class="highlight-note" hidden></p>
+            <ol id="artists" class="artists"></ol>
+            <button type="button" id="artists-more" class="more"></button>
+        </section>
+
+        <!-- Methode -->
+        <section class="method">
+            <h2 class="section-title">Daten &amp; Methode</h2>
+            <ul id="method"></ul>
+        </section>
     </section>
-    <p id="status"></p>
 </main>
-<script src="script.js"></script>
+
+<footer class="footer">
+    <p><span class="h1-mix">Pink gegen Neon.</span> Eine Datenreportage der Chartjägerinnen · IM3 · Daten: Spotify-Charts Schweiz (Kaggle, jfreyberg)</p>
+</footer>
+
+<div id="tooltip" class="tooltip" role="tooltip" hidden></div>
 </body>
-</html>⁄
+</html>
