@@ -174,15 +174,9 @@ button.legend-item.off { opacity: .35; text-decoration: line-through; }
    STORY
    ============================================================ */
 
-/* Lesefortschritt + Kapitel-Navigation */
+/* Lesefortschritt */
 .progress { position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 30; background: rgba(255,255,255,.06); }
 #progress-bar { height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); }
-.chapter-nav { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); z-index: 25; display: flex; flex-direction: column; gap: 14px; }
-.chapter-nav a { position: relative; display: block; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--cream); opacity: .5; transition: opacity .3s, background .3s, transform .3s; }
-.chapter-nav a span { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); white-space: nowrap; font-size: .7rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .08em; opacity: 0; pointer-events: none; transition: opacity .2s; color: var(--cream); }
-.chapter-nav a:hover span, .chapter-nav a:focus-visible span { opacity: 1; background: var(--black); padding: .2rem .5rem; border-radius: 6px; }
-.chapter-nav a.active { opacity: 1; background: var(--accent); border-color: var(--accent); transform: scale(1.25); }
 
 /* Hero */
 .hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 3rem 1rem 1.5rem; position: relative; overflow: hidden; }
@@ -473,9 +467,122 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 40; pointer-event
 .footer { padding: 2rem 1rem 3rem; text-align: center; font-size: .75rem; opacity: .75; border-top: 1px solid #222; }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 1240px) {
-    .chapter-nav { display: none; }
-}
+/* ============================================================
+   DAS MIXTAPE (Begleiter) & JAHRESZEITEN-EFFEKTE
+   ============================================================ */
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Jahreszeiten-Effekte: eine Leinwand über allem, gezeichnet wird nur im ausgelösten Bereich */
+.season-fx { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 15; pointer-events: none; }
+[data-season-fx] { transition: box-shadow .4s, transform .4s; }
+.season[data-season-fx] { cursor: default; border-radius: 16px; outline-offset: 4px; padding-bottom: 1.1rem; }
+.season[data-season-fx].fx-on, .takeaways li.fx-on { transform: translateY(-3px); }
+
+/* Mixtape-Player */
+.mixtape { --side: var(--pink); position: fixed; left: 16px; bottom: 16px; z-index: 35; width: min(410px, calc(100vw - 32px));
+    font-size: .74rem; opacity: 0; transform: translateY(30px); transition: opacity .6s, transform .7s cubic-bezier(.2,.9,.25,1.1); }
+.mixtape.in { opacity: 1; transform: none; }
+.mixtape[data-side="B"] { --side: var(--lime); }
+.mt-player { position: relative; display: flex; gap: .8rem; align-items: center; padding: .6rem .7rem .6rem .6rem;
+    background: rgba(17,17,17,.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 2px solid #2c2c2c; border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.45), 4px 4px 0 var(--side);
+    transition: box-shadow .6s; }
+.mt-cassette { flex: none; width: 112px; padding: 0; border: 0; background: none; cursor: pointer; position: relative;
+    perspective: 400px; border-radius: 10px; }
+.mt-cassette svg { display: block; width: 100%; height: auto; overflow: visible; transition: transform .35s cubic-bezier(.3,1.5,.5,1); }
+.mt-cassette:hover svg { transform: rotate(-4deg) translateY(-3px); }
+.mt-cassette.flipping svg { animation: flip .52s ease-in-out; }
+@keyframes flip { 50% { transform: scaleX(0) rotate(4deg); } }
+.c-body { fill: #1f1f1f; stroke: #3a3a3a; stroke-width: 1.5; }
+.c-screw { fill: #3a3a3a; }
+.c-label { fill: var(--side); transition: fill .3s .25s; }
+.c-side { font-family: var(--display); font-size: 17px; fill: var(--black); }
+.c-title { font-family: var(--mono); font-size: 7px; font-weight: 700; letter-spacing: .08em; fill: var(--black); }
+.c-rule { stroke: rgba(0,0,0,.35); stroke-width: .8; }
+.c-window { fill: #0d0d0d; stroke: rgba(0,0,0,.4); }
+.c-tape { fill: #3b2b22; }
+.c-reel circle { fill: var(--cream); }
+.c-reel path { stroke: #0d0d0d; stroke-width: 1.6; }
+.c-foot { fill: #181818; stroke: #333; stroke-width: 1.2; }
+.c-hole { fill: #0d0d0d; }
+.mt-notes { position: absolute; right: -6px; top: -8px; background: var(--lime); color: var(--black); font-weight: 700;
+    font-size: .62rem; padding: .08rem .4rem; border-radius: 999px; }
+.mixtape.unlocked .mt-cassette::after { content: '★'; position: absolute; left: -6px; top: -8px; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--cream); color: var(--black); font-size: .7rem; display: grid; place-items: center; animation: pop .5s cubic-bezier(.3,1.6,.5,1); }
+@keyframes pop { from { transform: scale(0); } }
+
+.mt-info { min-width: 0; flex: 1; }
+.mt-info p { margin: 0; }
+.mt-meta { font-size: .6rem; text-transform: uppercase; letter-spacing: .12em; opacity: .65; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mt-state { display: inline-block; width: 1.4em; color: var(--side); }
+.mt-title { font-family: var(--display); font-size: 1.25rem; line-height: 1.05; text-transform: uppercase; margin: .15rem 0 .2rem !important;
+    color: var(--cream); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mt-title.swap { animation: trackIn .5s cubic-bezier(.2,.9,.3,1); }
+@keyframes trackIn { from { opacity: 0; transform: translateY(8px); clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+.mt-liner { line-height: 1.4; min-height: 2.8em; opacity: .9; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.mt-liner b { color: var(--side); }
+.mt-liner.flash { color: var(--side); animation: linerIn .4s ease; }
+@keyframes linerIn { from { opacity: 0; transform: translateX(-6px); } }
+.mt-dot { display: inline-block; width: .7em; height: .7em; border-radius: 3px; background: var(--c); margin-right: .4em; vertical-align: -.05em; }
+.mt-controls { display: flex; gap: .35rem; margin-top: .45rem; align-items: center; min-width: 0; }
+.mt-controls button { font: inherit; font-size: .72rem; color: var(--cream); background: #262626; border: 0; border-radius: 999px;
+    height: 26px; min-width: 30px; padding: 0 .55rem; cursor: pointer; transition: background .2s, color .2s; }
+.mt-controls button:hover:not(:disabled) { background: var(--side); color: var(--black); }
+.mt-controls button:disabled { opacity: .3; cursor: default; }
+.mt-hint { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700;
+    background: color-mix(in oklab, var(--side) 22%, #1b1b1b) !important; color: var(--side) !important; }
+.mt-hint:hover { background: var(--side) !important; color: var(--black) !important; }
+.mt-hint.ping { animation: ping 1.4s ease 2; }
+@keyframes ping { 30% { box-shadow: 0 0 0 5px color-mix(in oklab, var(--side) 35%, transparent); } }
+.mt-min { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; border: 0; background: transparent;
+    color: var(--cream); opacity: .45; cursor: pointer; font: inherit; font-weight: 700; line-height: 1; }
+.mt-min:hover { opacity: 1; background: #262626; }
+
+/* verkleinert: nur Kassette */
+.mixtape.collapsed { width: auto; }
+.mixtape.collapsed .mt-info { display: none; }
+.mixtape.collapsed .mt-player { padding: .45rem 2rem .45rem .45rem; }
+.mixtape.collapsed .mt-cassette { width: 84px; }
+
+/* Trackliste */
+.mt-list { position: absolute; left: 0; bottom: calc(100% + 10px); width: min(300px, calc(100vw - 32px)); max-height: min(70vh, 460px); overflow: auto;
+    background: var(--cream); color: var(--black); border-radius: 18px; padding: .8rem; box-shadow: 6px 6px 0 var(--side), 0 16px 40px rgba(0,0,0,.5);
+    transform-origin: left bottom; animation: listIn .3s cubic-bezier(.3,1.4,.5,1); }
+@keyframes listIn { from { opacity: 0; transform: translateY(10px) scale(.95); } }
+.mt-list-head { margin: 0 0 .4rem; font-family: var(--display); text-transform: uppercase; font-size: 1.2rem; }
+.mt-list ol { list-style: none; margin: 0; padding: 0; }
+.mt-group { font-size: .6rem; text-transform: uppercase; letter-spacing: .14em; opacity: .55; margin: .7rem 0 .25rem; }
+.mt-list button { width: 100%; display: flex; align-items: center; gap: .6rem; text-align: left; font: inherit; font-size: .78rem; font-weight: 700;
+    color: inherit; background: none; border: 0; border-radius: 10px; padding: .45rem .5rem; cursor: pointer; }
+.mt-list button:hover, .mt-list button:focus-visible { background: rgba(0,0,0,.07); }
+.mt-list button.now { background: var(--black); color: var(--cream); }
+.mt-list .mt-n { font-family: var(--display); font-weight: 400; opacity: .5; width: 1.4rem; }
+.mt-list .mt-t { flex: 1; }
+.mt-list .done:not(.now) .mt-tick { color: #3c8c4b; }
+.mt-list .hidden-track { background: var(--lime); }
+
+/* Spotlight: der Tipp zeigt auf ein Element */
+.spotlight { animation: spotlight 2.4s ease; border-radius: 16px; }
+@keyframes spotlight { 0%, 100% { box-shadow: 0 0 0 0 transparent; } 15%, 70% { box-shadow: 0 0 0 4px var(--accent), 0 0 0 14px color-mix(in oklab, var(--accent) 25%, transparent); } }
+
+/* Farbwischer: Seiten-Beschriftung der Kassette */
+.wipe-side { position: absolute; top: clamp(1.2rem, 5vh, 3rem); right: max(1rem, calc(50% - 550px)); font-style: normal; font-weight: 700;
+    font-size: .8rem; text-transform: uppercase; letter-spacing: .2em; border: 2px solid currentColor; border-radius: 999px; padding: .3rem .8rem; }
+
+/* Versteckte Noten */
+.note-host { position: relative; }
+.hidden-note { position: absolute; z-index: 4; width: 34px; height: 34px; border: 0; padding: 0; background: none; cursor: pointer;
+    color: var(--accent); font-size: 1.5rem; line-height: 1; opacity: .38; transform: rotate(var(--tilt)); transition: opacity .3s, transform .3s; }
+.hidden-note span { display: inline-block; animation: noteFloat 3.4s ease-in-out infinite; }
+.hidden-note:hover, .hidden-note:focus-visible { opacity: 1; transform: rotate(0) scale(1.35); }
+.hidden-note.caught { opacity: 1; transform: translateY(-40px) scale(2); transition: transform .55s cubic-bezier(.2,.8,.3,1), opacity .55s; pointer-events: none; }
+.hidden-note.caught span { animation: none; }
+@keyframes noteFloat { 50% { transform: translateY(-6px); } }
+
+/* Platz für den Player am Seitenende */
+.footer { padding-bottom: 9rem; }
+
 @media (max-width: 1100px) {
     .era-artists { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
@@ -502,6 +609,16 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 40; pointer-event
 }
 @media (max-width: 600px) {
     :root { --chart-height: 380px; }
+    .mixtape { left: 8px; right: 8px; bottom: 8px; width: auto; }
+    .wipe-side { top: auto; bottom: 120px; right: auto; left: 1rem; }
+    .mt-player { gap: .55rem; padding: .45rem 2rem .45rem .45rem; border-radius: 14px; }
+    .mt-cassette { width: 74px; }
+    .mt-title { font-size: 1.05rem; }
+    .mt-liner { -webkit-line-clamp: 1; min-height: 1.4em; font-size: .7rem; }
+    .mt-controls { margin-top: .3rem; }
+    .mt-controls button { height: 24px; }
+    .mixtape.collapsed { right: auto; }
+    .mixtape.collapsed .mt-cassette { width: 64px; }
     .card { padding: 1rem; border-radius: 20px; }
     .kpi strong { font-size: 1.3rem; }
     .name { width: 6.5rem; font-size: .7rem; }
@@ -532,4 +649,5 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 40; pointer-event
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; animation: none !important; }
     html { scroll-behavior: auto; }
+    .mixtape { transform: none; opacity: 1; }
 }

@@ -162,7 +162,7 @@ async function loadData() {
 function showStatus(type, message = '') {
     const el = $('status');
     const ready = type === 'ready';
-    ['app', 'story', 'chapter-nav', 'hero-stats', 'scroll-cue'].forEach(id => ($(id).hidden = !ready));
+    ['app', 'story', 'hero-stats', 'scroll-cue'].forEach(id => ($(id).hidden = !ready));
     el.hidden = ready;
     el.className = 'status ' + type;
     document.documentElement.dataset.state = type;

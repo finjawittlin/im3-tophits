@@ -154,6 +154,9 @@ function initStory() {
     renderChapter4(F);
     renderFinale(F);
     setupScrollEffects();
+    // Für Rillo (guide.js): gleiche Fakten, keine zweite Berechnung
+    window.storyReady = F;
+    document.dispatchEvent(new CustomEvent('story:ready', { detail: F }));
 }
 
 // ---------- Hero ----------
@@ -691,6 +694,7 @@ function renderWipe(F) {
     const layer = (cls, color, hidden) => `
         <div class="wipe-layer ${cls}" style="--c:${color}"${hidden ? ' aria-hidden="true"' : ''}>
             <p>${first.len} Monate lang lag in den Schweizer Spotify-Charts ${esc(F.main)} vorne.</p>
+            <em class="wipe-side">${cls === 'wipe-a' ? 'Seite A · Pop' : 'Seite B · Hip-Hop'}</em>
             <strong class="w1">Dann</strong>
             <strong class="w2">änderte sich<br>der Beat.</strong>
         </div>`;
@@ -852,7 +856,6 @@ function setupScrollEffects() {
 
     const bar = $('progress-bar');
     const chapters = [...document.querySelectorAll('[data-chapter-section]')];
-    const navLinks = [...document.querySelectorAll('#chapter-nav a')];
     const scrollyEl = $('kapitel-2');
     const wipeEl = document.getElementById('wipe');
     let ticking = false;
@@ -881,7 +884,7 @@ function setupScrollEffects() {
             if (r.top <= vh / 2 && r.bottom > vh / 2) wipeMix = p > .5 ? 1 : 0;
         }
 
-        // Kapitel in der Bildschirmmitte -> Farbe + Navigation
+        // Kapitel in der Bildschirmmitte -> Farbe
         const current = chapters.find(c => {
             const r = c.getBoundingClientRect();
             return r.top <= vh / 2 && r.bottom > vh / 2;
@@ -889,7 +892,6 @@ function setupScrollEffects() {
         const mix = wipeMix ?? (current === scrollyEl ? scrollyMix() : +(current?.dataset.mix ?? 0));
         // Klar Pink oder Neongrün (Zwischentöne wirken schlammig); der Wechsel wird per CSS animiert
         root.style.setProperty('--story-mix', mix >= .5 ? '1' : '0');
-        navLinks.forEach(a => a.classList.toggle('active', !!current && (current.id === a.dataset.chapter || !!current.querySelector('#' + a.dataset.chapter))));
     }
 
     const request = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };

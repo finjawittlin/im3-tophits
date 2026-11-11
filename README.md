@@ -148,6 +148,25 @@ Ein letzter Monat mit auffällig wenigen Streams (unter 50 % des Medians der sec
 
 Sind Genre-Daten (`?resource=genres`) vorhanden, kommen im Explorer automatisch dazu: Rangliste aller Genres, echte Jahreszeiten-Summen, «Ø pro Woche», Top Song, Explicit-Anteil und Linien pro Genre.
 
+#### Roter Faden: das Mixtape (`frontend/guide.js`)
+
+Die Reportage ist ein Mixtape: **Seite A** (Pink/Pop: Intro, Kapitel 1, Quiz) – beim Farbwischer wird die Kassette **umgedreht** – **Seite B** (Neon/Hip-Hop: Kapitel 2–6) – **Bonus** (Kapitel 7, Explorer).
+
+Der Begleiter unten links ist eine Kassette:
+- zeigt Track (Kapitel), Seite und Bandstand (linke Spule wird kleiner, rechte grösser); die Spulen drehen sich nur beim Scrollen
+- Liner Notes mit echten Zahlen; in Kapitel 2 und in der Zeitmaschine live mit dem aktuellen Monat
+- **Tipp-Knopf** pro Kapitel: springt zum interaktiven Element und hebt es hervor
+- ⏮ ⏭ und Trackliste (Klick auf die Kassette) mit ✓ für gehörte Tracks; verkleinerbar
+- reagiert auf Quiz-Tipp, Wendepunkt, Zeitmaschine (Rekordmonat, unvollständige Monate)
+- fünf versteckte Noten ♪ schalten einen **Hidden Track** mit Geheimfakt frei
+
+#### Jahreszeiten nur dort, wo sie Thema sind
+
+Elemente mit `data-season-fx` lösen beim Hover, Fokus oder Antippen einen Effekt **nur in ihrem Bereich** aus: Schnee (bleibt unten liegen), Herbstlaub, wachsende Blumen, Sonnenstrahlen.
+- Kapitel 3: Karten «Juni–November» (Sonne + Laub), «Januar–April» (Schnee + Blumen), «Dezember» (Schnee); beim ersten Erreichen spielen sie einmal kurz an. Hover über der Jahresuhr zeigt die Jahreszeit des Monats, «Nur Dezember» lässt es schneien.
+- Kapitel 2 (Dezember-Schritt), Fazit (Sommer/Herbst), Explorer-Ansicht «Jahreszeiten» und die Zeitmaschine (kurzer Gruss der Jahreszeit des gewählten Monats).
+- Bei «reduzierter Bewegung» keine Effekte und keine Animationen.
+
 ### 8. Aktueller Datenfluss
 
 Der aktuelle Datenfluss funktioniert so:
