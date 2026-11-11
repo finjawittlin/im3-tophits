@@ -34,6 +34,7 @@ const GENRE_COLORS = {
     'Latin': '#ff9f43',
     'Indie / Alternative': '#7ee8c1',
     'Other': '#b5aca0',
+    'Unknown': '#6f6a64',
 };
 const EXTRA_COLORS = ['#ffe14d', '#ff8fab', '#5b8cff', '#b8f2e6'];
 
@@ -907,7 +908,7 @@ function renderMethod() {
         `Angezeigt werden ${db.months.length} Monate von ${keyLabel(first)} bis ${keyLabel(last)} – live aus unserer Datenbank geladen.`,
         'Die Charts sind wöchentlich. Jede Chart-Woche zählt zum Monat ihres Datums; die Streams werden pro Monat summiert. Monate mit fünf Chart-Wochen haben deshalb mehr Streams'
             + (db.hasGenres ? ' – die Ansicht „Ø pro Woche“ gleicht das aus.' : '.'),
-        'Die Spotify-Genres jedes Artists werden zu Hauptgenres zusammengefasst (Pop, Hip-Hop / Rap, Electronic / Dance, Rock, R&amp;B / Soul, Latin, Indie / Alternative, Other).',
+        'Die Spotify-Genres jedes Artists werden zu Hauptgenres zusammengefasst (Pop, Hip-Hop / Rap, Electronic / Dance, Rock, R&amp;B / Soul, Latin, Indie / Alternative). „Other“ = Spotify-Genres, die keiner Kategorie entsprechen; „Unknown“ = Artists ohne Spotify-Genre.',
         'Bei Songs mit mehreren Artists zählt nur der erste Artist.',
         ...db.months.filter(r => r.incomplete).map(r =>
             `${keyLabel(r.key)} hat auffällig wenige Streams (${fmtText(r.streams)}) und ist vermutlich nicht vollständig erfasst. Er ist schraffiert markiert.`),

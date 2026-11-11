@@ -1,7 +1,13 @@
+# Zugangsdaten – nie committen (Vorlage: config.template.php)
 config.php
-.DS_Store
-.idea/
 
+# Rohdaten (zu gross, Lizenz des Datensatzes beachten)
 data/spotify_ch_2014_2022.csv
 
-config.php
+# IDE / lokale Werkzeuge
+.idea/
+.mcp.json
+.claude/settings.local.json
+
+# Betriebssystem
+.DS_Store

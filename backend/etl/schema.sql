@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS monthly_results (
     genre_streams BIGINT NOT NULL,
     top_artist VARCHAR(255) NOT NULL,
     artist_streams BIGINT NOT NULL
-) DEFAULT CHARSET = utf8mb4;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 
 -- ------------------------------------------------------------
@@ -45,4 +45,4 @@ CREATE TABLE IF NOT EXISTS monthly_genre_streams (
     top_track_artist VARCHAR(255) NOT NULL,
     top_track_streams BIGINT NOT NULL,
     UNIQUE KEY month_genre (month, genre)
-) DEFAULT CHARSET = utf8mb4;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
