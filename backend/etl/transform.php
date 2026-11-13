@@ -106,6 +106,11 @@ function classifyGenreTag(string $tag): ?string
 {
     $tag = strtolower(trim($tag));
 
+    // "pop rap" ist ein Mischgenre und soll nicht allein Hip-Hop / Rap auslösen.
+    if ($tag === 'pop rap') {
+        return "Pop";
+    }
+
     foreach (GENRE_RULES as $mainGenre => $pattern) {
 
         // Pop-Varianten sollen nicht wegen "dance"/"electro" Electronic werden
