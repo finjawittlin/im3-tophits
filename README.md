@@ -1,11 +1,11 @@
 # Pink gegen Neon – Was hört die Schweiz?
 
-Data-Story-Projekt im Modul IM3 von **Die Chartjägerinnen**: Wie sich die Schweizer Spotify-Charts zwischen 2014 und 2022 verändert haben – Monat für Monat, erzählt als interaktive Datenreportage.
+Data-Story-Projekt im Modul IM3 von **Die Chartjägerinnen**. Die interaktive Reportage untersucht, welches Genre die Schweizer Spotify-Charts in jedem Monat zwischen 2014 und 2022 dominierte und welcher Artist innerhalb dieses Top-Genres am stärksten war. Aus wöchentlichen Chartdaten entsteht eine Geschichte über Pop, Hip-Hop / Rap und den Wandel des Schweizer Streaming-Geschmacks.
 
-**Website:** https://im3.okurocic.myhostpoint.ch/im3-tophits/frontend/
-**API:** https://im3.okurocic.myhostpoint.ch/im3-tophits/backend/api/
-
-> TODO (Team): Die Online-Version auf Hostpoint entspricht noch nicht dem aktuellen Stand dieses Repos (Stand 11.11.2026: alter Seitentitel, `?resource=genres` wird von der API noch nicht unterstützt). Nach dem Hochladen der aktuellen Dateien und einem Load diesen Hinweis entfernen.
+**Website:** https://im3.okurocic.myhostpoint.ch/im3-tophits/frontend/index.html?v=2  
+**API – Monatsresultate:** https://im3.okurocic.myhostpoint.ch/im3-tophits/backend/api/  
+**API – Genre-Daten:** https://im3.okurocic.myhostpoint.ch/im3-tophits/backend/api/?resource=genres  
+**GitHub:** https://github.com/finjawittlin/im3-tophits
 
 ## Inhalt
 
@@ -14,13 +14,14 @@ Data-Story-Projekt im Modul IM3 von **Die Chartjägerinnen**: Wie sich die Schwe
 3. [Marktstand](#3-marktstand)
 4. [Installation und Ausführung](#4-installation-und-ausführung)
 5. [ETL-Prozess](#5-etl-prozess)
-6. [Datenbank und API](#6-datenbank-und-api)
-7. [Frontend](#7-frontend)
-8. [Technische Umsetzung und Projektstruktur](#8-technische-umsetzung-und-projektstruktur)
-9. [Learnings](#9-learnings)
-10. [Schwierigkeiten und Lösungen](#10-schwierigkeiten-und-lösungen)
-11. [Ressourcen](#11-ressourcen)
-12. [Lizenz](#12-lizenz)
+6. [Datenqualität und Grenzen](#6-datenqualität-und-grenzen)
+7. [Datenbank und API](#7-datenbank-und-api)
+8. [Frontend](#8-frontend)
+9. [Technische Umsetzung und Projektstruktur](#9-technische-umsetzung-und-projektstruktur)
+10. [Learnings](#10-learnings)
+11. [Schwierigkeiten und Lösungen](#11-schwierigkeiten-und-lösungen)
+12. [Ressourcen](#12-ressourcen)
+13. [Lizenz und Team](#13-lizenz-und-team)
 
 ---
 
@@ -28,283 +29,527 @@ Data-Story-Projekt im Modul IM3 von **Die Chartjägerinnen**: Wie sich die Schwe
 
 **Forschungsfrage:** Welches Genre wurde in welchem Monat in der Schweiz zwischen 2014 und 2022 am meisten gestreamt?
 
-Zusätzlich zeigen wir den Top Artist innerhalb des jeweiligen Top Genres.
+Zusätzlich zeigen wir den **Top Artist innerhalb des jeweiligen Top-Genres**.
 
-**Ziel:** Aus wöchentlichen Spotify-Chartdaten eine verständliche, interaktive Geschichte machen. Die Daten werden mit einem eigenen ETL-Prozess in PHP aufbereitet, in einer MySQL-Datenbank gespeichert, über eine JSON-API ausgeliefert und im Browser als Scrollytelling-Reportage dargestellt («Pink» = Pop, «Neon» = Hip-Hop / Rap).
+**Ziel:** Aus wöchentlichen Spotify-Chartdaten eine verständliche, interaktive Geschichte machen. Die Daten werden mit einem eigenen ETL-Prozess in PHP gelesen und aufbereitet, in einer MySQL-Datenbank gespeichert, über eine JSON-API ausgeliefert und im Browser als Scrollytelling-Reportage dargestellt.
+
+Der visuelle rote Faden ist das Duell **«Pink gegen Neon»**:
+
+- **Pink** steht für Pop.
+- **Neon** steht für Hip-Hop / Rap.
+- Die Reportage zeigt aber auch weitere Hauptgenres wie Electronic / Dance, Rock, R&B / Soul, Latin und Indie / Alternative.
 
 Datenfluss:
 
-```
+```text
 CSV → Extract → Transform → Qualitätschecks → Load → MySQL → API → Frontend
 ```
 
+Die Auswertung umfasst **108 Monate** von Januar 2014 bis Dezember 2022.
+
 ## 2. Screenshots
 
-Aufgenommen aus der lokalen Version mit den 108 Monatsresultaten aus der Datenbank (Desktop 1280 px, Mobile 390 px).
+Die Screenshots zeigen die aktuelle Frontend-Version mit den Daten aus der Datenbank.
 
 | | |
 |---|---|
 | ![Startseite mit Skyline aller Monate](docs/screenshots/01-hero.png) Startseite: jeder Balken ein Monat | ![Kapitel 1](docs/screenshots/02-kapitel-1-pink.png) Kapitel 1: die Pop-Phase |
-| ![Kapitel 2: Heatmap beim Wendepunkt Juni 2018](docs/screenshots/03-kapitel-2-wandel.png) Kapitel 2: der Wendepunkt | ![Kapitel 3: Jahresuhr mit Jahreszeiten-Effekten](docs/screenshots/04-kapitel-3-jahresuhr.png) Kapitel 3: die Jahresuhr |
+| ![Kapitel 2: Heatmap beim Wendepunkt](docs/screenshots/03-kapitel-2-wandel.png) Kapitel 2: der Wandel | ![Kapitel 3: Jahresuhr](docs/screenshots/04-kapitel-3-jahresuhr.png) Kapitel 3: die Jahresuhr |
 | ![Kapitel 5: Streams im Zeitverlauf](docs/screenshots/05-kapitel-5-streams.png) Kapitel 5: Streams | ![Zeitmaschine im Explorer](docs/screenshots/06-zeitmaschine.png) Kapitel 7: die Zeitmaschine |
 
 <img src="docs/screenshots/07-mobile.png" alt="Startseite auf dem Smartphone" width="260">
 
 ## 3. Marktstand
 
-> TODO (Team): Foto vom Marktstand als `docs/marktstand.jpg` ablegen und die Zeile unten aktivieren (Kommentarzeichen entfernen). Kurz beschreiben, was am Stand gezeigt wurde.
+Am Marktstand erklären wir den Datenfluss vom Rohdatensatz bis zur fertigen interaktiven Story:
 
-<!-- ![Unser Marktstand](docs/marktstand.jpg) -->
+```text
+Spotify-Chartdaten → CSV → PHP-ETL → Qualitätschecks → MySQL → API → Frontend
+```
+
+Dabei zeigen wir insbesondere, wie aus vielen einzelnen Spotify-Genres gröbere Hauptgenres entstehen, wie die Monatswerte berechnet werden und welche Grenzen die Daten haben.
+
+**Noch einzufügen:** Das verlangte Foto des Marktstands als `docs/marktstand.jpg`.
+
+Sobald das Bild vorhanden ist, kann folgende Zeile aktiviert werden:
+
+```md
+![Unser Marktstand](docs/marktstand.jpg)
+```
 
 ## 4. Installation und Ausführung
 
 ### Voraussetzungen
 
-- PHP 8.0 oder neuer mit `pdo_mysql` (lokal geht für Tests auch `pdo_sqlite`)
-- MySQL / MariaDB (bei uns: Hostpoint)
-- Die Rohdaten-CSV (nicht im Repo, siehe unten)
+- PHP 8.0 oder neuer mit `pdo_mysql`
+- MySQL / MariaDB
+- Rohdaten-CSV `spotify_ch_2014_2022.csv`
+- Für das Online-Projekt wird Hostpoint verwendet; dort steht PHP 8.3 zur Verfügung.
 
 ### Schritte
 
-1. **Repo klonen**
+1. **Repository klonen**
+
    ```bash
    git clone https://github.com/finjawittlin/im3-tophits.git
    cd im3-tophits
    ```
+
 2. **Konfiguration anlegen**
+
    ```bash
    cp config.template.php config.php
    ```
-   In `config.php` Datenbank-Host, -Name, Benutzer und Passwort eintragen. `config.php` ist in `.gitignore` und wird nie committet.
-3. **Daten bereitstellen:** Den Kaggle-Datensatz herunterladen (siehe [Ressourcen](#11-ressourcen)), aus `charts.csv` die Schweizer Zeilen (`country = ch`) von 2014 bis 2022 filtern und als `data/spotify_ch_2014_2022.csv` speichern. Die CSV ist wegen ihrer Grösse nicht im Repo.
-4. **Probelauf (ohne Datenbank):**
+
+   In `config.php` Datenbank-Host, Datenbankname, Benutzername und Passwort eintragen.
+
+   `config.php` ist in `.gitignore` und darf nicht ins öffentliche Repository gelangen.
+
+3. **Daten bereitstellen**
+
+   Den Kaggle-Datensatz herunterladen und aus `charts.csv` die Schweizer Zeilen für 2014 bis 2022 filtern.
+
+   Verwendeter Filter:
+
    ```bash
-   php backend/etl/extract.php      # liest die CSV, zeigt Spalten, Zeilen, Zeitraum
-   php backend/etl/transform.php    # Transform + Qualitätschecks, schreibt nichts
+   awk -F',' 'NR==1 {print; next} {d=$1; gsub("/", "-", d)} $2=="ch" && d >= "2014-01-01" && d <= "2022-12-31" {print}' charts.csv > spotify_ch_2014_2022.csv
    ```
-5. **Load (schreibt in die Datenbank):**
+
+   Die gefilterte Datei kommt nach:
+
+   ```text
+   data/spotify_ch_2014_2022.csv
+   ```
+
+   Die CSV ist wegen ihrer Grösse nicht im GitHub-Repository.
+
+4. **Extract testen**
+
+   ```bash
+   php backend/etl/extract.php
+   ```
+
+5. **Transform und Qualitätschecks testen – ohne Datenbankänderung**
+
+   ```bash
+   php backend/etl/transform.php
+   ```
+
+6. **Daten in die Datenbank laden**
+
    ```bash
    php backend/etl/load.php
    ```
-   Ersetzt den Inhalt von `monthly_results` und `monthly_genre_streams` in einer Transaktion. Im Browser nur mit Token: `backend/etl/load.php?token=…` (`$etlToken` in `config.php`; leer = gesperrt).
-6. **Website lokal starten:**
+
+   `load.php` ersetzt die Inhalte von `monthly_results` und `monthly_genre_streams` innerhalb einer Transaktion.
+
+   Im Browser ist `load.php` nur mit gültigem ETL-Token erreichbar. In der produktiven Konfiguration ist der Token aktuell leer:
+
+   ```php
+   $etlToken = '';
+   ```
+
+   Damit ist der Browser-Aufruf gesperrt.
+
+7. **Website lokal starten**
+
    ```bash
    php -S 127.0.0.1:8000
    ```
-   und http://127.0.0.1:8000/frontend/ öffnen.
 
-Andere CSV verwenden: `php backend/etl/transform.php --csv=pfad/zur/datei.csv` oder `$csvFile` in `config.php`.
+   Danach:
 
-### Deployment (Hostpoint)
+   ```text
+   http://127.0.0.1:8000/frontend/
+   ```
 
-Ordner `backend/`, `frontend/`, `data/` (mit `.htaccess` und CSV) und `config.php` per SFTP hochladen. `data/.htaccess` verhindert, dass die CSV öffentlich heruntergeladen werden kann.
+### Deployment auf Hostpoint
+
+Die Projektdateien werden per PhpStorm Deployment / FTP auf Hostpoint übertragen.
+
+Wichtig:
+
+- `config.php` enthält geheime Zugangsdaten und wird nicht über GitHub verteilt.
+- `data/.htaccess` verhindert den öffentlichen Download der Rohdaten-CSV.
+- `mock-data.json` wird nicht mehr verwendet.
+- Das Frontend lädt echte Daten aus der API.
+- Für CSS und JavaScript werden Cache-Busting-Parameter (`?v=2`) verwendet, damit Browser nach einem Deployment die aktuelle Version laden.
 
 ## 5. ETL-Prozess
 
 ### Datenquelle
 
-Kaggle-Datensatz **«Spotify tracks chart dataset (2014-2022)»** von Julian Freyberg (jfreyberg), https://www.kaggle.com/datasets/jfreyberg/spotify-chart-data/. Der Datensatz stammt laut Beschreibung von kworb.net und der offiziellen Spotify-API.
+Verwendet wird der Kaggle-Datensatz **«Spotify tracks chart dataset (2014-2022)»** von Julian Freyberg (`jfreyberg`):
 
-Die gefilterte Datei `data/spotify_ch_2014_2022.csv` enthält wöchentliche Chart-Einträge mit den Spalten `date, country, position, streams, track_id, artists, artist_genres, duration, explicit, name`.
+https://www.kaggle.com/datasets/jfreyberg/spotify-chart-data/
+
+Laut Datensatzbeschreibung basieren die Daten auf kworb.net und der offiziellen Spotify-API.
+
+Die gefilterte Datei `data/spotify_ch_2014_2022.csv` enthält die Spalten:
+
+```text
+date, country, position, streams, track_id, artists, artist_genres, duration, explicit, name
+```
 
 ### Extract – `backend/etl/extract.php`
 
-- liest die CSV Zeile für Zeile als **Generator** (`extractRows()`), damit auch grosse Dateien wenig Speicher brauchen
-- findet die Spalten über ihren **Namen** (nicht über die Position) und prüft, ob alle Pflichtspalten vorhanden sind
-- Pfad dynamisch: Terminal-Argument `--csv=…`, `$csvFile` in `config.php` oder Standardpfad
-- Fehler (Datei fehlt, leer, Pflichtspalte fehlt) werfen eine `ExtractException` – Load verändert dann nichts
-- Zeilen mit falscher Spaltenzahl werden übersprungen und mit Zeilennummer protokolliert
-- direkt aufgerufen: Bericht mit Spalten, Anzahl Zeilen, Chart-Wochen und Zeitraum
+Der Extract:
+
+- liest die CSV Zeile für Zeile als Generator (`extractRows()`), damit auch grosse Dateien speicherschonend verarbeitet werden;
+- sucht Spalten anhand ihrer Namen und prüft Pflichtspalten;
+- unterstützt einen dynamischen Dateipfad über `--csv=…`, `$csvFile` in `config.php` oder den Standardpfad;
+- wirft bei fehlender oder ungültiger Datei eine `ExtractException`;
+- protokolliert fehlerhafte CSV-Zeilen;
+- liefert beim direkten Aufruf einen Bericht über Spalten, Zeilen, Chart-Wochen und Zeitraum.
+
+**Wichtige Abgrenzung:** Der aktuelle Extract lädt den Kaggle-Datensatz nicht automatisch aus dem Internet herunter. Die CSV wird vorher bereitgestellt und danach dynamisch durch das ETL eingelesen. Das ist eine technische Grenze der aktuellen Projektversion.
 
 ### Transform – `backend/etl/transform.php`
 
-`transform.php` bindet `extract.php` ein und verarbeitet dessen Zeilen direkt (`transformRows(extractRows(…))`). Dabei werden:
+`transform.php` verarbeitet die vom Extract gelieferten Zeilen direkt:
 
-- Datum geprüft (`2019/01/03` oder `2019-01-03`; ungültige Daten wie 31. Februar werden verworfen) und der Monat bestimmt – **jede Chart-Woche zählt zum Monat ihres Datums**
-- Streams geprüft (nur ganze Zahlen ≥ 0)
-- Duplikate verworfen (derselbe Song zweimal in derselben Chart-Woche)
-- Genres aus der CSV gelesen und zu Hauptgenres zusammengefasst
-- Streams pro Monat und Hauptgenre summiert, Top Genre und Top Artist pro Monat bestimmt
-- pro Monat **und Genre** zusätzlich: Anzahl Chart-Wochen, Chart-Einträge, Explicit-Streams, Top Artist und Top Song
+```text
+extractRows(...) → transformRows(...)
+```
 
-Hauptgenres: Pop, Hip-Hop / Rap, Electronic / Dance, Rock, R&B / Soul, Latin, Indie / Alternative – sowie:
+Dabei werden:
 
-| Kategorie | Bedeutung |
-|---|---|
-| `Other` | Der Artist hat Spotify-Genres, aber keine Regel passt (z.B. `schlager`) |
-| `Unknown` | Der Artist hat bei Spotify **keine** Genres. Fehlt der Artist- oder Songname, steht dort ebenfalls `Unknown` |
+- Datumswerte geprüft;
+- jede Chart-Woche dem Monat ihres Datums zugeordnet;
+- Streams validiert;
+- Duplikate erkannt;
+- Artists und Spotify-Genres aus den Python-Listen der CSV gelesen;
+- Spotify-Genres zu Hauptgenres zusammengefasst;
+- Streams pro Monat und Hauptgenre summiert;
+- Top Genre und Top Artist pro Monat bestimmt;
+- pro Monat und Genre zusätzliche Kennzahlen für das Frontend berechnet.
 
-Regeln der Genre-Zuordnung:
+Gespeichert werden unter anderem:
 
-- Jedes Spotify-Genre eines Artists wird einzeln geprüft. Die Reihenfolge der Kategorien bestimmt die Priorität: Latin, Hip-Hop / Rap, R&B / Soul, Rock, Indie / Alternative, Electronic / Dance, Pop.
-- `dance pop`, `pop dance` und `electropop` zählen als `Pop`, nicht als Electronic.
-- Eindeutig elektronische Genres wie `edm`, `house`, `techno`, `electro` und `brostep` werden `Electronic / Dance` zugeordnet – auch wenn der Artist zusätzlich `dance pop` hat.
-- `trap latino` zählt zu `Latin` (Latin steht vor Hip-Hop).
-- Listen aus der CSV (`['…']`) werden zeichenweise gelesen, damit Namen mit Apostroph (z.B. `Guns N' Roses`) korrekt erkannt werden.
-- Bei Songs mit mehreren Artists zählt nur der erste Artist als Hauptartist.
+- Streams
+- Anzahl Chart-Wochen
+- Anzahl Chart-Einträge
+- Explicit-Streams
+- Top Artist
+- Top Song
+
+### Genre-Zuordnung
+
+Hauptgenres:
+
+- Pop
+- Hip-Hop / Rap
+- Electronic / Dance
+- Rock
+- R&B / Soul
+- Latin
+- Indie / Alternative
+- Other
+- Unknown
+
+Die Reihenfolge der Regeln bestimmt die Priorität:
+
+```text
+Latin
+→ Hip-Hop / Rap
+→ R&B / Soul
+→ Rock
+→ Indie / Alternative
+→ Electronic / Dance
+→ Pop
+```
+
+Sonderfälle:
+
+- `trap latino` wird Latin zugeordnet.
+- `dance pop`, `pop dance` und `electropop` sollen nicht allein wegen `dance` oder `electro` Electronic / Dance werden.
+- Der Mischbegriff `pop rap` wird als Pop behandelt und löst nicht automatisch Hip-Hop / Rap aus.
+- `Unknown` bedeutet, dass für den Artist kein Spotify-Genre vorhanden ist.
+- `Other` bedeutet, dass Genres vorhanden sind, aber keine Regel passt.
+- Bei Kollaborationen zählt der **erste gelistete Artist** als Hauptartist.
+
+Die `pop rap`-Ausnahme wurde ergänzt, nachdem bei einer Qualitätskontrolle Avicii aufgrund des Spotify-Tags `pop rap` fälschlich Hip-Hop / Rap zugeordnet wurde. Nach der Korrektur ist Januar 2014 beispielsweise **Pop** mit **Milky Chance** als Top Artist des Top-Genres.
 
 ### Qualitätschecks – `backend/etl/quality.php`
 
-Laufen bei jedem Transform automatisch. Jeder Check meldet **OK**, **WARNUNG** (auffällig, Load läuft weiter) oder **FEHLER** (Load bricht ab, Datenbank bleibt unverändert):
+Die Qualitätschecks laufen automatisch bei jedem Transform.
 
-| Check | Was geprüft wird |
+Jeder Check meldet:
+
+- **OK** – keine relevante Auffälligkeit
+- **WARNUNG** – Daten können geladen werden, Auffälligkeit wird aber dokumentiert
+- **FEHLER** – Load wird abgebrochen
+
+Geprüft werden unter anderem:
+
+| Check | Prüfung |
 |---|---|
-| Zeilen | falsche Spaltenzahl, ungültiges Datum, ungültige Streams, Duplikate – mit Zeilennummern. FEHLER ab 1 % verworfener Zeilen |
-| Monate | lückenlos vom ersten bis zum letzten Monat, sonst FEHLER |
-| Wochen pro Monat | jede Chart-Woche genau einem Monat zugeordnet (sonst FEHLER); Verteilung 4/5 Wochen; Monate mit weniger als 4 oder mehr als 5 Wochen und Abstände ≠ 7 Tage als WARNUNG |
-| Einträge pro Woche | Wochen mit weniger als der Hälfte des Medians (z.B. unvollständig erfasste letzte Wochen) |
-| Unknown | Zeilen ohne Genre, Artist oder Titel; Anteil an den Streams, betroffene Artists; WARNUNG ab 5 % oder wenn `Unknown` ein Monat gewinnt |
-| Other | Anteil an den Streams und die häufigsten nicht zugeordneten Spotify-Genres (Kandidaten für neue Regeln); WARNUNG ab 10 % oder wenn `Other` ein Monat gewinnt |
-| Konsistenz | Monat + Genre eindeutig, Summe der Genre-Streams = alle verarbeiteten Streams, Top Genre hat wirklich die meisten Streams |
-
-Den Bericht zeigt `php backend/etl/transform.php` (Probelauf) und `load.php` vor dem Schreiben.
-
-Warum «Wochen pro Monat» wichtig ist: Ein Monat hat 4 oder 5 Chart-Wochen. Monate mit 5 Wochen haben deshalb mehr Streams. Darum speichern wir `chart_weeks`, und der Explorer bietet die Ansicht «Ø pro Woche».
+| Zeilen | ungültige Daten, Streams, Spaltenzahl und Duplikate |
+| Monate | lückenloser Zeitraum |
+| Wochen pro Monat | Zahl der Chart-Wochen und ungewöhnliche Zeitabstände |
+| Einträge pro Woche | auffällig kleine Wochen |
+| Unknown | Anteil fehlender Spotify-Genres |
+| Other | Anteil nicht zugeordneter Spotify-Genres |
+| Konsistenz | Stream-Summen, eindeutige Monat-Genre-Kombinationen und korrektes Top Genre |
 
 ### Load – `backend/etl/load.php`
 
-1. Zugriffsschutz: im Browser nur mit Token, sonst nur im Terminal
-2. Sperre: Es kann immer nur ein Load gleichzeitig laufen
-3. Extract + Transform + Qualitätschecks – bei FEHLER Abbruch **vor** dem Verbinden zur Datenbank
-4. Fehlende Tabellen anlegen (`schema.sql`) und prüfen, dass sie **InnoDB** nutzen (nur InnoDB kann ein ROLLBACK). Das geschieht vor der Transaktion, weil `CREATE TABLE` in MySQL eine offene Transaktion automatisch beendet
-5. **`BEGIN`** → alte Zeilen löschen → neue Zeilen einfügen (Prepared Statements) → Kontrolle: Anzahl Zeilen und Summe der Streams in der Datenbank = erwartete Werte → **`COMMIT`**
-6. Bei jedem Fehler: **`ROLLBACK`** – der alte Datenbestand bleibt vollständig erhalten. Die Meldung nennt den Schritt (z.B. Monat und Genre), aber keine Zugangsdaten
+Der Load ist abgesichert:
 
-Duplikate verhindert zusätzlich die Datenbank: `month` ist in `monthly_results` eindeutig, `(month, genre)` in `monthly_genre_streams`.
+1. Extract, Transform und Qualitätschecks laufen zuerst.
+2. Bei einem Qualitätsfehler wird abgebrochen.
+3. Es kann nur ein Load gleichzeitig laufen.
+4. Die Tabellen werden geprüft bzw. angelegt.
+5. Die eigentliche Datenänderung läuft innerhalb einer Datenbanktransaktion.
+6. Nach dem Schreiben werden Anzahl Zeilen und Stream-Summen kontrolliert.
+7. Erst danach erfolgt `COMMIT`.
+8. Bei Fehlern erfolgt `ROLLBACK`.
 
-## 6. Datenbank und API
+Dadurch soll verhindert werden, dass nach einem abgebrochenen Load eine halb aktualisierte Datenbank zurückbleibt.
 
-Tabellen (`backend/etl/schema.sql`, MySQL, InnoDB, utf8mb4):
+## 6. Datenqualität und Grenzen
 
-- `monthly_results`: pro Monat `month`, `top_genre`, `genre_streams`, `top_artist`, `artist_streams`
-- `monthly_genre_streams`: pro Monat und Genre `streams`, `chart_weeks`, `chart_entries`, `explicit_streams`, `top_artist`, `artist_streams`, `top_track`, `top_track_artist`, `top_track_streams`
+Der aktuelle Qualitätslauf verarbeitet:
 
-`backend/api/index.php` liest nur und gibt JSON zurück:
+- **87'432 Zeilen**
+- **108 Monate** von 2014-01 bis 2022-12
+- **465 Chart-Wochen**
+- **910 Monat-Genre-Werte**
+- **4'812'682'893 Streams** in den verarbeiteten Chartdaten
 
-- `backend/api/` oder `?resource=months` – Top Genre und Top Artist pro Monat
-- `backend/api/?resource=genres` – alle Genres pro Monat (leere Liste, solange `monthly_genre_streams` nicht befüllt ist)
+### Auffälligkeiten
 
-`backend/etl/unload.php` nutzt dieselbe Logik.
+**April 2015:** Der Monat enthält nur eine erfasste Chart-Woche (`2015-04-30`). Zwischen `2015-03-22` und `2015-04-30` liegt eine Lücke von 39 Tagen. Aussagen für April 2015 beruhen deshalb auf deutlich weniger Daten als andere Monate.
 
-## 7. Frontend
+**Unvollständige Wochen:** 50 Wochen enthalten weniger als die Hälfte des Medians der wöchentlichen Einträge. Besonders frühe Wochen im Jahr 2014 enthalten teilweise nur rund 50 Chart-Einträge.
+
+**Unknown:** 620 Zeilen haben kein Spotify-Genre. Diese Zeilen entsprechen rund **0,75 % der Streams**.
+
+**Other:** 994 Zeilen haben Spotify-Genres, die von keiner Regel erfasst werden. Sie entsprechen rund **1,05 % der Streams**. Beispiele sind `adult standards`, `lounge`, `easy listening`, `vocal jazz` und `partyschlager`.
+
+### Methodische Grenzen
+
+- Die Daten zeigen **Spotify-Chartdaten**, nicht das vollständige Hörverhalten aller Spotify-Nutzerinnen und -Nutzer in der Schweiz.
+- `artist_genres` sind Artist-Genres, keine präzisen Track-Genres.
+- Die Genre-Zuordnung ist eine eigene, dokumentierte Heuristik.
+- Eine Chart-Woche wird vollständig dem Monat ihres Datums zugerechnet, auch wenn die Kalenderwoche über eine Monatsgrenze reicht.
+- Monate mit vier und fünf Chart-Wochen sind bei absoluten Stream-Summen nicht direkt gleich lang beobachtet. Deshalb speichert das Projekt `chart_weeks` und bietet im Explorer zusätzlich «Ø pro Woche».
+- Die ursprüngliche CSV wird aktuell manuell aus Kaggle bereitgestellt; der Download selbst ist nicht Teil des automatischen Extracts.
+
+## 7. Datenbank und API
+
+Die Datenbank verwendet MySQL / MariaDB mit InnoDB und `utf8mb4`.
+
+### Tabelle `monthly_results`
+
+Pro Monat:
+
+- `month`
+- `top_genre`
+- `genre_streams`
+- `top_artist`
+- `artist_streams`
+
+Aktueller Stand: **108 Monatsresultate**.
+
+### Tabelle `monthly_genre_streams`
+
+Pro Monat und Genre:
+
+- `streams`
+- `chart_weeks`
+- `chart_entries`
+- `explicit_streams`
+- `top_artist`
+- `artist_streams`
+- `top_track`
+- `top_track_artist`
+- `top_track_streams`
+
+Aktueller Stand: **910 Monat-Genre-Werte**.
+
+### API
+
+`backend/api/index.php` liest die Datenbank nur lesend aus und liefert JSON.
+
+Monatsresultate:
+
+```text
+https://im3.okurocic.myhostpoint.ch/im3-tophits/backend/api/
+```
+
+Alternativ:
+
+```text
+https://im3.okurocic.myhostpoint.ch/im3-tophits/backend/api/?resource=months
+```
+
+Alle Genre-Monatswerte:
+
+```text
+https://im3.okurocic.myhostpoint.ch/im3-tophits/backend/api/?resource=genres
+```
+
+`backend/etl/unload.php` verwendet dieselbe Ausgabelogik.
+
+## 8. Frontend
 
 ### «Pink gegen Neon» – interaktive Datenreportage
 
-`frontend/index.html` lädt die Daten live über `../backend/api/` und erzählt sie als Scrollytelling:
+`frontend/index.html` lädt die Daten live über die Backend-API.
 
 | | Kapitel | Inhalt |
 |---|---|---|
-| Hero | Was hört die Schweiz? | Skyline aus allen Monaten (Farbe = Genre, Höhe = Streams), animierte Kennzahlen |
-| 01 | Pink | Die lange Pop-Phase, ihre Artists und der «Machtmoment» (höchster Anteil eines Artists an seinem Genre) |
-| – | Quiz | «In welchem Jahr lag Hip-Hop zum ersten Mal vorne?» – Auflösung beim Wendepunkt |
-| – | Farbwischer | Pink wird beim Scrollen von Neongrün überwischt: «Dann änderte sich der Beat.» |
-| 02 | Der Wandel | Fixierte Heatmap, füllt sich Monat für Monat; Wendepunkt, Hip-Hop-Phase, Pop-Comeback |
-| 03 | Die Jahresuhr | Radiale Heatmap (Ringe = Jahre, Segmente = Monate) – Saisonmuster, Filter |
-| 04 | Die Gesichter | Artists vor/nach dem Wendepunkt, Zeitachse der wichtigsten Artists |
-| 05 | Die Streams | Liniendiagramm mit Rekorden, Duell Jahr für Jahr |
-| 06 | Fazit | Drei Kernaussagen und «Was die Daten nicht sagen» |
-| 07 | Dein Jahr | Zeitmaschine (Regler über alle Monate) und Explorer: Jahr, Monate/Jahreszeiten, Zeitverlauf, Artist-Suche |
+| Hero | Was hört die Schweiz? | Skyline aus allen Monaten, Farbe = Genre, Höhe = Streams |
+| 01 | Pink | Pop-Phase, Artists und Machtmomente |
+| – | Quiz | Frage zum Aufstieg von Hip-Hop / Rap |
+| – | Farbwischer | Übergang von Pink zu Neon |
+| 02 | Der Wandel | Heatmap und zeitlicher Wendepunkt |
+| 03 | Die Jahresuhr | Monate, Jahre und Saisonmuster |
+| 04 | Die Gesichter | wichtige Artists vor und nach dem Wandel |
+| 05 | Die Streams | Streams im Zeitverlauf |
+| 06 | Fazit | Kernaussagen und Grenzen der Daten |
+| 07 | Dein Jahr | Zeitmaschine und Explorer |
 
-Alle Zahlen und Überschriften werden aus den Daten berechnet (`frontend/story.js`). Aussagen wie «2014 war die Schweiz pink» erscheinen nur, wenn die Daten sie stützen. Lade- und Scrollzustände sind oben in `story.js` dokumentiert.
+Die Texte und Kennzahlen werden aus den geladenen Daten berechnet.
 
-Farben: Pink = Pop, Neongrün = Hip-Hop / Rap. Die Akzentfarbe der ganzen Seite wechselt mit der Geschichte.
+### Explorer
 
-Barrierefreiheit: Skip-Link zum Explorer, Tastaturbedienung (Regler mit Pfeiltasten), sichtbarer Fokus, `prefers-reduced-motion` schaltet Animationen ab.
+Der Explorer ermöglicht unter anderem:
 
-Ein letzter Monat mit auffällig wenigen Streams (unter 50 % des Medians der sechs Monate davor) wird als «vermutlich unvollständig» schraffiert – aktuell Dezember 2022.
+- Auswahl von Jahren und Monaten
+- Jahreszeiten-Auswertung
+- Ranglisten der Genres
+- Ansicht «Ø pro Woche»
+- Top Songs und Top Artists
+- Explicit-Anteil
+- Zeitverläufe
+- Artist-Suche
 
-Sind Genre-Daten (`?resource=genres`) vorhanden, kommen im Explorer automatisch dazu: Rangliste aller Genres, echte Jahreszeiten-Summen, «Ø pro Woche», Top Song, Explicit-Anteil und Linien pro Genre.
+### Mixtape-Begleiter
 
-### Roter Faden: das Mixtape (`frontend/guide.js`)
+`frontend/guide.js` verwendet eine Kassette als roten Faden:
 
-Die Reportage ist ein Mixtape: **Seite A** (Pink/Pop: Intro, Kapitel 1, Quiz) – beim Farbwischer wird die Kassette **umgedreht** – **Seite B** (Neon/Hip-Hop: Kapitel 2–6) – **Bonus** (Kapitel 7, Explorer).
+- Seite A für den Pink-/Pop-Teil
+- Kassette wird beim Übergang «umgedreht»
+- Seite B für den Neon-/Hip-Hop-Teil
+- Bonus-Bereich für den Explorer
+- Trackliste, Hinweise und versteckter Hidden Track
 
-Der Begleiter unten links ist eine Kassette:
-- zeigt Track (Kapitel), Seite und Bandstand (linke Spule wird kleiner, rechte grösser); die Spulen drehen sich nur beim Scrollen
-- Liner Notes mit echten Zahlen; in Kapitel 2 und in der Zeitmaschine live mit dem aktuellen Monat
-- **Tipp-Knopf** pro Kapitel: springt zum interaktiven Element und hebt es hervor
-- ⏮ ⏭ und Trackliste (Klick auf die Kassette) mit ✓ für gehörte Tracks; verkleinerbar
-- reagiert auf Quiz-Tipp, Wendepunkt, Zeitmaschine (Rekordmonat, unvollständige Monate)
-- fünf versteckte Noten ♪ schalten einen **Hidden Track** mit Geheimfakt frei
+### Barrierefreiheit und Bewegung
 
-### Jahreszeiten nur dort, wo sie Thema sind
+Das Frontend berücksichtigt unter anderem:
 
-Elemente mit `data-season-fx` lösen beim Hover, Fokus oder Antippen einen Effekt **nur in ihrem Bereich** aus: Schnee (bleibt unten liegen), Herbstlaub, wachsende Blumen, Sonnenstrahlen.
-- Kapitel 3: Karten «Juni–November» (Sonne + Laub), «Januar–April» (Schnee + Blumen), «Dezember» (Schnee); beim ersten Erreichen spielen sie einmal kurz an. Hover über der Jahresuhr zeigt die Jahreszeit des Monats, «Nur Dezember» lässt es schneien.
-- Kapitel 2 (Dezember-Schritt), Fazit (Sommer/Herbst), Explorer-Ansicht «Jahreszeiten» und die Zeitmaschine (kurzer Gruss der Jahreszeit des gewählten Monats).
-- Bei «reduzierter Bewegung» keine Effekte und keine Animationen.
+- Skip-Link
+- Tastaturbedienung
+- sichtbaren Fokus
+- `prefers-reduced-motion`
 
-## 8. Technische Umsetzung und Projektstruktur
+Jahreszeiten-Effekte werden nur in den dafür vorgesehenen Bereichen ausgelöst.
 
-- **Backend:** PHP 8 ohne Framework, PDO mit Prepared Statements, MySQL bei Hostpoint
-- **Frontend:** HTML, CSS und Vanilla JavaScript ohne Bibliotheken; Diagramme als SVG/HTML selbst gezeichnet, Jahreszeiten-Effekte mit Canvas
-- **Schriften:** Anton und Space Mono (Google Fonts)
+## 9. Technische Umsetzung und Projektstruktur
 
-```
+- **Backend:** PHP 8, PDO, Prepared Statements, MySQL / MariaDB
+- **Frontend:** HTML, CSS, Vanilla JavaScript
+- **Visualisierungen:** SVG, HTML und Canvas
+- **Hosting:** Hostpoint
+- **Schriften:** Anton und Space Mono über Google Fonts
+- **Versionsverwaltung:** Git / GitHub
+
+```text
 im3-tophits/
-├── config.template.php      Vorlage für config.php (ohne Zugangsdaten)
-├── config.php               echte Zugangsdaten – nur lokal/Server, in .gitignore
+├── config.template.php      Vorlage ohne echte Zugangsdaten
+├── config.php               nur lokal/Server, durch .gitignore geschützt
 ├── backend/
-│   ├── api/index.php        JSON-API (nur lesend)
+│   ├── api/
+│   │   └── index.php        JSON-API
 │   └── etl/
 │       ├── extract.php      CSV lesen und prüfen
-│       ├── transform.php    Monats- und Genre-Auswertung
+│       ├── transform.php    Daten aufbereiten und aggregieren
 │       ├── quality.php      Qualitätschecks
-│       ├── load.php         Schreiben in MySQL (Transaktion)
-│       ├── unload.php       JSON-Ausgabe (nutzt die API)
-│       └── schema.sql       Tabellenstruktur
+│       ├── load.php         Datenbank-Load mit Transaktion
+│       ├── unload.php       JSON-Ausgabe
+│       └── schema.sql       Datenbankschema
 ├── data/
-│   ├── .htaccess            sperrt den Download der Rohdaten
-│   └── spotify_ch_2014_2022.csv   (nicht im Repo)
+│   ├── .htaccess            schützt die Rohdaten vor öffentlichem Zugriff
+│   └── spotify_ch_2014_2022.csv   nicht im GitHub-Repo
 ├── frontend/
-│   ├── index.html           Seite und Kapitelstruktur
-│   ├── style.css            Gestaltung
-│   ├── script.js            Daten laden, Explorer, Zeitmaschine
-│   ├── story.js             Kapitel und Texte aus den Daten
-│   └── guide.js             Mixtape-Begleiter, Jahreszeiten-Effekte
-└── docs/screenshots/        Screenshots für dieses README
+│   ├── index.html
+│   ├── style.css
+│   ├── script.js
+│   ├── story.js
+│   └── guide.js
+└── docs/
+    └── screenshots/
 ```
 
-## 9. Learnings
+## 10. Learnings
 
-> TODO (Team): Eigene Learnings ergänzen – was habt ihr im Projekt gelernt (fachlich, technisch, im Team)?
+Im Projekt haben wir besonders gelernt:
 
--
--
--
+- wie ein vollständiger Datenfluss von Rohdaten über ETL, Datenbank und API bis zum Frontend funktioniert;
+- dass Datenqualität nicht nur bedeutet, dass Code ohne Fehler läuft: fehlende Wochen, unterschiedlich viele Chart-Einträge und unvollständige Zeiträume müssen ebenfalls geprüft und erklärt werden;
+- wie wichtig transparente Transformationsregeln sind, wenn sehr viele Spotify-Genres zu wenigen verständlichen Hauptgenres zusammengefasst werden;
+- dass eine technisch korrekte Regel fachlich trotzdem unplausible Resultate erzeugen kann – wie beim Sonderfall `pop rap`;
+- wie Prepared Statements, Transaktionen, `COMMIT` und `ROLLBACK` eine Datenbank robuster machen;
+- wie Frontend und Backend über eine JSON-API getrennt voneinander arbeiten;
+- wie Git, GitHub, Hostpoint und Deployment zusammenspielen;
+- wie wichtig es ist, Zugangsdaten, Datenbankpasswörter und Tokens nicht im öffentlichen Repository zu speichern;
+- dass Browser- und Server-Caching nach einem Deployment dazu führen können, dass trotz neuer Dateien scheinbar noch eine alte Website sichtbar ist.
 
-## 10. Schwierigkeiten und Lösungen
-
-Die folgenden Punkte sind im Code und in den Commits dokumentiert:
+## 11. Schwierigkeiten und Lösungen
 
 | Schwierigkeit | Lösung |
 |---|---|
-| Artists und Genres stehen in der CSV als Python-Listen (`['…']`); einfaches Ersetzen von `'` durch `"` scheitert bei Namen wie `Guns N' Roses` | Eigener Parser `parsePythonList()`, der die Liste Zeichen für Zeichen liest |
-| Artists haben viele, teils widersprüchliche Spotify-Genres (z.B. `dance pop` und `edm`) | Hauptgenres mit fester Priorität und Ausnahmen (`GENRE_RULES`); nicht zuordenbare Genres landen in `Other`, Artists ohne Genre in `Unknown`, beides wird im Qualitätsbericht ausgewiesen |
-| Wöchentliche Daten, aber Auswertung pro Monat: Monate haben 4 oder 5 Chart-Wochen | Jede Woche zählt zum Monat ihres Datums; `chart_weeks` wird gespeichert, der Explorer zeigt zusätzlich «Ø pro Woche»; Check «Wochen pro Monat» |
-| Der letzte Monat (Dezember 2022) ist vermutlich unvollständig erfasst | Qualitätscheck «Einträge pro Woche»; im Frontend wird der Monat schraffiert und in Aussagen nicht als vollständig gezählt |
-| Ein abgebrochener Load hätte die Tabellen halb leer hinterlassen können | Transaktion mit BEGIN/COMMIT/ROLLBACK, Kontrolle vor dem COMMIT, Qualitätschecks vor dem Verbinden |
-| `load.php` liegt auf dem Webserver und könnte von allen aufgerufen werden | Aufruf nur im Terminal oder mit geheimem Token |
-| Rohdaten sollen nicht öffentlich herunterladbar sein | `data/.htaccess` mit `Require all denied` |
+| Artists und Genres stehen als Python-Listen in der CSV | eigener Parser `parsePythonList()` |
+| Namen mit Apostrophen konnten beim einfachen Ersetzen von Anführungszeichen kaputtgehen | zeichenweises Parsen der Listen |
+| Viele widersprüchliche Spotify-Genres pro Artist | feste Hauptgenre-Regeln, Prioritäten, `Other` und `Unknown` |
+| `pop rap` führte zu unplausibler Zuordnung von Avicii zu Hip-Hop / Rap | Sonderfall `pop rap → Pop`, danach erneuter Qualitätscheck und Reload |
+| Wöchentliche Daten müssen monatlich aggregiert werden | jede Chart-Woche zählt zum Monat ihres Datums; `chart_weeks` wird gespeichert |
+| April 2015 enthält nur eine Chart-Woche | Qualitätswarnung und transparente Dokumentation |
+| Manche Wochen enthalten deutlich weniger Chart-Einträge | Qualitätscheck «Einträge pro Woche» |
+| Ein fehlerhafter Load könnte Daten halb überschreiben | Transaktion, Prüfungen, `COMMIT` / `ROLLBACK` |
+| `load.php` darf nicht öffentlich frei ausführbar sein | Browser-Zugriff nur mit Token; produktiv ist der Token leer und damit gesperrt |
+| Rohdaten sollen nicht öffentlich herunterladbar sein | `data/.htaccess` |
+| Frontend zeigte nach Deployment teilweise eine alte Version | Cache-Busting mit `?v=2` und Kontrolle der Dateien auf Hostpoint |
+| GitHub-Push schlug wegen abgelaufenem Token fehl | neuen Personal Access Token erstellt und macOS-Keychain als Credential Helper eingerichtet |
+| Team arbeitet an gemeinsamem Repository | Änderungen über Git pull/commit/push synchronisiert |
 
-> TODO (Team): Eigene Erfahrungen ergänzen – was war für euch schwierig (z.B. Teamorganisation, Hostpoint, Git), und wie habt ihr es gelöst?
+## 12. Ressourcen
 
-## 11. Ressourcen
-
-| Ressource | Verwendung | Abrufdatum |
+| Ressource | Verwendung | Stand / Abruf |
 |---|---|---|
-| Kaggle: [Spotify tracks chart dataset (2014-2022)](https://www.kaggle.com/datasets/jfreyberg/spotify-chart-data/), Julian Freyberg, Version 4 (letzte Aktualisierung 09.04.2023), Lizenz CC BY 4.0 | Rohdaten | Download: TODO (Team) · Metadaten geprüft: 11.11.2026 |
-| [kworb.net](https://kworb.net/spotify/) und Spotify Web API | Ursprung der Kaggle-Daten (laut Datensatzbeschreibung) | 11.11.2026 (über die Kaggle-Beschreibung) |
-| [Google Fonts](https://fonts.google.com/): Anton, Space Mono | Schriften der Website | TODO (Team) |
-| [PHP-Dokumentation](https://www.php.net/manual/de/) (PDO, Transaktionen, `fgetcsv`) | Backend | TODO (Team) |
-| Hostpoint (Webhosting, MySQL) | Server und Datenbank | – |
-| PhpStorm, GitHub, GitHub Desktop | Entwicklung und Versionsverwaltung | – |
-| Claude Code (KI-Assistent von Anthropic) | Unterstützung bei Frontend, ETL, Qualitätschecks und Dokumentation | – |
+| [Kaggle: Spotify tracks chart dataset (2014-2022)](https://www.kaggle.com/datasets/jfreyberg/spotify-chart-data/), Julian Freyberg, Version 4, Lizenz CC BY 4.0 | Rohdaten | Metadaten geprüft: 11.11.2026; ursprüngliches Downloaddatum nicht dokumentiert |
+| [kworb.net](https://kworb.net/spotify/) | Ursprung der Chartdaten laut Kaggle-Beschreibung | über Kaggle-Dokumentation nachvollzogen |
+| Spotify Web API | Ursprung ergänzender Spotify-Metadaten laut Kaggle-Beschreibung | über Kaggle-Dokumentation nachvollzogen |
+| [Google Fonts](https://fonts.google.com/) – Anton, Space Mono | Schriften | im Projekt verwendet |
+| [PHP-Dokumentation](https://www.php.net/manual/de/) | PHP, PDO, CSV-Verarbeitung, Transaktionen | im Projekt verwendet |
+| Hostpoint | Webhosting und MySQL | produktive Umgebung |
+| PhpStorm | Entwicklung und Deployment | im Projekt verwendet |
+| Git / GitHub | Versionsverwaltung und Zusammenarbeit | im Projekt verwendet |
+| Claude Code / KI-Unterstützung | Unterstützung bei Frontend, ETL, Qualitätschecks und Dokumentation | im Projekt verwendet |
+| IM3-Unterrichtsunterlagen | Anforderungen, ETL, Datenbank und Projektstruktur | Modulunterlagen HS26 |
 
-> TODO (Team): Weitere Quellen (z.B. Unterrichtsunterlagen IM3, Tutorials, Inspirationen) mit Abrufdatum ergänzen.
+## 13. Lizenz und Team
 
-## 12. Lizenz
+### Daten
 
-- **Daten:** Der Kaggle-Datensatz steht unter [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). Namensnennung: Julian Freyberg, «Spotify tracks chart dataset (2014-2022)», Kaggle. Die Website nennt die Quelle im Abschnitt «Daten & Methode».
-- **Code:** TODO (Team) – Lizenz festlegen (z.B. MIT) und als `LICENSE` ablegen. Ohne Lizenzdatei gilt: alle Rechte bei den Autorinnen.
-- **Team:** Die Chartjägerinnen, IM3. TODO (Team): Namen ergänzen.
+Der Kaggle-Datensatz wird im Projekt gemäss der dort angegebenen **Creative Commons Attribution 4.0 International (CC BY 4.0)** verwendet.
+
+Namensnennung:
+
+> Julian Freyberg, «Spotify tracks chart dataset (2014-2022)», Kaggle.
+
+### Code
+
+Aktuell liegt keine separate Open-Source-Lizenzdatei im Repository. Solange keine `LICENSE` ergänzt wird, ist der Projektcode nicht automatisch zur freien Weiterverwendung lizenziert.
+
+### Team
+
+**Die Chartjägerinnen – IM3, HS26**
+
+---
+
+## Kurzfazit
+
+Die Datenstory zeigt, wie sich die dominierenden Genres in den Schweizer Spotify-Charts zwischen 2014 und 2022 Monat für Monat verändert haben. Das Projekt verbindet Datenaufbereitung, Qualitätskontrolle, Datenbank, API und interaktives Frontend. Gleichzeitig macht es transparent, wo die Daten unvollständig sind und welche methodischen Entscheidungen – insbesondere die Genre-Zuordnung – die Resultate beeinflussen.
