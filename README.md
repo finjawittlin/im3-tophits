@@ -261,14 +261,18 @@ Latin
 
 Sonderfälle:
 
-- `trap latino` wird Latin zugeordnet.
-- `dance pop`, `pop dance` und `electropop` sollen nicht allein wegen `dance` oder `electro` Electronic / Dance werden.
+- `trap latino`, `latin rap`, `reggaeton`, `dembow` und ähnliche Begriffe werden Latin zugeordnet.
+- `dance pop`, `pop dance` und `electropop` zählen zu Pop und werden nicht allein wegen `dance` oder `electro` als Electronic / Dance klassifiziert.
+- Ein allgemeiner `dance`-Treffer wird bewusst nicht verwendet, weil Begriffe wie `australian dance` sonst Pop-Artists fälschlich Electronic / Dance zuordnen können.
 - Der Mischbegriff `pop rap` wird als Pop behandelt und löst nicht automatisch Hip-Hop / Rap aus.
+- `electronic trap` wird Electronic / Dance zugeordnet, während normales `trap` weiterhin zu Hip-Hop / Rap zählt.
+- `trap soul` wird R&B / Soul zugeordnet.
+- Eindeutige elektronische Genres wie `edm`, `house`, `electro house`, `moombahton` oder `hardstyle` werden Electronic / Dance zugeordnet.
 - `Unknown` bedeutet, dass für den Artist kein Spotify-Genre vorhanden ist.
 - `Other` bedeutet, dass Genres vorhanden sind, aber keine Regel passt.
-- Bei Kollaborationen zählt der **erste gelistete Artist** als Hauptartist.
+- Bei Kollaborationen zählt der **erste gelistete Artist** als Hauptartist. Die Genre-Tags der CSV können dabei Genres mehrerer beteiligter Artists enthalten; dies ist eine methodische Grenze der Quelle.
 
-Die `pop rap`-Ausnahme wurde ergänzt, nachdem bei einer Qualitätskontrolle Avicii aufgrund des Spotify-Tags `pop rap` fälschlich Hip-Hop / Rap zugeordnet wurde. Nach der Korrektur ist Januar 2014 beispielsweise **Pop** mit **Milky Chance** als Top Artist des Top-Genres.
+Die Genre-Regeln wurden anhand auffälliger Resultate mit konkreten Artists und Songs geprüft. Dabei zeigte sich unter anderem, dass `pop rap` fälschlich Hip-Hop / Rap auslösen konnte, allgemeine `dance`-Treffer Pop-Artists zu Electronic / Dance verschieben konnten und `electronic trap` nicht wie normales `trap` behandelt werden sollte. Nach den Korrekturen wurden die gesamten Daten erneut transformiert, mit den Qualitätschecks geprüft und in die Datenbank geladen.
 
 ### Qualitätschecks – `backend/etl/quality.php`
 
@@ -314,7 +318,7 @@ Der aktuelle Qualitätslauf verarbeitet:
 - **87'432 Zeilen**
 - **108 Monate** von 2014-01 bis 2022-12
 - **465 Chart-Wochen**
-- **910 Monat-Genre-Werte**
+- **913 Monat-Genre-Werte**
 - **4'812'682'893 Streams** in den verarbeiteten Chartdaten
 
 ### Auffälligkeiten
@@ -325,7 +329,7 @@ Der aktuelle Qualitätslauf verarbeitet:
 
 **Unknown:** 620 Zeilen haben kein Spotify-Genre. Diese Zeilen entsprechen rund **0,75 % der Streams**.
 
-**Other:** 994 Zeilen haben Spotify-Genres, die von keiner Regel erfasst werden. Sie entsprechen rund **1,05 % der Streams**. Beispiele sind `adult standards`, `lounge`, `easy listening`, `vocal jazz` und `partyschlager`.
+**Other:** 969 Zeilen haben Spotify-Genres, die von keiner Regel erfasst werden. Sie entsprechen rund **1,01 % der Streams**. Beispiele sind `adult standards`, `lounge`, `easy listening`, `vocal jazz` und `partyschlager`.
 
 ### Methodische Grenzen
 
@@ -366,7 +370,7 @@ Pro Monat und Genre:
 - `top_track_artist`
 - `top_track_streams`
 
-Aktueller Stand: **910 Monat-Genre-Werte**.
+Aktueller Stand: **913 Monat-Genre-Werte**.
 
 ### API
 
@@ -490,7 +494,7 @@ Im Projekt haben wir besonders gelernt:
 - wie ein vollständiger Datenfluss von Rohdaten über ETL, Datenbank und API bis zum Frontend funktioniert;
 - dass Datenqualität nicht nur bedeutet, dass Code ohne Fehler läuft: fehlende Wochen, unterschiedlich viele Chart-Einträge und unvollständige Zeiträume müssen ebenfalls geprüft und erklärt werden;
 - wie wichtig transparente Transformationsregeln sind, wenn sehr viele Spotify-Genres zu wenigen verständlichen Hauptgenres zusammengefasst werden;
-- dass eine technisch korrekte Regel fachlich trotzdem unplausible Resultate erzeugen kann – wie beim Sonderfall `pop rap`;
+- dass eine technisch korrekte Regel fachlich trotzdem unplausible Resultate erzeugen kann und Genre-Regeln deshalb mit echten Artists und Songs geprüft werden müssen;
 - wie Prepared Statements, Transaktionen, `COMMIT` und `ROLLBACK` eine Datenbank robuster machen;
 - wie Frontend und Backend über eine JSON-API getrennt voneinander arbeiten;
 - wie Git, GitHub, Hostpoint und Deployment zusammenspielen;
@@ -504,7 +508,8 @@ Im Projekt haben wir besonders gelernt:
 | Artists und Genres stehen als Python-Listen in der CSV | eigener Parser `parsePythonList()` |
 | Namen mit Apostrophen konnten beim einfachen Ersetzen von Anführungszeichen kaputtgehen | zeichenweises Parsen der Listen |
 | Viele widersprüchliche Spotify-Genres pro Artist | feste Hauptgenre-Regeln, Prioritäten, `Other` und `Unknown` |
-| `pop rap` führte zu unplausibler Zuordnung von Avicii zu Hip-Hop / Rap | Sonderfall `pop rap → Pop`, danach erneuter Qualitätscheck und Reload |
+| Zu breite Genre-Regeln führten zu unplausiblen Zuordnungen, z. B. `pop rap`, allgemeines `dance` oder `electronic trap` | Regeln anhand echter Artists und Songs geprüft und präzisiert; danach Qualitätscheck und Reload |
+| Genre-Tags bei Kollaborationen können Genres mehrerer beteiligter Artists enthalten | erster gelisteter Artist wird als Hauptartist verwendet; Einschränkung wird transparent dokumentiert |
 | Wöchentliche Daten müssen monatlich aggregiert werden | jede Chart-Woche zählt zum Monat ihres Datums; `chart_weeks` wird gespeichert |
 | April 2015 enthält nur eine Chart-Woche | Qualitätswarnung und transparente Dokumentation |
 | Manche Wochen enthalten deutlich weniger Chart-Einträge | Qualitätscheck «Einträge pro Woche» |
