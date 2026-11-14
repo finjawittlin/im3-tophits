@@ -87,17 +87,21 @@ const GENRE_OTHER = "Other";
 
 const GENRE_RULES = [
 
-    "Latin" => '/latin|reggaeton|bachata|urbano|cumbia|salsa|\bsertanejo/',
+    // Latin steht bewusst vor Hip-Hop, damit z.B. "trap latino"
+    // und "latin rap" nicht als Hip-Hop / Rap enden.
+    "Latin" => '/latin|reggaeton|bachata|urbano|cumbia|salsa|merengue|dembow|\bsertanejo\b|rap dominicano/',
 
-    "Hip-Hop / Rap" => '/hip hop|rap\b|\btrap\b|drill|grime/',
+    "Hip-Hop / Rap" => '/hip hop|rap\b|\btrap\b|drill|grime|hip pop/',
 
-    "R&B / Soul" => '/r&b|\bsoul\b|neo soul/',
+    "R&B / Soul" => '/r&b|\bsoul\b|neo soul|urban contemporary|contemporary r&b/',
 
     "Rock" => '/rock|metal|punk|grunge/',
 
     "Indie / Alternative" => '/indie|alternative/',
 
-    "Electronic / Dance" => '/\bedm\b|house|techno|\belectro\b|electro house|brostep|dubstep|trance|big room|drum and bass|\bdance\b/',
+    // Kein allgemeines "\bdance\b": Begriffe wie "australian dance"
+    // haben sonst Pop-Artists fälschlich zu Electronic / Dance gemacht.
+    "Electronic / Dance" => '/\bedm\b|electronic|house|techno|\belectro\b|brostep|dubstep|trance|big room|drum and bass|\bdnb\b|moombahton|hardstyle|future bass/',
 
     "Pop" => '/pop/'
 ];
@@ -106,21 +110,35 @@ function classifyGenreTag(string $tag): ?string
 {
     $tag = strtolower(trim($tag));
 
-    // "pop rap" ist ein Mischgenre und soll nicht allein Hip-Hop / Rap auslösen.
+    // --------------------------------------------------
+    // Bekannte Mischgenres / Grenzfälle
+    // --------------------------------------------------
+
+    // "pop rap" allein soll nicht genügen, um einen Track als Hip-Hop / Rap
+    // einzustufen. Hat derselbe Eintrag zusätzlich "hip hop" oder "rap",
+    // wird Hip-Hop / Rap über diese separaten Tags trotzdem erkannt.
     if ($tag === 'pop rap') {
         return "Pop";
     }
 
+    // "electronic trap" ist ein elektronisches Subgenre und nicht dasselbe
+    // wie Hip-Hop-Trap. Das war z.B. bei Major Lazer / "Lean On" relevant.
+    if ($tag === 'electronic trap') {
+        return "Electronic / Dance";
+    }
+
+    // "trap soul" ist näher an R&B / Soul als an klassischem Hip-Hop-Trap.
+    if ($tag === 'trap soul') {
+        return "R&B / Soul";
+    }
+
+    // Diese Begriffe enthalten "dance" oder "electro", werden aber in diesem
+    // Projekt nicht automatisch Electronic / Dance zugeordnet.
+    if (preg_match('/^(dance pop|pop dance|electropop|dancehall|afro dancehall)$/', $tag)) {
+        return str_contains($tag, 'pop') ? "Pop" : null;
+    }
+
     foreach (GENRE_RULES as $mainGenre => $pattern) {
-
-        // Pop-Varianten sollen nicht wegen "dance"/"electro" Electronic werden
-        if (
-            $mainGenre === "Electronic / Dance" &&
-            preg_match('/dance pop|pop dance|electropop|dancehall/', $tag)
-        ) {
-            continue;
-        }
-
         if (preg_match($pattern, $tag)) {
             return $mainGenre;
         }
@@ -461,3 +479,4 @@ if ($transformIsMain) {
 }
 
 return $result;
+
